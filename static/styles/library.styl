@@ -1,0 +1,77 @@
+.library
+    display none
+    width 1220px
+    height 850px
+    float right
+    background #232c37
+    transition ease-in-out .2s
+
+    &.active
+        display inline-block
+
+    .game-container
+        display flex
+        width 100%
+        height 100%
+        box-sizing border-box
+        padding 30px
+
+.game-card
+    display inline-block
+    width 200px
+    height 300px
+    border 2px solid #202832
+    box-shadow 0 10px 20px rgba(0, 0, 0, .2)
+    padding 20px
+    box-sizing border-box
+    position relative
+    background #1e252e
+    border-radius 10px
+    overflow hidden
+
+    .background
+        display block
+        width 200px
+        height 300px
+        position absolute
+        top 0
+        left 0
+        opacity 0
+        background #000
+        transition ease-in-out .4s
+
+    .title
+        display block
+        width 100%
+        position absolute
+        // top 100%
+        top -30px
+        left 50%
+        transform translateX(-50%)
+        color #fff
+        text-align center
+        transition ease-in-out .2s
+        z-index 2
+
+    .play-btn
+        width 50%
+        height 50px
+        position absolute
+        // top -30%
+        top 105%
+        left 50%
+        transform translateX(-50%)
+        line-height 30px
+        text-align center
+        transition ease-in-out .2s
+        z-index 2
+
+    &:hover
+        .title
+            top 40%
+
+        .play-btn
+            top 70%
+
+        .background
+            opacity 0.1

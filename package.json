@@ -1,0 +1,30 @@
+{
+  "name": "hidrogen",
+  "version": "0.1.0-alpha",
+  "description": "Your gaming library",
+  "main": "./src/main-process/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --development",
+    "watch": "gulp build && gulp watch"
+  },
+  "keywords": [
+    "hidrogen",
+    "game",
+    "launcher",
+    "electron",
+    "library"
+  ],
+  "author": "Ionix",
+  "license": "MIT",
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron": "^3.0.6",
+    "electron-reload": "^1.2.5",
+    "gulp": "^3.9.1",
+    "gulp-plumber": "^1.2.0",
+    "gulp-pug": "^4.0.1",
+    "gulp-stylus": "^2.7.0",
+    "live-reload": "^1.1.0"
+  }
+}
