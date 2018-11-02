@@ -1,9 +1,9 @@
-![Hidrogen](./.github/images/logo-hidrogen.png)
+![Hidrogen](./.github/images/logo-hidrogen-dark.png)
 
-`Hidrogen` is an open source library and launcher for your favourite videogames. It's powered by [Node.js](nodejs.org) and [Electron](electronjs.org).
+`Hidrogen` is an open source library and launcher for your favourite videogames. It's powered by [Node.js](https://nodejs.org) and [Electron](https://electronjs.org/).
 
 ## Getting Started
-First of all, you'll need to install [Node.js](nodejs.org) and NPM in order to run and develop Hidrogen. *In Windows NPM comes along with Node*. Then clone this repository by using
+First of all, you'll need to install [Node.js](https://nodejs.org) and NPM in order to run and develop Hidrogen. *In Windows NPM comes along with Node*. Then clone this repository by using
 ```bash
 git clone https://github.com/rixgarregid/Hidrogen.git
 ```
@@ -24,7 +24,7 @@ to run the app.
 
 ## Development
 
-As Streamlight is built in [Electron](electronjs.org), it's essential you have installed [Node.js](nodejs.org) to work on this app.
+As Streamlight is built in [Electron](https://electronjs.org/), it's essential you have installed [Node.js](https://nodejs.org) to work on this app.
 
 Command | Description
 --- | ---
