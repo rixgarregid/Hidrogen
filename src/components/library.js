@@ -6,30 +6,17 @@ class Library extends HTMLElement {
   }
 
   render () {
-    this.gameTitle = document.createElement('text')
-    this.gameTitle.classList.add('text')
-    this.gameTitle.classList.add('title')
-    this.gameTitle.innerText = 'Some cool game'
+    this.innerHTML = `
+      <hidrogen-panel class="game-container">
 
-    this.playBtn = document.createElement('btn')
-    this.playBtn.classList.add('btn')
-    this.playBtn.classList.add('play-btn')
-    this.playBtn.innerText = 'Jugar'
+        <hidrogen-game-card class="game-card">
+          <text class="text title">Some cool game</text>
+          <btn class="btn play-btn">Jugar</btn>
+          <hidrogen-panel class="background"></hidrogen-panel>
+        </hidrogen-game-card>
 
-    this.background = document.createElement('span')
-    this.background.classList.add('background')
-
-    this.gameCard = document.createElement('game-card')
-    this.gameCard.classList.add('game-card')
-    this.gameCard.appendChild(this.gameTitle)
-    this.gameCard.appendChild(this.playBtn)
-    this.gameCard.appendChild(this.background)
-
-    this.gameContainer = document.createElement('hidrogen-panel')
-    this.gameContainer.classList.add('game-container')
-    this.gameContainer.appendChild(this.gameCard)
-
-    this.appendChild(this.gameContainer)
+      </hidrogen-panel>
+    `
   }
 }
 

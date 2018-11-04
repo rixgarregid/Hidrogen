@@ -3,7 +3,7 @@ class Board extends HTMLElement {
     super()
     this.classList.add('board')
 
-    this.views = ['home', 'library', 'settings']
+    this.views = ['home', 'library', 'about', 'settings', 'language', 'game-editor']
     this.activeView = 'home'
 
     this.updateView('home')

@@ -7,43 +7,26 @@ class Home extends HTMLElement {
   }
 
   attachEvents () {
-    this.libraryBtn.addEventListener('click', () => {
+    this.querySelector('.library-btn').addEventListener('click', () => {
       document.querySelector('hidrogen-board').updateView('library')
       document.querySelector('hidrogen-board').setAttribute('view', 'library')
       document.querySelector('hidrogen-sidebar').updateSelectedListItem('library')
     })
+
+    this.querySelector('.add-btn').addEventListener('click', () => {
+      document.querySelector('hidrogen-game-editor').classList.add('active')
+    })
   }
 
   render () {
-    this.mainTitle = document.createElement('text')
-    this.mainTitle.classList.add('text')
-    this.mainTitle.classList.add('main-title')
-    this.mainTitle.innerText = 'Bienvenido a Hidrogen,'
-
-    this.subTitle = document.createElement('text')
-    this.subTitle.classList.add('text')
-    this.subTitle.classList.add('sub-title')
-    this.subTitle.innerText = 'tu biblioteca de juegos'
-
-    this.libraryBtn = document.createElement('btn')
-    this.libraryBtn.classList.add('btn')
-    this.libraryBtn.classList.add('library-btn')
-    this.libraryBtn.innerText = 'Ir a mi biblioteca'
-
-    this.addBtn = document.createElement('btn')
-    this.addBtn.classList.add('btn')
-    this.addBtn.classList.add('btn-sec')
-    this.addBtn.classList.add('add-btn')
-    this.addBtn.innerText = 'Añadir juegos'
-
-    this.homeBtns = document.createElement('hidrogen-container')
-    this.homeBtns.classList.add('home-btns')
-    this.homeBtns.appendChild(this.libraryBtn)
-    this.homeBtns.appendChild(this.addBtn)
-
-    this.appendChild(this.mainTitle)
-    this.appendChild(this.subTitle)
-    this.appendChild(this.homeBtns)
+    this.innerHTML = `
+      <text class="text main-title">Bienvenido a Hidrogen,</text>
+      <text class="text sub-title">tu biblioteca de juegos</text>
+      <hidrogen-panel class="home-btns">
+        <btn class="btn library-btn">Ir a mi biblioteca</btn>
+        <btn class="btn btn-sec add-btn">Añadir juegos</btn>
+      </hidrogen-panel>
+    `
   }
 }
 

@@ -1,7 +1,7 @@
-class Settings extends HTMLElement {
+class About extends HTMLElement {
   constructor () {
     super()
-    this.classList.add('settings')
+    this.classList.add('about')
     this.render()
     this.attachEvents()
   }
@@ -21,4 +21,4 @@ class Settings extends HTMLElement {
   }
 }
 
-customElements.define('hidrogen-settings', Settings)
+customElements.define('hidrogen-about', About)
