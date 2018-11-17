@@ -1,6 +1,6 @@
 {
   "name": "hidrogen",
-  "version": "0.1.0-alpha",
+  "version": "0.1.5-alpha",
   "description": "Your gaming library",
   "main": "./src/main-process/main.js",
   "scripts": {

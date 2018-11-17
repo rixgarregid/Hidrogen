@@ -8,14 +8,51 @@
     top 20px
     left -870px
     transition ease-in-out .2s
+    padding-top 60px
 
     &.active
         left 350px
 
-    .icon-close
-        width 40px
-        height 40px
-        background transparent
+    .field
+        margin-bottom 20px
+        line-height 40px
+
+        &:nth-child(2)
+            margin-bottom 10px
+
+        &:nth-child(3)
+            margin-left 40px
+
+        .lang-label
+            display inline-block
+            cursor pointer
+            color #a9a9a9
+            transition .2s ease-in-out
+            line-height 40px
+
+            &:hover
+                color #fff
+
+        .lang-dropdown
+            margin 0 15px
+            vertical-align middle
+
+            &:hover + .lang-label
+                color #a9a9a9
+
+            .dropdown-title
+                padding 0 20px
+
+        .autolang-label
+            display inline-block
+            height 40px
+            vertical-align middle
+
+    .cancel-btn
+        width 200px
+        height 50px
         position absolute
-        top 30px
-        right 30px
+        bottom 170px
+        right 380px
+        line-height 30px
+        text-align center

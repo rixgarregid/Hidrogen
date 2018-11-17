@@ -8,13 +8,93 @@
     top 20px
     left 1570px
     transition ease-in-out .2s
+    padding-top 60px
+    overflow-y scroll
 
     &.active
         left 350px
+
+    input
+        margin-right 26px
+
+    .game-path-input
+        width 350px
+
+    .game-path-btn
+        width 170px
+        height 40px
+        text-align center
+        line-height 20px
+        font-size 14px
+
+    .game-synopsis-input
+        display inline-block
+        width 530px
+        height 360px
+        float left
+        margin-right 30px
+
+    .huge-field
+        height 360px
+        position relative
+
+        .input-text
+            float left
+            margin-bottom 24px
+
+    .game-image-preview-panel
+        display block
+        width 200px
+        height 300px
+        padding 20px
+        box-sizing border-box
+        position relative
+        background #232c37
+        border-radius 10px
+        float left
+        margin-right 30px
+
+        .text
+            display block
+            width 100%
+            position absolute
+            left 50%
+            transform translateX(-50%)
+            color #a9a9a9
+            text-align center
+            transition ease-in-out .2s
+
+        .title
+            top 40%
+
+        .sub-title
+            top 60%
+            font-size 13px
+
+    .game-image-btn
+        width 200px
+        height 40px
+        text-align center
+        line-height 20px
+        font-size 14px
+        position absolute
+        bottom 0
+        right 460px
 
     .btn-done
         width 200px
         height 50px
         position absolute
-        bottom 30px
-        right 30px
+        bottom 140px
+        right 360px
+        text-align center
+        line-height 30px
+
+    .btn-cancel
+        width 150px
+        height 50px
+        position absolute
+        bottom 140px
+        right 180px
+        text-align center
+        line-height 30px

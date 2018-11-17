@@ -1,0 +1,94 @@
+.input-text
+    display inline-block
+    width 250px
+    height 40px
+    padding 10px 20px
+    box-sizing border-box
+    border-radius 5px
+    border none
+    background #232c37
+    transition ease-in-out .2s
+    color #a9a9a9
+    cursor pointer
+
+    &:hover
+        color #fff !important
+        background #303d4d
+
+    &:focus
+        outline none
+        color #fff !important
+        background #303d4d
+
+    &.error
+        border 1px solid darkred
+        animation error .2s ease-in-out
+
+    @keyframes error
+        0%
+            transform translateX(0px)
+        25%
+            transform translateX(30px)
+        100%
+            transform translateX(0px)
+
+.input-textarea
+    display inline-block
+    width 250px
+    height 100px
+    padding 20px
+    box-sizing border-box
+    border-radius 5px
+    border none
+    background #232c37
+    transition ease-in-out .2s
+    resize none
+    font-family 'Arial'
+    color #a9a9a9
+    cursor pointer
+
+    &:hover
+        color #fff !important
+        background #303d4d
+
+    &:focus
+        outline none
+        color #fff !important
+        background #303d4d
+
+input::-webkit-input-placeholder
+    color #a9a9a9
+    font-family 'Arial'
+    transition .2s ease-in-out
+
+textarea::-webkit-input-placeholder
+    color #a9a9a9
+    font-family 'Arial'
+
+label
+    cursor pointer
+    color #a9a9a9
+    transition .2s ease-in-out
+
+    &:hover
+        color #fff
+
+    input[type='checkbox']
+        display none
+
+        + .label:before
+            content '\e835'
+            font-family 'icons'
+            font-size 1em
+            display inline-block
+            margin-right 5px
+
+        &:checked + .label:before
+            content '\e834'
+            animation tick 250ms ease-in-out
+
+        @keyframes tick
+            0%
+                transform scale(0)
+            100%
+                transform scale(1)

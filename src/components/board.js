@@ -1,17 +1,23 @@
+// The {Board} class manages the app's major panel in which
+// most of the content is displayed (home, library, etc.).
+// It controls which `view` is active at a certain time or
+// by a certain action.
 class Board extends HTMLElement {
   constructor () {
     super()
-    this.classList.add('board')
 
-    this.views = ['home', 'library', 'about', 'settings', 'language', 'game-editor']
-    this.activeView = 'home'
+    this.views = ['home', 'library', 'game-editor', 'settings', 'about']
 
     this.updateView('home')
+    this.render()
   }
 
   updateView (view) {
-    for (let v of this.childNodes) {
-      if (v.classList.contains('active')) v.classList.remove('active')
+    // In order to get all <hidrogen-board>'s child elements, each of
+    // these elements must have the `board-view` css class to be recognized
+    // as a child and selected.
+    for (let boardView of this.querySelectorAll('.board-view')) {
+      if (boardView.classList.contains('active')) boardView.classList.remove('active')
     }
 
     document.querySelector(`hidrogen-${view}`).classList.add('active')
@@ -19,12 +25,12 @@ class Board extends HTMLElement {
     this.setAttribute('view', view)
   }
 
-  get view () {
+  getActiveView () {
     return this.getAttribute('view')
   }
 
-  set view (view) {
-    this.updateView(view)
+  render () {
+    this.classList.add('board')
   }
 }
 

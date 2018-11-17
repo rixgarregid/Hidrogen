@@ -2,6 +2,9 @@ const { BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
 
+// The {HidrogenWindow} class manages Hidrogen's window, its
+// events and states throught a electron's {BrowserWindow}
+// instance.
 module.exports =
 class HidrogenWindow {
   constructor (options) {

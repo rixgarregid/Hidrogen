@@ -1,31 +1,58 @@
+const { app } = require('electron').remote
+const os = require('os')
+
+// The {App} class links all the main components that builds
+// the Hidrogen UI. Also sends debug information for the renderer
+// process which can be accesed in the app's Developer Tools.
 class App extends HTMLElement {
   constructor () {
     super()
     this.render()
+
+    this.logEnvironmentInfo()
+  }
+
+  getSystemInfo () {
+    let systemOS
+    let arch
+
+    switch (process.platform) {
+      case 'win32': systemOS = 'Windows'; break
+      case 'linux': systemOS = 'Linux'; break
+      case 'darwin': systemOS = 'MacOS'; break
+    }
+
+    switch (os.arch()) {
+      case 'ia32': arch = '32-bit'; break
+      case 'arm64': arch = '64-bit'; break
+      case 'x32': arch = '32-bit'; break
+      case 'x64': arch = '64-bit'; break
+    }
+
+    let platformRelease = os.release()
+
+    return `${systemOS} ${platformRelease} ${arch}`
+  }
+
+  logEnvironmentInfo () {
+    console.log(`Hidrogen version: v${app.getVersion()}`)
+    console.log(`Running on ${this.getSystemInfo()}`)
+    console.log(`Exec path: ${process.execPath}`)
   }
 
   render () {
-    this.titlebar = document.createElement('hidrogen-titlebar')
-    this.sidebar = document.createElement('hidrogen-sidebar')
+    this.innerHTML = `
+      <hidrogen-titlebar></hidrogen-titlebar>
+      <hidrogen-sidebar></hidrogen-sidebar>
 
-    this.home = document.createElement('hidrogen-home')
-    this.library = document.createElement('hidrogen-library')
-    this.about = document.createElement('hidrogen-about')
-    this.settings = document.createElement('hidrogen-settings')
-    this.language = document.createElement('hidrogen-language')
-    this.gameEditor = document.createElement('hidrogen-game-editor')
-
-    this.board = document.createElement('hidrogen-board')
-    this.board.appendChild(this.home)
-    this.board.appendChild(this.library)
-    this.board.appendChild(this.about)
-    this.board.appendChild(this.settings)
-    this.board.appendChild(this.language)
-    this.board.appendChild(this.gameEditor)
-
-    this.appendChild(this.titlebar)
-    this.appendChild(this.sidebar)
-    this.appendChild(this.board)
+      <hidrogen-board>
+        <hidrogen-home></hidrogen-home>
+        <hidrogen-library></hidrogen-library>
+        <hidrogen-game-editor></hidrogen-game-editor>
+        <hidrogen-settings></hidrogen-settings>
+        <hidrogen-about></hidrogen-about>
+      </hidrogen-board>
+    `
   }
 }
 

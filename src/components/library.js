@@ -1,19 +1,24 @@
+// The {Library} class displays all the games added by the
+// user and controls how they are shown.
 class Library extends HTMLElement {
   constructor () {
     super()
-    this.classList.add('library')
+
     this.render()
   }
 
+  add (game) {
+    this.querySelector('.game-container').appendChild(game)
+  }
+
   render () {
+    this.classList.add('library')
+    this.classList.add('board-view')
+
     this.innerHTML = `
       <hidrogen-panel class="game-container">
 
-        <hidrogen-game-card class="game-card">
-          <text class="text title">Some cool game</text>
-          <btn class="btn play-btn">Jugar</btn>
-          <hidrogen-panel class="background"></hidrogen-panel>
-        </hidrogen-game-card>
+        <hidrogen-game-card class="wow-card"></hidrogen-game-card> <!-- Just an example -->
 
       </hidrogen-panel>
     `
