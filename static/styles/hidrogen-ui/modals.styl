@@ -1,0 +1,53 @@
+.modal
+    display none
+    width 1570px
+    height 870px
+    position absolute
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
+    background rgba(0, 0, 0, .6)
+    z-index 10
+    transition ease-in-out .2s
+    color #a9a9a9
+
+    &.active
+        display block
+        animation popUp .3s ease-in-out forwards
+
+        .content
+            animation popUp .3s ease-in-out forwards
+            animation-delay .1s
+
+    &.no-default-content
+        .title
+            display none
+
+        .btn-close
+            display none
+
+    .content
+        display block
+        width 600px
+        height 400px
+        padding 25px
+        box-sizing border-box
+        background #1e252e
+        border-radius 10px
+        position relative
+        top 50%
+        left 50%
+        transform translate(-50%, -50%)
+        transform-origin center
+        box-shadow 0 0 50px rgba(0, 0, 0, .7)
+        opacity 0
+
+    @keyframes popUp
+        0%
+            transform scale(0.1) translate(-50%, -50%)
+            opacity 0
+        60%
+            transform scale(1.2) translate(-50%, -50%)
+        100%
+            transform scale(1) translate(-50%, -50%)
+            opacity 1

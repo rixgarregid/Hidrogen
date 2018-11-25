@@ -1,6 +1,8 @@
 const I18n = require('../translator')
 const i18n = new I18n()
 
+// The {Sidebar} class manages all the events in the sidebar
+// component.
 class Sidebar extends HTMLElement {
   constructor () {
     super()
@@ -19,30 +21,41 @@ class Sidebar extends HTMLElement {
   }
 
   attachEvents () {
-    this.querySelector('.item-home').addEventListener('click', () => {
+
+    const showHome = () => {
       document.querySelector('hidrogen-board').updateView('home')
       this.updateSelectedListItem('home')
-    })
+    }
 
-    this.querySelector('.item-library').addEventListener('click', () => {
+    const showLibrary = () => {
       document.querySelector('hidrogen-board').updateView('library')
       this.updateSelectedListItem('library')
-    })
+    }
 
-    this.querySelector('.item-game-editor').addEventListener('click', () => {
-      document.querySelector('hidrogen-game-editor').classList.add('active')
+    const showGameEditor = () => {
+      document.querySelector('hidrogen-board').updateView('game-editor')
       this.updateSelectedListItem('game-editor')
-    })
+    }
 
-    this.querySelector('.item-about').addEventListener('click', () => {
-      document.querySelector('hidrogen-board').updateView('about')
-      this.updateSelectedListItem('about')
-    })
-
-    this.querySelector('.item-settings').addEventListener('click', () => {
+    const showSettings = () => {
       document.querySelector('hidrogen-board').updateView('settings')
       this.updateSelectedListItem('settings')
-    })
+    }
+
+    const showAbout = () => {
+      document.querySelector('hidrogen-board').updateView('about')
+      this.updateSelectedListItem('about')
+    }
+
+    this.querySelector('.item-home').addEventListener('click', showHome)
+
+    this.querySelector('.item-library').addEventListener('click', showLibrary)
+
+    this.querySelector('.item-game-editor').addEventListener('click', showGameEditor)
+
+    this.querySelector('.item-settings').addEventListener('click', showSettings)
+
+    this.querySelector('.item-about').addEventListener('click', showAbout)
   }
 
   render () {
@@ -63,8 +76,8 @@ class Sidebar extends HTMLElement {
         </li>
 
         <li class="list-item item-game-editor">
-          <span class="icon icon-mode_edit"></span>
-          <text class="text"> ${i18n.translate('Game editor')} </text>
+          <span class="icon icon-add"></span>
+          <text class="text"> ${i18n.translate('Add games')} </text>
         </li>
 
         <li class="list-item item-settings">

@@ -1,4 +1,5 @@
 const { shell } = require('electron')
+const LibraryManager = require('../library-manager')
 const I18n = require('../translator')
 const i18n = new I18n()
 
@@ -6,12 +7,30 @@ class Game extends HTMLElement {
   constructor () {
     super()
 
-    this.gameTitle = 'World of Warcraft' // Yeah.
+    this.gameTitle = this.gameTitle
 
+    this.libraryManager = new LibraryManager()
     this.hidrogenLibrary = document.querySelector('hidrogen-library')
 
     this.render()
     this.attachEvents()
+  }
+
+  get gameTitle () {
+    return this.getAttribute('game-title') || 'Some cool game'
+  }
+
+  set gameTitle (title) {
+    this.setAttribute('game-title', title)
+  }
+
+  get gameId () {
+    return this.getAttribute('game-id')
+  }
+
+  destroy (id) {
+    this.hidrogenLibrary.remove(id)
+    this.libraryManager.removeGame(this.gameTitle)
   }
 
   attachEvents () {
@@ -24,7 +43,16 @@ class Game extends HTMLElement {
       this.querySelector('.play-btn').classList.toggle('disabled')
     }
 
+    const deleteGame = () => {
+      document.querySelector('.delete-game-modal').classList.add('active')
+      document.querySelector('.delete-game-modal').setAttribute('game-id', this.gameId)
+      // Avoid showing the modal and delete game directly:
+      // this.hidrogenLibrary.remove(this.gameId)
+    }
+
     this.querySelector('.game-menu-btn').addEventListener('click', toggleGameMenu)
+
+    this.querySelector('.delete-game-item').addEventListener('click', deleteGame)
   }
 
   render () {
@@ -39,16 +67,16 @@ class Game extends HTMLElement {
       <hidrogen-panel class="game-menu" state="no-active">
         <ul class="list menu-list">
           <li class="list-item">
-            <span class="icon icon-info"></span><text class="text">Información</text>
+            <span class="icon icon-info"></span><text class="text"> ${i18n.translate('Information')} </text>
           </li>
           <li class="list-item">
-            <span class="icon icon-mode_edit"></span><text class="text">Editar información</text>
+            <span class="icon icon-mode_edit"></span><text class="text"> ${i18n.translate('Edit information')} </text>
           </li>
           <li class="list-item">
-            <span class="icon icon-folder_open"></span><text class="text">Abrir carpeta del juego</text>
+            <span class="icon icon-folder_open"></span><text class="text"> ${i18n.translate('Open game folder')} </text>
           </li>
-          <li class="list-item">
-            <span class="icon icon-delete"></span><text class="text">Eliminar</text>
+          <li class="list-item delete-game-item">
+            <span class="icon icon-delete"></span><text class="text"> ${i18n.translate('Delete')} </text>
           </li>
         </ul>
       </hidrogen-panel>

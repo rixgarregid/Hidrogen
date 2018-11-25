@@ -52,6 +52,8 @@ class App extends HTMLElement {
         <hidrogen-settings></hidrogen-settings>
         <hidrogen-about></hidrogen-about>
       </hidrogen-board>
+
+      <hidrogen-modals></hidrogen-modals>
     `
   }
 }

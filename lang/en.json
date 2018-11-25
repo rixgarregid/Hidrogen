@@ -6,6 +6,7 @@
   "Home": "Home",
   "My library": "My library",
   "Game editor": "Game editor",
+  "Add games": "Add games",
   "Settings and customization": "Settings and customization",
   "About": "About",
   "English": "English",
@@ -34,6 +35,12 @@
   "Genre": "Genre",
   "Adquisition date": "Adquisition date",
   "Finished on": "Finished on",
-  "Save changes": "Gave changes",
-  "Cancel": "Cancel"
+  "Save changes": "Save changes",
+  "Cancel": "Cancel",
+  "Add game": "Add game",
+  "Images": "Images",
+  "Information": "Information",
+  "Edit information": "Edit information",
+  "Open game folder": "Open game folder",
+  "Delete": "Delete"
 }

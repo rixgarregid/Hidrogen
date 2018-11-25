@@ -4,8 +4,6 @@ const { app } = remote
 class Titlebar extends HTMLElement {
   constructor () {
     super()
-    this.classList.add('titlebar')
-
     this.win = remote.getCurrentWindow()
 
     this.render()
@@ -13,42 +11,39 @@ class Titlebar extends HTMLElement {
   }
 
   attachEvents () {
-    this.btnClose.addEventListener('click', () => app.quit())
+    const quitHidrogen = () => {
+      app.quit()
+    }
 
-    this.btnMaximize.addEventListener('click', () => {
+    const toggleMaximizeHidrogen = () => {
       if (this.win.isMaximized()) {
         this.win.restore()
       } else {
         this.win.maximize()
       }
-    })
+    }
 
-    this.btnMinimize.addEventListener('click', () => this.win.minimize())
+    const minimizeHidrogen = () => {
+      this.win.minimize()
+    }
+
+    this.querySelector('.btn-window-close').addEventListener('click', quitHidrogen)
+
+    this.querySelector('.btn-window-maximize').addEventListener('click', toggleMaximizeHidrogen)
+
+    this.querySelector('.btn-window-minimize').addEventListener('click', minimizeHidrogen)
   }
 
   render () {
-    this.btnClose = document.createElement('btn')
-    this.btnClose.classList.add('btn')
-    this.btnClose.classList.add('win-control')
-    this.btnClose.classList.add('icon-close')
+    this.classList.add('titlebar')
 
-    this.btnMaximize = document.createElement('btn')
-    this.btnMaximize.classList.add('btn')
-    this.btnMaximize.classList.add('win-control')
-    this.btnMaximize.classList.add('icon-crop_landscape')
-
-    this.btnMinimize = document.createElement('btn')
-    this.btnMinimize.classList.add('btn')
-    this.btnMinimize.classList.add('win-control')
-    this.btnMinimize.classList.add('icon-remove')
-
-    this.winControlsContainer = document.createElement('hidrogen-panel')
-    this.winControlsContainer.classList.add('window-controls')
-    this.winControlsContainer.appendChild(this.btnClose)
-    this.winControlsContainer.appendChild(this.btnMaximize)
-    this.winControlsContainer.appendChild(this.btnMinimize)
-
-    this.appendChild(this.winControlsContainer)
+    this.innerHTML = `
+      <hidrogen-panel class="window-controls">
+        <btn class="btn win-control icon-close btn-window-close"></btn>
+        <btn class="btn win-control icon-crop_landscape btn-window-maximize"></btn>
+        <btn class="btn win-control icon-remove btn-window-minimize"></btn>
+      </hidrogen-panel>
+    `
   }
 }
 

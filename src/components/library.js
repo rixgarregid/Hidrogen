@@ -3,12 +3,24 @@
 class Library extends HTMLElement {
   constructor () {
     super()
-
+    
     this.render()
   }
 
-  add (game) {
-    this.querySelector('.game-container').appendChild(game)
+  add (gameData) {
+    this.querySelector('.game-container').innerHTML += `
+      <hidrogen-game-card game-id=${gameData.id} game-title='${gameData.name}'></hidrogen-game-card>
+    `
+
+    let addedGame = this.querySelector(`.game-container hidrogen-game-card[game-id='${gameData.id}']`)
+    if (gameData.thumbnailPath === '') {
+      addedGame.classList.add('no-bg')
+    }
+  }
+
+  remove (gameId) {
+    let removedGame = this.querySelector(`.game-container hidrogen-game-card[game-id='${gameId}']`)
+    this.querySelector('.game-container').removeChild(removedGame)
   }
 
   render () {
@@ -16,11 +28,7 @@ class Library extends HTMLElement {
     this.classList.add('board-view')
 
     this.innerHTML = `
-      <hidrogen-panel class="game-container">
-
-        <hidrogen-game-card class="wow-card"></hidrogen-game-card> <!-- Just an example -->
-
-      </hidrogen-panel>
+      <hidrogen-panel class="game-container"></hidrogen-panel>
     `
   }
 }

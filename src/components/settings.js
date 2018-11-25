@@ -32,6 +32,7 @@ class Settings extends HTMLElement {
   }
 
   attachEvents () {
+
     this.querySelector('.autolaunch-checkbox').addEventListener('click', () => {
       if (this.querySelector('.autolaunch-checkbox').checked === true) {
         this.config.set('autorun', true)
@@ -71,6 +72,19 @@ class Settings extends HTMLElement {
         this.config.set('askBeforeLeave', false)
       }
     })
+
+    for (let item of this.querySelectorAll('.lang-dropdown .dropdown-item')) {
+      item.addEventListener('click', () => {
+
+        if (item.classList.contains('spanish-item')) {
+          this.config.set('lang', 'es')
+        } else if (item.classList.contains('english-item')) {
+          this.config.set('lang', 'en')
+        } else if (item.classList.contains('german-item')) {
+          this.config.set('lang', 'de')
+        }
+      })
+    }
 
     this.querySelector('.autolang-checkbox').addEventListener('click', () => {
       if (this.querySelector('.autolang-checkbox').checked === true) {
@@ -128,6 +142,12 @@ class Settings extends HTMLElement {
       </hidrogen-panel>
 
       <hidrogen-panel class="field">
+        <text class="text lang-label"> ${i18n.translate('Language.')} </text>
+        <dropdown-menu class="lang-dropdown dropdown-menu">
+          <span class="dropdown-item spanish-item selected"> ${i18n.translate('Spanish')} </span>
+          <span class="dropdown-item english-item"> ${i18n.translate('English')} </span>
+          <span class="dropdown-item german-item"> ${i18n.translate('German')} </span>
+        </dropdown-menu>
         <label class="checkbox-label autolang-label">
           <input type="checkbox" class="autolang-checkbox">
           <text class="label"> ${i18n.translate('Detect language automatically.')} </text>

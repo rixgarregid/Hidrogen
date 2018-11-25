@@ -29,12 +29,14 @@ class GameEditor extends HTMLElement {
       name: this.querySelector('.game-name-input').value,
       path: this.querySelector('.game-path-input').value,
       synopsis: this.querySelector('.game-synopsis-input').value,
-      thumbnailPath: this.querySelector('.game-name-input').value,
+      // Empty by default until we find a solution to upload images and
+      // load them to the game element through JavaScript.
+      thumbnailPath: '',
       developer: this.querySelector('.game-developer-input').value,
       year: this.querySelector('.game-year-input').value,
       genre: this.querySelector('.game-genre-input').value,
       adquisitionDate: this.querySelector('.game-adquisition-date-input').value,
-      finishedOnDate: this.querySelector('.game-finished-date-input').value,
+      finishedOnDate: this.querySelector('.game-finished-date-input').value
     }
   }
 
@@ -47,15 +49,21 @@ class GameEditor extends HTMLElement {
     }
 
     const openGameBackgroundImgDialog = () => {
-      dialog.showOpenDialog({ properties: ['openFiles'], filters: [{name: 'Images (*.jpg, *.png)', extensions: ['jpg', 'png', 'gif']}] }, files => {
-        console.log(files[0])
+      dialog.showOpenDialog({
+        properties: ['openFiles'],
+        filters: [{name: `${i18n.translate('Images')} (*.jpg, *.png)`,
+        extensions: ['jpg', 'png', 'gif']}] },
+        files => {
+          console.log(files[0])
       })
     }
 
     const addGame = () => {
-      if (!this.validateInputs()) return
+      // Input validation will wait until next patch.
+      // if (!this.validateInputs()) return
+      let gameDataObj = this.getInputsValue()
 
-      this.libraryManager.addGame(this.getInputsValue())
+      this.libraryManager.addGame(gameDataObj)
 
       this.classList.remove('active')
       this.hidrogenBoard.updateView('library')
@@ -107,7 +115,7 @@ class GameEditor extends HTMLElement {
         <input type="text" class="input-text game-finished-date-input" placeholder="${i18n.translate('Finished on')}">
       </hidrogen-panel>
 
-      <btn class="btn btn-done"> ${i18n.translate('Save changes')} </btn>
+      <btn class="btn btn-done"> ${i18n.translate('Add game')} </btn>
       <btn class="btn btn-sec btn-cancel"> ${i18n.translate('Cancel')} </btn>
     `
   }

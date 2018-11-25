@@ -6,6 +6,7 @@
   "Home": "Inicio",
   "My library": "Mi biblioteca",
   "Game editor": "Editor de juegos",
+  "Add games": "Añadir juegos",
   "Settings and customization": "Ajustes y personalización",
   "About": "Acerca de",
   "English": "Inglés",
@@ -35,5 +36,11 @@
   "Adquisition date": "Fecha de adquisición",
   "Finished on": "Completado el",
   "Save changes": "Guardar cambios",
-  "Cancel": "Cancelar"
+  "Cancel": "Cancelar",
+  "Add game": "Añadir juego",
+  "Images": "Imágenes",
+  "Information": "Información",
+  "Edit information": "Editar información",
+  "Open game folder": "Abrir carpeta del juego",
+  "Delete": "Eliminar"
 }
