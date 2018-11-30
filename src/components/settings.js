@@ -1,17 +1,19 @@
+const HidrogenComponent = require('./hidrogen-component')
 const Config = require('../config')
 const I18n = require('../translator')
 const i18n = new I18n()
 
-class Settings extends HTMLElement {
+class Settings extends HidrogenComponent {
   constructor () {
     super()
+
+    this.setClassNames(['settings', 'board-view'])
 
     this.config = new Config()
 
     this.hidrogenBoard = document.querySelector('hidrogen-board')
     this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
 
-    this.render()
     this.attachEvents()
 
     this.loadSettings()
@@ -102,10 +104,7 @@ class Settings extends HTMLElement {
   }
 
   render () {
-    this.classList.add('settings')
-    this.classList.add('board-view')
-
-    this.innerHTML = `
+    super.render(`
       <hidrogen-panel class="field">
         <label class="checkbox-label autolaunch-label">
           <input type="checkbox" class="autolaunch-checkbox">
@@ -155,7 +154,7 @@ class Settings extends HTMLElement {
       </hidrogen-panel>
 
       <btn class="btn cancel-btn"> ${i18n.translate('Save settings!')} </btn>
-    `
+    `)
   }
 }
 

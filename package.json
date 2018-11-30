@@ -1,12 +1,14 @@
 {
   "name": "hidrogen",
-  "version": "0.1.5-alpha",
+  "version": "0.2.0-alpha",
   "description": "Your gaming library",
   "main": "./src/main-process/main.js",
   "scripts": {
     "start": "electron .",
-    "dev": "electron . --development",
-    "watch": "gulp build && gulp watch"
+    "dev": "electron . --development && npm run watch",
+    "watch": "gulp build:stylus && gulp watch",
+    "build:stylus": "stylus -w styles/ -o styles/hidrogen.css",
+    "hidrogen-dev": "cd script && hidrogen.sh"
   },
   "keywords": [
     "hidrogen",
@@ -19,7 +21,7 @@
   "license": "MIT",
   "devDependencies": {
     "devtron": "^1.4.0",
-    "electron": "^3.0.6",
+    "electron": "^3.0.10",
     "electron-reload": "^1.2.5",
     "gulp": "^4.0.0",
     "gulp-plumber": "^1.2.0",

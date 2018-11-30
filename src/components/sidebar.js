@@ -1,20 +1,20 @@
+const HidrogenComponent = require('./hidrogen-component')
 const I18n = require('../translator')
 const i18n = new I18n()
 
 // The {Sidebar} class manages all the events in the sidebar
 // component.
-class Sidebar extends HTMLElement {
+class Sidebar extends HidrogenComponent {
   constructor () {
     super()
 
-    this.render()
     this.attachEvents()
   }
 
   updateSelectedListItem (item) {
-    for (let i of this.querySelectorAll('.list-item')) {
-      if (i.classList.contains('settings')) i.classList.remove('active')
-      i.classList.remove('selected')
+    for (let listItem of this.children('.list-item')) {
+      if (listItem.classList.contains('settings')) listItem.classList.remove('active')
+      listItem.classList.remove('selected')
     }
 
     document.querySelector(`.item-${item}`).classList.add('selected')
@@ -47,23 +47,21 @@ class Sidebar extends HTMLElement {
       this.updateSelectedListItem('about')
     }
 
-    this.querySelector('.item-home').addEventListener('click', showHome)
+    this.child('.item-home').addEventListener('click', showHome)
 
-    this.querySelector('.item-library').addEventListener('click', showLibrary)
+    this.child('.item-library').addEventListener('click', showLibrary)
 
-    this.querySelector('.item-game-editor').addEventListener('click', showGameEditor)
+    this.child('.item-game-editor').addEventListener('click', showGameEditor)
 
-    this.querySelector('.item-settings').addEventListener('click', showSettings)
+    this.child('.item-settings').addEventListener('click', showSettings)
 
-    this.querySelector('.item-about').addEventListener('click', showAbout)
+    this.child('.item-about').addEventListener('click', showAbout)
   }
 
   render () {
-    this.classList.add('sidebar')
-
-    this.innerHTML = `
+    super.render(`
       <ul class="list sidebar-list">
-        <li class="list-item"><span class="icon-hidrogen"></span></li>
+        <li class="list-item"> <span class="icon-hidrogen"></span> </li>
 
         <li class="list-item item-home selected">
           <span class="icon icon-home"></span>
@@ -90,7 +88,7 @@ class Sidebar extends HTMLElement {
           <text class="text"> ${i18n.translate('About')} </text>
         </li>
       </ul>
-    `
+    `)
   }
 }
 

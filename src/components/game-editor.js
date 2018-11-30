@@ -1,26 +1,28 @@
-const LibraryManager = require('../library-manager')
+const HidrogenComponent = require('./hidrogen-component')
+// const LibraryManager = require('../library-manager')
 const { dialog } = require('electron').remote
 const I18n = require('../translator')
 const i18n = new I18n()
 
-class GameEditor extends HTMLElement {
+class GameEditor extends HidrogenComponent {
   constructor () {
     super()
 
-    this.libraryManager = new LibraryManager()
+    this.setClassNames(['board-view', 'game-editor'])
+    // this.libraryManager = new LibraryManager()
 
+    this.hidrogenLibrary = document.querySelector('hidrogen-library')
     this.hidrogenBoard = document.querySelector('hidrogen-board')
     this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
 
-    this.render()
     this.attachEvents()
   }
 
   validateInputs () {
-    if (this.querySelector('.game-name-input').value == '') {
-      this.querySelector('.game-name-input').classList.add('error')
+    if (this.child('.game-name-input').value == '') {
+      this.child('.game-name-input').classList.add('error')
     } else {
-      this.querySelector('.game-name-input').classList.remove('error')
+      this.child('.game-name-input').classList.remove('error')
     }
   }
 
@@ -63,7 +65,7 @@ class GameEditor extends HTMLElement {
       // if (!this.validateInputs()) return
       let gameDataObj = this.getInputsValue()
 
-      this.libraryManager.addGame(gameDataObj)
+      this.hidrogenLibrary.addGame(gameDataObj)
 
       this.classList.remove('active')
       this.hidrogenBoard.updateView('library')
@@ -86,10 +88,7 @@ class GameEditor extends HTMLElement {
   }
 
   render () {
-    this.classList.add('game-editor')
-    this.classList.add('board-view')
-
-    this.innerHTML = `
+    super.render(`
       <hidrogen-panel class="field">
         <input type="text" class="input-text game-name-input" placeholder="${i18n.translate('Game title')}">
       </hidrogen-panel>
@@ -117,7 +116,7 @@ class GameEditor extends HTMLElement {
 
       <btn class="btn btn-done"> ${i18n.translate('Add game')} </btn>
       <btn class="btn btn-sec btn-cancel"> ${i18n.translate('Cancel')} </btn>
-    `
+    `)
   }
 }
 

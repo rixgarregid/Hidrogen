@@ -1,0 +1,9 @@
+{
+  "autorun": false,
+  "autoclose": false,
+  "closingCountdown": false,
+  "allowMultiInstance": false,
+  "askBeforeLeave": false,
+  "autolang": true,
+  "lang": "en"
+}

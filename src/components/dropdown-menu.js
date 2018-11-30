@@ -1,10 +1,12 @@
-class DropdownMenuElement extends HTMLElement {
+const HidrogenComponent = require('./hidrogen-component')
+
+class DropdownMenuElement extends HidrogenComponent {
   constructor () {
     super()
 
     this.dropdownItems = this.innerHTML
+    this.setClassNames(['dropdown-menu'])
 
-    this.render()
     this.attachEvents()
 
     this.selectItem()
@@ -12,13 +14,13 @@ class DropdownMenuElement extends HTMLElement {
   }
 
   setListHeight () {
-    this.querySelector('.dropdown-list').style.height = `${40 * (this.querySelectorAll('.dropdown-item').length - 1)}px`
+    this.child('.dropdown-list').style.height = `${40 * (this.children('.dropdown-item').length - 1)}px`
   }
 
   selectItem () {
-    for (let item of this.querySelectorAll('.dropdown-item')) {
+    for (let item of this.children('.dropdown-item')) {
       if (item.classList.contains('selected')) {
-        this.querySelector('.dropdown-title').innerText = item.innerText
+        this.child('.dropdown-title').innerText = item.innerText
       }
     }
   }
@@ -49,15 +51,13 @@ class DropdownMenuElement extends HTMLElement {
   }
 
   render () {
-    this.classList.add('dropdown-menu')
-
-    this.innerHTML = `
+    super.render(`
         <text class="text dropdown-title">Dropdown Menu</text>
         <span class="icon-expand_more dropdown-icon"></span>
         <ul class="list dropdown-list">
           ${this.dropdownItems}
         </ul>
-    `
+    `)
   }
 }
 

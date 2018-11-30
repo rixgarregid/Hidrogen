@@ -2,20 +2,22 @@ const gulp = require('gulp')
 const plumber = require('gulp-plumber')
 const stylus = require('gulp-stylus')
 
-const stylusCompilePath = './static/styles/hidrogen.styl'
-const stylusWatchPath = './static/styles/**/*.styl'
+const paths = {
+  styles: {
+    compile: './styles/hidrogen.styl',
+    watch:   './styles/**/*.styl',
+    dest:    './styles/'
+  }
+}
 
-gulp.task('build:stylus', () =>
-    gulp.src(stylusCompilePath)
-        .pipe(plumber())
-        .pipe(stylus())
-        .pipe(gulp.dest('./static/styles/'))
+gulp.task('styles:compile', () =>
+  gulp
+    .src(paths.styles.compile)
+    .pipe(plumber())
+    .pipe(stylus())
+    .pipe(gulp.dest(paths.styles.dest))
 )
 
-gulp.task('build', () => ['build:stylus'])
-
-gulp.task('watch', () => {
-    gulp.watch(stylusWatchPath, ['build:stylus'])
-})
-
-gulp.task('default', () => ['build'])
+gulp.task('styles:watch', () =>
+  gulp.watch(paths.styles.watch, gulp.series('styles:compile'))
+)

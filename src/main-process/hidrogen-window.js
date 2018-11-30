@@ -33,6 +33,8 @@ class HidrogenWindow {
       slashes: true
     }))
 
+    this.browserWindow.webContents.openDevTools()
+
     this.browserWindow.on('ready-to-show', () => this.browserWindow.show())
   }
 

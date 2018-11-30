@@ -10,20 +10,20 @@ body {
 }
 @font-face {
   font-family: 'Roboto';
-  src: url("../../resources/fonts/Roboto-Regular.ttf");
+  src: url("../static/fonts/Roboto-Regular.ttf");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'GravityLight';
-  src: url("../../resources/fonts/Gravity-Light.otf");
+  src: url("../static/fonts/Gravity-Light.otf");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'icons';
-  src: url("../../resources/fonts/icons.eot?q1sc4n");
-  src: url("../../resources/fonts/icons.eot?q1sc4n#iefix") format('embedded-opentype'), url("../../resources/fonts/icons.ttf?q1sc4n") format('truetype'), url("../../resources/fonts/icons.woff?q1sc4n") format('woff'), url("../../resources/fonts/icons.svg?q1sc4n#icons") format('svg');
+  src: url("../static/fonts/icons.eot?q1sc4n");
+  src: url("../static/fonts/icons.eot?q1sc4n#iefix") format('embedded-opentype'), url("../static/fonts/icons.ttf?q1sc4n") format('truetype'), url("../static/fonts/icons.woff?q1sc4n") format('woff'), url("../static/fonts/icons.svg?q1sc4n#icons") format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -488,6 +488,10 @@ body {
     transform: translateX(0px);
   }
 }
+::selection {
+  background: #a9a9a9;
+  color: #232c37;
+}
 .input-textarea {
   display: inline-block;
   width: 250px;
@@ -595,7 +599,7 @@ label input[type='checkbox']:checked + .label:before {
 .dropdown-menu.active .dropdown-icon {
   transform: rotate(180deg);
 }
-.dropdown-menu.active .dropdown-item {
+.dropdown-menu.active .dropdown-list {
   display: block;
 }
 .dropdown-menu .dropdown-title {
@@ -631,16 +635,23 @@ label input[type='checkbox']:checked + .label:before {
   text-align: center;
   font-size: 16px;
 }
-.dropdown-menu .dropdown-item {
+.dropdown-menu .dropdown-list {
   display: none;
   width: 100%;
-  height: 40px;
+  min-height: 40px;
+  position: absolute;
+  top: 40px;
+  border-radius: 0 0 5px 5px;
   background: #37414d;
+}
+.dropdown-menu .dropdown-item {
+  display: block;
+  width: 100%;
+  height: 40px;
   transition: 0.2s ease-in-out;
   padding: 10px 20px;
   box-sizing: border-box;
   line-height: 20px;
-  position: absolute;
   cursor: pointer;
   color: #a9a9a9;
 }
@@ -649,16 +660,105 @@ label input[type='checkbox']:checked + .label:before {
   background: #303d4d;
 }
 .dropdown-menu .dropdown-item:last-child {
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 5px 5px;
 }
-.dropdown-menu .dropdown-item:nth-child(3) {
-  top: 40px;
+.dropdown-menu .dropdown-item.selected {
+  display: none;
 }
-.dropdown-menu .dropdown-item:nth-child(4) {
-  top: 80px;
+.modal {
+  display: none;
+  width: 1570px;
+  height: 870px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.6);
+  z-index: 10;
+  transition: ease-in-out 0.2s;
+  color: #a9a9a9;
 }
-.dropdown-menu .dropdown-item:nth-child(5) {
-  top: 120px;
+.modal.active {
+  display: block;
+  animation: popUp 0.3s ease-in-out forwards;
+}
+.modal.active .content {
+  animation: popUp 0.3s ease-in-out forwards;
+  animation-delay: 0.1s;
+}
+.modal.no-default-content .title {
+  display: none;
+}
+.modal.no-default-content .btn-close {
+  display: none;
+}
+.modal .content {
+  display: block;
+  width: 600px;
+  height: 400px;
+  padding: 25px;
+  box-sizing: border-box;
+  background: #1e252e;
+  border-radius: 10px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  box-shadow: 0 0 50px rgba(0,0,0,0.7);
+  opacity: 0;
+}
+@-moz-keyframes popUp {
+  0% {
+    transform: scale(0.1) translate(-50%, -50%);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes popUp {
+  0% {
+    transform: scale(0.1) translate(-50%, -50%);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+@-o-keyframes popUp {
+  0% {
+    transform: scale(0.1) translate(-50%, -50%);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+@keyframes popUp {
+  0% {
+    transform: scale(0.1) translate(-50%, -50%);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
 }
 #app {
   display: block;
@@ -713,7 +813,7 @@ label input[type='checkbox']:checked + .label:before {
   border-radius: 0 0 0 10px;
   transition: 0.3s ease-in-out;
   position: relative;
-  z-index: 2;
+  z-index: 5;
 }
 .sidebar .list {
   width: 100%;
@@ -734,7 +834,7 @@ label input[type='checkbox']:checked + .label:before {
   width: 100%;
   height: 60px;
   cursor: default !important;
-  background: url("../../resources/images/logo-hidrogen.png");
+  background: url("../static/images/logo-hidrogen.png");
 }
 .sidebar.collapsed {
   width: 60px;
@@ -833,7 +933,7 @@ label input[type='checkbox']:checked + .label:before {
   height: 850px;
   position: absolute;
   top: 20px;
-  left: -870px;
+  left: -1200px;
   float: right;
   transition: ease-in-out 0.2s;
 }
@@ -1080,6 +1180,9 @@ label input[type='checkbox']:checked + .label:before {
 .game-card:hover .background {
   opacity: 0.7;
 }
+.game-card.no-bg .title {
+  top: 40% !important;
+}
 .game-card .title {
   display: block;
   width: 100%;
@@ -1269,4 +1372,21 @@ label input[type='checkbox']:checked + .label:before {
 }
 .wow-card {
   background: url("D:\\Proyectos\\Hidrogen\\resources-2\\wow_gamecard_hidrogen200x300_1.png");
+}
+.delete-game-modal .content {
+  height: 200px;
+}
+.delete-game-modal .confirm-btn,
+.delete-game-modal .cancel-btn {
+  width: 300px;
+  height: 50px;
+  position: absolute;
+  bottom: 30px;
+  right: 25px;
+  line-height: 30px;
+  text-align: center;
+}
+.delete-game-modal .confirm-btn {
+  width: 150px;
+  right: 345px;
 }

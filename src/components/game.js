@@ -1,18 +1,23 @@
+const HidrogenComponent = require('./hidrogen-component')
 const { shell } = require('electron')
-const LibraryManager = require('../library-manager')
 const I18n = require('../translator')
 const i18n = new I18n()
 
-class Game extends HTMLElement {
+class Game extends HidrogenComponent {
   constructor () {
     super()
 
     this.gameTitle = this.gameTitle
 
-    this.libraryManager = new LibraryManager()
+    this.setClassNames(['game-card'])
+
+    // FIXME: Executing this method causes the app to freeze.
+    // Increses CPU and RAM usage. DONT USE THIS
+    // THIS CAUSES AN INFINITE LOOP
+    // this.libraryManager = new LibraryManager()
+    ////////////
     this.hidrogenLibrary = document.querySelector('hidrogen-library')
 
-    this.render()
     this.attachEvents()
   }
 
@@ -29,8 +34,8 @@ class Game extends HTMLElement {
   }
 
   destroy (id) {
-    this.hidrogenLibrary.remove(id)
-    this.libraryManager.removeGame(this.gameTitle)
+    this.hidrogenLibrary.removeGame(id)
+    // this.libraryManager.removeGame(this.gameTitle)
   }
 
   attachEvents () {
@@ -44,10 +49,10 @@ class Game extends HTMLElement {
     }
 
     const deleteGame = () => {
-      document.querySelector('.delete-game-modal').classList.add('active')
-      document.querySelector('.delete-game-modal').setAttribute('game-id', this.gameId)
+      // document.querySelector('.delete-game-modal').classList.add('active')
+      // document.querySelector('.delete-game-modal').setAttribute('game-id', this.gameId)
       // Avoid showing the modal and delete game directly:
-      // this.hidrogenLibrary.remove(this.gameId)
+      this.destroy(this.gameId)
     }
 
     this.querySelector('.game-menu-btn').addEventListener('click', toggleGameMenu)
@@ -56,9 +61,7 @@ class Game extends HTMLElement {
   }
 
   render () {
-    this.classList.add('game-card')
-
-    this.innerHTML = `
+    super.render(`
       <text class="text title"> ${this.gameTitle} </text>
       <btn class="btn play-btn"> ${i18n.translate('Play')} </btn>
 
@@ -82,7 +85,7 @@ class Game extends HTMLElement {
       </hidrogen-panel>
 
       <hidrogen-panel class="background"></hidrogen-panel>
-    `
+    `)
   }
 }
 

@@ -1,10 +1,11 @@
+const HidrogenComponent = require('./hidrogen-component')
 const I18n = require('../translator')
 const i18n = new I18n()
 
 // The {Home} class is the default view (component) to be
 // selected by {Board} <hidrogen-board> and the first to be
 // displayed when the app starts.
-class Home extends HTMLElement {
+class Home extends HidrogenComponent {
   constructor () {
     super()
 
@@ -12,7 +13,8 @@ class Home extends HTMLElement {
     this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
     this.hidrogenGameEditor = document.querySelector('hidrogen-game-editor')
 
-    this.render()
+    this.setClassNames(['home-screen', 'board-view'])
+
     this.attachEvents()
   }
 
@@ -29,24 +31,23 @@ class Home extends HTMLElement {
       this.hidrogenSidebar.updateSelectedListItem('game-editor')
     }
 
-    this.querySelector('.library-btn').addEventListener('click', showLibrary)
+    this.child('.library-btn').addEventListener('click', showLibrary)
 
-    this.querySelector('.add-btn').addEventListener('click', showGameEditor)
+    this.child('.add-btn').addEventListener('click', showGameEditor)
   }
 
   render () {
-    this.classList.add('home-screen')
-    this.classList.add('board-view')
-
-    this.innerHTML = `
+    super.render(`
       <text class="text main-title"> ${i18n.translate('Welcome to Hidrogen,')} </text>
       <text class="text sub-title"> ${i18n.translate('your gaming library')} </text>
 
       <hidrogen-panel class="home-btns">
+
         <btn class="btn library-btn"> ${i18n.translate('Go to my library')} </btn>
         <btn class="btn btn-sec add-btn"> ${i18n.translate('Add a game')} </btn>
+
       </hidrogen-panel>
-    `
+    `)
   }
 }
 
