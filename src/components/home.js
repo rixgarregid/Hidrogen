@@ -8,12 +8,11 @@ const i18n = new I18n()
 class Home extends HidrogenComponent {
   constructor () {
     super()
+    this.classNames = ['board-view', 'home-screen']
 
     this.hidrogenBoard = document.querySelector('hidrogen-board')
     this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
     this.hidrogenGameEditor = document.querySelector('hidrogen-game-editor')
-
-    this.setClassNames(['home-screen', 'board-view'])
 
     this.attachEvents()
   }
@@ -27,7 +26,8 @@ class Home extends HidrogenComponent {
     }
 
     const showGameEditor = () => {
-      this.hidrogenGameEditor.classList.add('active')
+      // this.hidrogenGameEditor.classList.add('active')
+      this.hidrogenBoard.updateView('game-editor')
       this.hidrogenSidebar.updateSelectedListItem('game-editor')
     }
 
@@ -38,6 +38,11 @@ class Home extends HidrogenComponent {
 
   render () {
     super.render(`
+      <hidrogen-panel class="panel background-video">
+        <video src="../static/video/video_sample.mp4" autoplay muted loop="true"></video>
+      </hidrogen-panel>
+      <hidrogen-panel class="background-video-overlay"></hidrogen-panel>
+
       <text class="text main-title"> ${i18n.translate('Welcome to Hidrogen,')} </text>
       <text class="text sub-title"> ${i18n.translate('your gaming library')} </text>
 

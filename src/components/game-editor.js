@@ -1,5 +1,4 @@
 const HidrogenComponent = require('./hidrogen-component')
-// const LibraryManager = require('../library-manager')
 const { dialog } = require('electron').remote
 const I18n = require('../translator')
 const i18n = new I18n()
@@ -7,9 +6,7 @@ const i18n = new I18n()
 class GameEditor extends HidrogenComponent {
   constructor () {
     super()
-
-    this.setClassNames(['board-view', 'game-editor'])
-    // this.libraryManager = new LibraryManager()
+    this.classNames = ['board-view', 'game-editor']
 
     this.hidrogenLibrary = document.querySelector('hidrogen-library')
     this.hidrogenBoard = document.querySelector('hidrogen-board')
@@ -105,6 +102,7 @@ class GameEditor extends HidrogenComponent {
           <text class="text title">${i18n.translate('Preview')}</text>
           <text class="text sub-title">${i18n.translate('Recommended')} 200x300px</text>
         </hidrogen-panel>
+
         <btn class="btn game-image-btn"><span class="icon icon-file_upload"></span>${i18n.translate('Upload image')}</btn>
 
         <input type="text" class="input-text game-developer-input" placeholder="${i18n.translate('Developer')}">

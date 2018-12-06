@@ -11,6 +11,58 @@
     &.active
         left 350px
 
+    .library-toolbar
+        display block
+        width 100%
+        height 30px
+        background #39424e
+        border-radius 10px 0 0 0
+
+        .searchbox
+            display inline-block
+            float left
+            width 200px
+            height 30px
+            margin-left 20px
+            position relative
+
+            &.active
+                .input-search
+                    width 165px
+
+            .icon-search
+                display inline-block
+                width 30px
+                height 30px
+                text-align center
+                line-height 30px
+                margin-right 5px
+                cursor pointer
+
+            .input-search
+                position absolute
+                top 0
+                left 35px
+                width 0
+                height 29px
+                border none
+                background transparent
+                font-family 'Roboto'
+                font-size 14px
+                color #fff
+                transition ease-in-out .2s
+                border-bottom 1px solid #fff
+
+        .add-btn
+            display inline-block
+            width 30px
+            height 30px
+            text-align center
+            line-height 30px
+            float right
+            margin-right 20px
+            cursor pointer
+
     .game-container
         display grid
         grid-template-columns repeat(5, 240px)

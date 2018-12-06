@@ -8,7 +8,7 @@ const { app } = remote
 class Titlebar extends HidrogenComponent {
   constructor () {
     super()
-
+    this.classNames = ['titlebar']
     this.hidrogenWindow = remote.getCurrentWindow()
 
     this.attachEvents()

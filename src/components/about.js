@@ -8,11 +8,10 @@ const i18n = new I18n()
 class About extends HidrogenComponent {
   constructor () {
     super()
+    this.classNames = ['board-view', 'about']
 
     this.hidrogenBoard = document.querySelector('hidrogen-board')
     this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
-
-    this.setClassNames(['board-view', 'about'])
 
     this.attachEvents()
   }
@@ -30,7 +29,8 @@ class About extends HidrogenComponent {
 
   render () {
     super.render(`
-      <text class="text version-text"> Hidrogen v.${app.getVersion()} </text>
+      <span class="hidrogen-logo"></span>
+      <text class="text version-text"> v.${app.getVersion()} </text>
       <btn class="btn back-btn"> ${i18n.translate('Back')} </btn>
     `)
   }

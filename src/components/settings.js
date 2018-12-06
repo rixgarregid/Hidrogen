@@ -6,31 +6,29 @@ const i18n = new I18n()
 class Settings extends HidrogenComponent {
   constructor () {
     super()
-
-    this.setClassNames(['settings', 'board-view'])
+    this.classNames = ['board-view', 'settings']
 
     this.config = new Config()
+    this.loadSettings()
 
     this.hidrogenBoard = document.querySelector('hidrogen-board')
     this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
 
     this.attachEvents()
-
-    this.loadSettings()
   }
 
   loadSettings () {
-    if (this.config.get('autorun')) this.querySelector('.autolaunch-checkbox').checked = true
+    if (this.config.get('autorun')) this.child('.autolaunch-checkbox').checked = true
 
-    if (this.config.get('autoclose')) this.querySelector('.autoclose-checkbox').checked = true
+    if (this.config.get('autoclose')) this.child('.autoclose-checkbox').checked = true
 
-    if (this.config.get('closingCountdown')) this.querySelector('.autoclose-countdown-checkbox').checked = true
+    if (this.config.get('closingCountdown')) this.child('.autoclose-countdown-checkbox').checked = true
 
-    if (this.config.get('allowMultiInstance')) this.querySelector('.multiinstance-checkbox').checked = true
+    if (this.config.get('allowMultiInstance')) this.child('.multiinstance-checkbox').checked = true
 
-    if (this.config.get('askBeforeLeave')) this.querySelector('.ask-before-leave-checkbox').checked = true
+    if (this.config.get('askBeforeLeave')) this.child('.ask-before-leave-checkbox').checked = true
 
-    if (this.config.get('autolang')) this.querySelector('.autolang-checkbox').checked = true
+    if (this.config.get('autolang')) this.child('.autolang-checkbox').checked = true
   }
 
   attachEvents () {
@@ -147,6 +145,7 @@ class Settings extends HidrogenComponent {
           <span class="dropdown-item english-item"> ${i18n.translate('English')} </span>
           <span class="dropdown-item german-item"> ${i18n.translate('German')} </span>
         </dropdown-menu>
+
         <label class="checkbox-label autolang-label">
           <input type="checkbox" class="autolang-checkbox">
           <text class="label"> ${i18n.translate('Detect language automatically.')} </text>

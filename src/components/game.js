@@ -6,16 +6,9 @@ const i18n = new I18n()
 class Game extends HidrogenComponent {
   constructor () {
     super()
-
+    this.classNames = ['game-card']
     this.gameTitle = this.gameTitle
 
-    this.setClassNames(['game-card'])
-
-    // FIXME: Executing this method causes the app to freeze.
-    // Increses CPU and RAM usage. DONT USE THIS
-    // THIS CAUSES AN INFINITE LOOP
-    // this.libraryManager = new LibraryManager()
-    ////////////
     this.hidrogenLibrary = document.querySelector('hidrogen-library')
 
     this.attachEvents()
@@ -33,19 +26,22 @@ class Game extends HidrogenComponent {
     return this.getAttribute('game-id')
   }
 
+  toggleMenu () {
+
+  }
+
   destroy (id) {
     this.hidrogenLibrary.removeGame(id)
-    // this.libraryManager.removeGame(this.gameTitle)
   }
 
   attachEvents () {
 
     const toggleGameMenu = () => {
-      this.querySelector('.game-menu').classList.toggle('active')
-      this.querySelector('.game-menu-btn').classList.toggle('active')
+      this.child('.game-menu').classList.toggle('active')
+      this.child('.game-menu-btn').classList.toggle('active')
 
-      this.querySelector('.title').classList.toggle('disabled')
-      this.querySelector('.play-btn').classList.toggle('disabled')
+      this.child('.title').classList.toggle('disabled')
+      this.child('.play-btn').classList.toggle('disabled')
     }
 
     const deleteGame = () => {
@@ -55,32 +51,37 @@ class Game extends HidrogenComponent {
       this.destroy(this.gameId)
     }
 
-    this.querySelector('.game-menu-btn').addEventListener('click', toggleGameMenu)
+    this.child('.game-menu-btn').addEventListener('click', toggleGameMenu)
+    this.child('.delete-game-item').addEventListener('click', deleteGame)
 
-    this.querySelector('.delete-game-item').addEventListener('click', deleteGame)
+    // super.attachEvents(this.attachEvents())
   }
 
   render () {
     super.render(`
       <text class="text title"> ${this.gameTitle} </text>
       <btn class="btn play-btn"> ${i18n.translate('Play')} </btn>
-
       <btn class="btn game-menu-btn"><span class="hamburger"></span></btn>
 
       <hidrogen-panel class="game-menu" state="no-active">
         <ul class="list menu-list">
+
           <li class="list-item">
             <span class="icon icon-info"></span><text class="text"> ${i18n.translate('Information')} </text>
           </li>
+
           <li class="list-item">
             <span class="icon icon-mode_edit"></span><text class="text"> ${i18n.translate('Edit information')} </text>
           </li>
+
           <li class="list-item">
             <span class="icon icon-folder_open"></span><text class="text"> ${i18n.translate('Open game folder')} </text>
           </li>
+
           <li class="list-item delete-game-item">
             <span class="icon icon-delete"></span><text class="text"> ${i18n.translate('Delete')} </text>
           </li>
+
         </ul>
       </hidrogen-panel>
 

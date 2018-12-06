@@ -7,12 +7,17 @@ const i18n = new I18n()
 class Sidebar extends HidrogenComponent {
   constructor () {
     super()
+    this.classNames = ['sidebar']
 
     this.attachEvents()
   }
 
+  getListItems () {
+    return this.children('.list-item')
+  }
+
   updateSelectedListItem (item) {
-    for (let listItem of this.children('.list-item')) {
+    for (let listItem of this.getListItems()) {
       if (listItem.classList.contains('settings')) listItem.classList.remove('active')
       listItem.classList.remove('selected')
     }

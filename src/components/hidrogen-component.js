@@ -3,9 +3,9 @@
 // directly, only by inheritance.
 module.exports =
 class HidrogenComponent extends HTMLElement {
-  constructor () {
+  constructor (options = {}) {
     super()
-    this.render()
+    if (options.render !== false) this.render()
   }
 
   setClassNames (classNames) {
@@ -14,6 +14,10 @@ class HidrogenComponent extends HTMLElement {
     for (let className of classNames) {
       this.classList.add(className)
     }
+  }
+
+  set classNames (classNames) {
+    this.setClassNames(classNames)
   }
 
   child (selector) {

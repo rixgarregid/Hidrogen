@@ -8,7 +8,6 @@ const os = require('os')
 class App extends HidrogenComponent {
   constructor () {
     super()
-
     this.logEnvironmentInfo()
   }
 
@@ -43,8 +42,8 @@ class App extends HidrogenComponent {
 
   render () {
     super.render(`
-      <hidrogen-titlebar class="titlebar"></hidrogen-titlebar>
-      <hidrogen-sidebar class="sidebar"></hidrogen-sidebar>
+      <hidrogen-titlebar></hidrogen-titlebar>
+      <hidrogen-sidebar></hidrogen-sidebar>
 
       <hidrogen-board>
 

@@ -6,9 +6,8 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --development && npm run watch",
-    "watch": "gulp build:stylus && gulp watch",
-    "build:stylus": "stylus -w styles/ -o styles/hidrogen.css",
-    "hidrogen-dev": "cd script && hidrogen.sh"
+    "watch": "npm run watch:styles",
+    "watch:styles": "gulp styles:compile && gulp styles:watch"
   },
   "keywords": [
     "hidrogen",
