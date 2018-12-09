@@ -64,9 +64,9 @@ class Sidebar extends HidrogenComponent {
   }
 
   render () {
+    // <li class="list-item"> <span class="icon-hidrogen"></span> </li>
     super.render(`
       <ul class="list sidebar-list">
-        <li class="list-item"> <span class="icon-hidrogen"></span> </li>
 
         <li class="list-item item-home selected">
           <span class="icon icon-home"></span>

@@ -17,6 +17,14 @@ class Home extends HidrogenComponent {
     this.attachEvents()
   }
 
+  playBackgroundVideo () {
+    this.child('video').play()
+  }
+
+  pauseBackgroundVideo () {
+    this.child('video').pause()
+  }
+
   attachEvents () {
 
     const showLibrary = () => {

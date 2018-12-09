@@ -1,4 +1,5 @@
 const HidrogenComponent = require('./hidrogen-component')
+const binarySearch = require('../util')
 const mkdir = require('mkdirp')
 const rimraf = require('rimraf')
 const path = require('path')
@@ -51,6 +52,8 @@ class Library extends HidrogenComponent {
     let addedGame = this.querySelector(`.game-container hidrogen-game-card[game-id='${gameData.id}']`)
     if (gameData.thumbnailPath === '') {
       addedGame.classList.add('no-bg')
+    } else {
+      addedGame.setBackgroundImage(gameData.thumbnailPath)
     }
   }
 
@@ -61,6 +64,10 @@ class Library extends HidrogenComponent {
     rimraf(path.join(this.libraryGamesFolder, `${removedGame.gameTitle}`), (err) => {
       if (err) console.log(err)
     })
+  }
+
+  getGamesPath () {
+    return this.libraryGamesFolder
   }
 
   getGames () {
@@ -75,6 +82,17 @@ class Library extends HidrogenComponent {
     }
 
     return gameNames
+  }
+
+  searchGame (game) {
+    // binarySearch(this.getGameNames(), game)
+    for (let gameItem of this.getGames()) {
+      if (gameItem.gameTitle.toUpperCase().indexOf(game) > -1) {
+        gameItem.classList.remove('hidden')
+      } else {
+        gameItem.classList.add('hidden')
+      }
+    }
   }
 
   clean () {
@@ -108,13 +126,24 @@ class Library extends HidrogenComponent {
       this.hidrogenSidebar.updateSelectedListItem('game-editor')
     }
 
+    const search = () => {
+      this.searchGame(this.child('.input-search').value.toUpperCase())
+    }
+
     this.child('.icon-search').addEventListener('click', toggleSearchbox)
     this.child('.add-btn').addEventListener('click', addGameHandler)
+    this.child('.input-search').addEventListener('keyup', search)
+
+    // Not working... #fixme
+    this.addEventListener('keydown', event => {
+      // Ctrl + S to toggle search box.
+      if (event.keyCode === 17 && event.keyCode === 83) toggleSearchbox()
+    })
   }
 
   render () {
     super.render(`
-      <hidrogen-panel class="library-toolbar">
+      <hidrogen-panel class="toolbar">
 
         <hidrogen-panel class="searchbox">
           <span class="icon-search"></span>

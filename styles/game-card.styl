@@ -13,6 +13,9 @@
     border-radius 10px
     overflow hidden
 
+    &.hidden
+        display none
+
     &:hover
         .title
             top 40%
@@ -29,6 +32,9 @@
     &.no-bg
         .title
             top 40% !important
+
+        .custom-background
+            display none
 
     .title
         display block
@@ -60,6 +66,13 @@
         &.disabled
             top 105% !important
 
+    .custom-background
+        width 200px
+        height 300px
+        position absolute
+        top 0
+        left 0
+
     .background
         display block
         width 200px
@@ -70,6 +83,7 @@
         opacity 0
         background #000
         transition ease-in-out .4s
+        z-index 1
 
     .game-menu-btn
         width 20px
@@ -180,6 +194,3 @@
 
                 .icon
                     margin-right 10px
-
-.wow-card
-    background url('D:\\Proyectos\\Hidrogen\\resources-2\\wow_gamecard_hidrogen200x300_1.png')

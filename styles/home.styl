@@ -1,16 +1,16 @@
 .home-screen
     display inline-block
-    width 1220px
+    width 1270px
     height 850px
     float right
     position absolute
     font-family 'GravityLight'
     transition ease-in-out .2s
     top 20px
-    left -870px
+    left -970px
 
     &.active
-        left 350px
+        left 300px
 
     .background-video
         position absolute
@@ -23,7 +23,7 @@
         video
             min-width 100%
             min-height 100%
-            border-radius 10px 0 0 0
+            // border-radius 10px 0 0 0
 
     .background-video-overlay
         position absolute
@@ -31,10 +31,11 @@
         right 0
         width 100%
         height 100%
-        background #607692
+        // background #607692
+        background board-background-color
         opacity .9
         z-index 1
-        border-radius 10px 0 0 0
+        // border-radius 10px 0 0 0
 
     .main-title
         position absolute
@@ -74,6 +75,7 @@
         font-size 20px
         line-height 40px
         text-align center
+        // background home-button-primary-color
 
     .add-btn
         position absolute
@@ -84,5 +86,10 @@
         font-size 20px
         line-height 36px
         text-align center
-        color #37414d
-        font-weight bold
+        color #adadad
+        // color #37414d
+        // font-weight bold
+        // border-color home-button-primary-color
+
+        &:hover
+            color #fff

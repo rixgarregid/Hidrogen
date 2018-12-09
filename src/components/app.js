@@ -1,5 +1,6 @@
 const HidrogenComponent = require('./hidrogen-component')
-const { app } = require('electron').remote
+const { remote } = require('electron')
+const { app } = remote
 const os = require('os')
 
 // The {App} class links all the main components that builds
@@ -8,7 +9,17 @@ const os = require('os')
 class App extends HidrogenComponent {
   constructor () {
     super()
+    this.windowController = remote.getCurrentWindow()
+
+    if (!this.windowController.isFocused()) {
+      this.windowController.focus()
+      this.classList.add('focused')
+    } else {
+      this.classList.add('focused')
+    }
+
     this.logEnvironmentInfo()
+    this.attachEvents()
   }
 
   logEnvironmentInfo () {
@@ -40,8 +51,26 @@ class App extends HidrogenComponent {
     return `${systemOS} ${platformRelease} ${arch}`
   }
 
+  attachEvents () {
+    const toggleAppState = () => {
+      this.classList.toggle('blurred')
+      this.classList.toggle('focused')
+
+      if (this.classList.contains('blurred')) {
+        this.child('hidrogen-board').getView('home').pauseBackgroundVideo()
+      } else if (this.classList.contains('focused')) {
+        this.child('hidrogen-board').getView('home').playBackgroundVideo()
+      }
+    }
+
+    this.windowController.on('blur', toggleAppState)
+    this.windowController.on('focus', toggleAppState)
+  }
+
   render () {
     super.render(`
+      <hidrogen-loader></hidrogen-loader>
+
       <hidrogen-titlebar></hidrogen-titlebar>
       <hidrogen-sidebar></hidrogen-sidebar>
 

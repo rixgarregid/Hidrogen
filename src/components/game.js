@@ -1,5 +1,6 @@
 const HidrogenComponent = require('./hidrogen-component')
 const { shell } = require('electron')
+const path = require('path')
 const I18n = require('../translator')
 const i18n = new I18n()
 
@@ -27,21 +28,39 @@ class Game extends HidrogenComponent {
   }
 
   toggleMenu () {
+    this.child('.game-menu').classList.toggle('active')
+    this.child('.game-menu-btn').classList.toggle('active')
 
+    this.child('.title').classList.toggle('disabled')
+    this.child('.play-btn').classList.toggle('disabled')
+  }
+
+  setBackgroundImage (imageURL) {
+    this.child('.custom-background').src = imageURL
   }
 
   destroy (id) {
     this.hidrogenLibrary.removeGame(id)
   }
 
+  openGameFolder () {
+    shell.showItemInFolder(path.join(this.hidrogenLibrary.getGamesPath(), `${this.gameTitle}`, 'game.json'))
+    // shell.showItemInFolder(path.join(this.hidrogenLibrary.getGamesPath(), `${this.gameTitle}`))
+  }
+
   attachEvents () {
 
     const toggleGameMenu = () => {
-      this.child('.game-menu').classList.toggle('active')
-      this.child('.game-menu-btn').classList.toggle('active')
+      // this.child('.game-menu').classList.toggle('active')
+      // this.child('.game-menu-btn').classList.toggle('active')
+      //
+      // this.child('.title').classList.toggle('disabled')
+      // this.child('.play-btn').classList.toggle('disabled')
+      this.toggleMenu()
+    }
 
-      this.child('.title').classList.toggle('disabled')
-      this.child('.play-btn').classList.toggle('disabled')
+    const openGameFolder = () => {
+      this.openGameFolder()
     }
 
     const deleteGame = () => {
@@ -52,6 +71,7 @@ class Game extends HidrogenComponent {
     }
 
     this.child('.game-menu-btn').addEventListener('click', toggleGameMenu)
+    this.child('.open-game-folder-item').addEventListener('click', openGameFolder)
     this.child('.delete-game-item').addEventListener('click', deleteGame)
 
     // super.attachEvents(this.attachEvents())
@@ -74,7 +94,7 @@ class Game extends HidrogenComponent {
             <span class="icon icon-mode_edit"></span><text class="text"> ${i18n.translate('Edit information')} </text>
           </li>
 
-          <li class="list-item">
+          <li class="list-item open-game-folder-item">
             <span class="icon icon-folder_open"></span><text class="text"> ${i18n.translate('Open game folder')} </text>
           </li>
 
@@ -86,6 +106,9 @@ class Game extends HidrogenComponent {
       </hidrogen-panel>
 
       <hidrogen-panel class="background"></hidrogen-panel>
+      <img class="custom-background"></img>
+
+
     `)
   }
 }

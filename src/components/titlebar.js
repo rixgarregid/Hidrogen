@@ -38,13 +38,35 @@ class Titlebar extends HidrogenComponent {
     this.child('.btn-window-minimize').addEventListener('click', minimizeHidrogen)
   }
 
+  // render () {
+  //   super.render(`
+  //     <hidrogen-panel class="window-controls">
+  //
+  //     <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="M 0,5 10,5 10,6 0,6 Z"></path></svg>
+  //     <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="M 0,0 0,10 10,10 10,0 Z M 1,1 9,1 9,9 1,9 Z"></path></svg>
+  //     <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="M 0,0 0,0.7 4.3,5 0,9.3 0,10 0.7,10 5,5.7 9.3,10 10,10 10,9.3 5.7,5 10,0.7 10,0 9.3,0 5,4.3 0.7,0 Z"></path></svg>
+  //
+  //       <btn class="btn win-control icon-close btn-window-close"></btn>
+  //       <btn class="btn win-control icon-crop_landscape btn-window-maximize"></btn>
+  //       <btn class="btn win-control icon-remove btn-window-minimize"></btn>
+  //
+  //     </hidrogen-panel>
+  //   `)
+  // }
+  // Restore icon: <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="m 2,1e-5 0,2 -2,0 0,8 8,0 0,-2 2,0 0,-8 z m 1,1 6,0 0,6 -1,0 0,-5 -5,0 z m -2,2 6,0 0,6 -6,0 z"></path></svg>
   render () {
     super.render(`
       <hidrogen-panel class="window-controls">
 
-        <btn class="btn win-control icon-close btn-window-close"></btn>
-        <btn class="btn win-control icon-crop_landscape btn-window-maximize"></btn>
-        <btn class="btn win-control icon-remove btn-window-minimize"></btn>
+        <btn class="btn win-control btn-window-close">
+          <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="M 0,0 0,0.7 4.3,5 0,9.3 0,10 0.7,10 5,5.7 9.3,10 10,10 10,9.3 5.7,5 10,0.7 10,0 9.3,0 5,4.3 0.7,0 Z"></path></svg>
+        </btn>
+        <btn class="btn win-control btn-window-maximize">
+          <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="M 0,0 0,10 10,10 10,0 Z M 1,1 9,1 9,9 1,9 Z"></path></svg>
+        </btn>
+        <btn class="btn win-control btn-window-minimize">
+          <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="M 0,5 10,5 10,6 0,6 Z"></path></svg>
+        </btn>
 
       </hidrogen-panel>
     `)

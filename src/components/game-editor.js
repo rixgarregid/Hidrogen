@@ -13,6 +13,7 @@ class GameEditor extends HidrogenComponent {
     this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
 
     this.attachEvents()
+
   }
 
   validateInputs () {
@@ -28,9 +29,7 @@ class GameEditor extends HidrogenComponent {
       name: this.querySelector('.game-name-input').value,
       path: this.querySelector('.game-path-input').value,
       synopsis: this.querySelector('.game-synopsis-input').value,
-      // Empty by default until we find a solution to upload images and
-      // load them to the game element through JavaScript.
-      thumbnailPath: '',
+      thumbnailPath: this.tempGameBackground,
       developer: this.querySelector('.game-developer-input').value,
       year: this.querySelector('.game-year-input').value,
       genre: this.querySelector('.game-genre-input').value,
@@ -53,7 +52,9 @@ class GameEditor extends HidrogenComponent {
         filters: [{name: `${i18n.translate('Images')} (*.jpg, *.png)`,
         extensions: ['jpg', 'png', 'gif']}] },
         files => {
-          console.log(files[0])
+          if (files.length > 0) this.child('.preview').src = files[0]
+          // Guardar la ruta del fondo temporalmente.
+          this.tempGameBackground = files[0]
       })
     }
 
@@ -101,6 +102,7 @@ class GameEditor extends HidrogenComponent {
         <hidrogen-panel class="panel game-image-preview-panel">
           <text class="text title">${i18n.translate('Preview')}</text>
           <text class="text sub-title">${i18n.translate('Recommended')} 200x300px</text>
+          <img src="" class="preview"></img>
         </hidrogen-panel>
 
         <btn class="btn game-image-btn"><span class="icon icon-file_upload"></span>${i18n.translate('Upload image')}</btn>

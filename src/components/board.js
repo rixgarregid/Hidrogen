@@ -35,6 +35,14 @@ class Board extends HidrogenComponent {
     // as a child and selected.
     for (let boardView of this.getAllViews()) {
       if (boardView.classList.contains('active')) boardView.classList.remove('active')
+
+      // If the active view isn't home we're pausing the background video
+      // to save computer's resources.
+      if (view === 'home') {
+        this.getView('home').playBackgroundVideo()
+      } else {
+        this.getView('home').pauseBackgroundVideo()
+      }
     }
 
     this.getView(view).classList.add('active')

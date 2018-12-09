@@ -17,13 +17,14 @@ class HidrogenWindow {
       frame: false,
       transparent: true,
       maximizable: false,
-      resizable: false
+      resizable: false,
+      icon: path.resolve('./static/images/hidrogen-icon.png')
     }
 
-    this.iconPath = path.resolve('./resources/images/icon-hidrogen.png')
+    // this.iconPath = path.resolve('./static/images/hidrogen-icon.png')
     // An icon is only necessary for Linux, as Windows and MacOS takes
     // the window's icon from the app's executable.
-    if (process.platform === 'linux') this.preferences.icon = this.iconPath
+    // if (process.platform === 'linux') this.preferences.icon = this.iconPath
 
     this.browserWindow = new BrowserWindow(this.preferences)
 
@@ -33,7 +34,7 @@ class HidrogenWindow {
       slashes: true
     }))
 
-    this.browserWindow.webContents.openDevTools()
+    // this.browserWindow.webContents.openDevTools()
 
     this.browserWindow.on('ready-to-show', () => this.browserWindow.show())
   }

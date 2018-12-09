@@ -1,8 +1,8 @@
 .game-editor
     display block
-    width 1220px
+    width 1270px
     height 850px
-    border-radius 0 0 10px 0
+    // border-radius 0 0 10px 0
     background #1e252e
     position absolute
     top 20px
@@ -12,7 +12,7 @@
     overflow-y scroll
 
     &.active
-        left 350px
+        left 300px
 
     input
         margin-right 26px
@@ -70,6 +70,17 @@
         .sub-title
             top 60%
             font-size 13px
+
+        .preview
+            width 200px
+            height 300px
+            border-radius 10px
+            position absolute
+            top 0
+            left 0
+
+            .preview[src='']
+                display none
 
     .game-image-btn
         width 200px
