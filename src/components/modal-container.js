@@ -1,40 +1,57 @@
-class ModalContainer extends HTMLElement {
+const HidrogenComponent = require('./hidrogen-component')
+const I18n = require('../translator')
+const i18n = new I18n()
+
+class ModalContainer extends HidrogenComponent {
   constructor () {
     super()
-
-    this.render()
+    this.classNames = ['modal-container']
     this.attachEvents()
   }
 
   attachEvents () {
+    const deleteGame = () => {
+      this.child('.delete-game-modal').classList.remove('active')
 
-    // const handleOk = () => {
-    //   this.querySelector('.delete-game-modal').classList.remove('active')
-    //
-    //   let delId = this.querySelector('.delete-game-modal').getAttribute('game-id')
-    //   document.querySelector(`hidrogen-game-card[game-id='${delId}']`).destroy(delId)
-    // }
-    //
-    // const handleCancel = () => {
-    //   this.querySelector('.delete-game-modal').classList.remove('active')
-    // }
-    //
-    // this.querySelector('.delete-game-modal .confirm-btn').addEventListener('click', handleOk)
-    // this.querySelector('.delete-game-modal .cancel-btn').addEventListener('click', handleCancel)
+      let delId = this.child('.delete-game-modal').getAttribute('game-id')
+      document.querySelector(`hidrogen-game-card[game-id='${delId}']`).destroy(delId)
+    }
+
+    const cleanLibrary = () => { document.querySelector('hidrogen-library').clean() }
+
+    const resetHidrogenDefaults = () => { document.querySelector('hidrogen-app').restoreDefaults() }
+
+    this.child('.delete-game-modal .btn-confirm').addEventListener('click', deleteGame)
+    this.child('.clean-library-modal .btn-confirm').addEventListener('click', cleanLibrary)
+    this.child('.reset-hidrogen-modal .btn-confirm').addEventListener('click', resetHidrogenDefaults)
   }
 
   render () {
-    this.classList.add('modal-container')
+    super.render(`
+      <hidrogen-modal
+        type="confirm"
+        class="delete-game-modal"
+        content="${i18n.translate('Hey! This action can\'t be reverted, once done there\'s no way back. Are you sure about what are you doing?')}"
+      ></hidrogen-modal>
 
-    // this.innerHTML = `
-    //   <hidrogen-modal class="delete-game-modal no-default-content">
-    //     <!-- <text class="text">
-    //       ${i18n.translate('Hey! This action can\'t be reverted, once done there\'s no way back. Are you sure about what are you doing?')}
-    //     </text> -->
-    //     <!-- <btn class="btn confirm-btn"> ${i18n.translate('Yeah, n.n')} </btn>
-    //     <btn class="btn btn-sec cancel-btn"> ${i18n.translate('Nope, let me a moment...')} </btn> -->
-    //   </hidrogen-modal>
-    // `
+      <hidrogen-modal
+        type="info"
+        class="closing-countdown-modal"
+        content=" I'm a countdown! "
+      ></hidrogen-modal>
+
+      <hidrogen-modal
+        type="confirm"
+        class="clean-library-modal"
+        content="${i18n.translate('Hey! This action can\'t be reverted, once done there\'s no way back. Are you sure about what are you doing?')}"
+      ></hidrogen-modal>
+
+      <hidrogen-modal
+        type="confirm"
+        class="reset-hidrogen-modal"
+        content="${i18n.translate('Hey! This action can\'t be reverted, once done there\'s no way back. Are you sure about what are you doing?')}"
+      ></hidrogen-modal>
+    `)
   }
 }
 

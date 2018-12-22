@@ -9,14 +9,14 @@ class Loader extends HidrogenComponent {
   }
 
   attachEvents () {
-    document.addEventListener('DOMContentLoaded', () => {
-      this.classList.add('inactive')
-      console.log('Dom is ready!')
-    })
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   this.classList.add('inactive')
+    //   console.log('Dom is ready!')
+    // })
 
-    // let timer = setInterval(() => {
-    //     this.classList.add('inactive')
-    // }, 3000)
+    let timer = setInterval(() => {
+        this.classList.add('inactive')
+    }, 1000)
   }
 
   render () {

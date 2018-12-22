@@ -1,30 +1,22 @@
 .modal
-    display none
+    display block
     width 1570px
     height 870px
     position absolute
-    top 50%
-    left 50%
-    transform translate(-50%, -50%)
-    background rgba(0, 0, 0, .6)
+    top 0
     z-index 10
-    transition ease-in-out .2s
-    color #a9a9a9
+    background rgba(0, 0, 0, .7)
+    transform scale(0)
+    transition .5s cubic-bezier(0.165, 0.840, 0.440, 1.000)
 
     &.active
-        display block
-        animation popUp .3s ease-in-out forwards
+        transform scale(1)
 
         .content
-            animation popUp .3s ease-in-out forwards
-            animation-delay .1s
+            transform scale(1) translate(-50%, -50%)
 
-    &.no-default-content
-        .title
-            display none
-
-        .btn-close
-            display none
+    &.no-title .title
+        display none
 
     .content
         display block
@@ -32,22 +24,34 @@
         height 400px
         padding 25px
         box-sizing border-box
-        background #1e252e
-        border-radius 10px
+        background #f3f8ff
+        border-radius 5px
+        font-size 15px
         position relative
         top 50%
         left 50%
-        transform translate(-50%, -50%)
-        transform-origin center
+        transform translate(-50%, -50%) scale(0)
         box-shadow 0 0 50px rgba(0, 0, 0, .7)
-        opacity 0
+        transition .5s cubic-bezier(0.165, 0.840, 0.440, 1.000)
+        color #292929
 
-    @keyframes popUp
-        0%
-            transform scale(0.1) translate(-50%, -50%)
-            opacity 0
-        60%
-            transform scale(1.2) translate(-50%, -50%)
-        100%
-            transform scale(1) translate(-50%, -50%)
-            opacity 1
+    .btn-container
+        display block
+        width 550px
+        height 40px
+        position absolute
+        right 25px
+        bottom 25px
+
+        .btn-confirm, .btn-cancel
+            min-width 100px
+            width auto
+            height 40px
+            padding 10px 20px
+            float right
+            color #fff
+            font-size 15px
+            text-align center
+
+        .btn-confirm
+            margin-right 20px

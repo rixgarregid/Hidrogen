@@ -15,6 +15,13 @@
 
         .dropdown-list
             display block
+            animation displayItem 250ms ease-in-out forwards
+
+        @keyframes displayItem
+            0%
+                display none
+            100%
+                display block
 
     .dropdown-title
         display inline-block

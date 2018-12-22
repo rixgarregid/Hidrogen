@@ -1,40 +1,129 @@
-// Hidrogen UI
+// --------------- HIDROGEN UI ---------------
 
-app-background-color = #1e252e
-board-background-color = #232c37
-sidebar-background-color = app-background-color
+// --------------- COLORS ---------------
 
-home-button-primary-color = app-background-color
+primary-color = #161a1f
+secondary-color = lighten(#161a1f, 2%)
 
-background-color-light = #e6e5e2
-background-color-dark = #303034
-background-color-active = #30b0d2
-
-text-color-subtle = #aaaaaa
-text-color-highlight = #30b0d2
+text-color = #a9a9a9
+text-color-highlight = #e3e3e3
 text-color-success = #29b905
 text-color-warning = #dfd600
 text-color-error = #dd2020
+text-color-selected = text-color-highlight
+text-color-background-selected = #283b4f
 
-text-color-light = #000
-text-color-dark = #fff
-text-color-light-selected = #aba4a2
-text-color-dark-selected = #b3b4ae
-text-background-color-light = background-color-light
-text-background-color-dark = background-color-dark
+app-background-color = primary-color
+loader-background-color = primary-color
+titlebar-background-color = primary-color
+sidebar-background-color = primary-color
+board-background-color = secondary-color
+library-background-color = primary-color
+about-background-color = primary-color
 
-app-shadow-color = rgba(0, 0, 0, .5)
+// --------------- SIZES ---------------
 
-font-size-normal = 14px
-font-size-small = 13px
-font-size-medium = 16px
-font-size-large = 18px
-font-size-xlarge = 22px
+list-font-size = 15px
 
-font-family-default = 'Roboto'
+// --------------- ICONS ---------------
+
+
+
+// -------------------------------------------
+// THEME COLORS
+// -------------------------------------------
+// primary-color = #1e252e
+// secondary-color = #232c37
+// tertiary-color = #ececec
+
+// text-color = #a9a9a9
+// text-color-highlight = #e3e3e3
+// text-color-success = #29b905
+// text-color-warning = #dfd600
+// text-color-error = #dd2020
+// text-color-selected = text-color-highlight
+// text-color-background-selected = #283b4f
+
+// -------------------------------------------
+// ELEMENT-SPECIFIC COLORS
+// -------------------------------------------
+// app-background-color = primary-color
+// titlebar-background-color = #202832
+// sidebar-background-color = #161a1f
+// board-background-color = lighten(#161a1f, 2%)
+// board #232c37
+// sidebar bg #161a1f  // #191e25 // #1c2127
+
+panel-border-color = #000
+
+game-background-color = primary-color
+game-border-color = #3a3f44
+game-hover-background-color = #000
+game-menu-button-color = #aaa
+    // #202832
+
+input-border-color = button-color-background
+
+// Buttons -----------------------------------
+button-color-background = #37414d
+
+button-color-success = text-color-highlight
+button-background-color-success = #00c851
+button-hover-background-color-success = #007e33
+
+button-color-danger = #ff4444
+button-background-color-danger = #ff4444
+button-hover-background-color-danger = #cc0000
+
+button-color-highlight = text-color-highlight
+button-background-color-highlight = #33b5e5
+button-hover-background-color-highlight = #0099cc
+//
+// button-background-color-highlight = #2ba0ce
+// button-hover-background-color-highlight = #1b799e
+
+home-button-primary-color = app-background-color
+
+
+// -------------------------------------------
+// THEME TYPOGRAPHY
+// -------------------------------------------
+default-font = 'Roboto'
+
+
+
+// background-color-light = #e6e5e2
+// background-color-dark = #303034
+// background-color-active = #30b0d2
+//
+// text-color-subtle = #aaaaaa
+// text-color-highlight = #30b0d2
+// text-color-success = #29b905
+// text-color-warning = #dfd600
+// text-color-error = #dd2020
+//
+// text-color-light = #000
+// text-color-dark = #fff
+// text-color-light-selected = #aba4a2
+// text-color-dark-selected = #b3b4ae
+// text-background-color-light = background-color-light
+// text-background-color-dark = background-color-dark
+//
+// app-shadow-color = rgba(0, 0, 0, .5)
+//
+// font-size-normal = 14px
+// font-size-small = 13px
+// font-size-medium = 16px
+// font-size-large = 18px
+// font-size-xlarge = 22px
+
+
 
 font-path = "../static/fonts"
 
+// -------------------------------------------
+// THEME COLORS
+// -------------------------------------------
 icomoon-font-path ?= font-path
 icon-add = "\e145"
 icon-control_point = "\e3ba"
@@ -93,6 +182,7 @@ icon-tag_faces = "\e420"
 icon-label = "\e892"
 icon-label_outline = "\e893"
 icon-language = "\e894"
+icon-lens = "\e3fa"
 icon-local_library = "\e54b"
 icon-room = "\e8b4"
 icon-lock_open = "\e898"
@@ -103,6 +193,7 @@ icon-move_to_inbox = "\e168"
 icon-near_me = "\e569"
 icon-open_in_browser = "\e89d"
 icon-panorama = "\e40b"
+icon-radio_button_unchecked = "\e836"
 icon-person = "\e7fd"
 icon-person_add = "\e7fe"
 icon-photo_size_select_actual = "\e432"

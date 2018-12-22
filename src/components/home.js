@@ -34,7 +34,6 @@ class Home extends HidrogenComponent {
     }
 
     const showGameEditor = () => {
-      // this.hidrogenGameEditor.classList.add('active')
       this.hidrogenBoard.updateView('game-editor')
       this.hidrogenSidebar.updateSelectedListItem('game-editor')
     }
@@ -51,13 +50,13 @@ class Home extends HidrogenComponent {
       </hidrogen-panel>
       <hidrogen-panel class="background-video-overlay"></hidrogen-panel>
 
-      <text class="text main-title"> ${i18n.translate('Welcome to Hidrogen,')} </text>
-      <text class="text sub-title"> ${i18n.translate('your gaming library')} </text>
+      <span class="main-title"> ${i18n.translate('Welcome to Hidrogen,')} </span>
+      <span class="sub-title"> ${i18n.translate('your gaming library')} </span>
 
       <hidrogen-panel class="home-btns">
 
-        <btn class="btn library-btn"> ${i18n.translate('Go to my library')} </btn>
-        <btn class="btn btn-sec add-btn"> ${i18n.translate('Add a game')} </btn>
+        <hidrogen-btn text="${i18n.translate('Go to my library')}" class="library-btn"></hidrogen-btn>
+        <hidrogen-btn text="${i18n.translate('Add a game')}" class="outlined add-btn"></hidrogen-btn>
 
       </hidrogen-panel>
     `)

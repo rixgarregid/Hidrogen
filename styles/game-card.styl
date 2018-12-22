@@ -7,10 +7,9 @@
     margin-bottom 35px
     padding 20px
     position relative
-    border 2px solid #202832
-    box-shadow 0 10px 20px rgba(0, 0, 0, .2)
-    background #1e252e
-    border-radius 10px
+    border 1px solid game-border-color
+    // box-shadow 0 10px 20px rgba(0, 0, 0, .2)
+    background game-background-color
     overflow hidden
 
     &.hidden
@@ -38,15 +37,16 @@
 
     .title
         display block
-        width 100%
+        width 80%
         position absolute
         top -40px
         left 50%
         transform translateX(-50%)
-        color #fff
-        text-align center
-        transition ease-in-out .2s
         z-index 2
+        color text-color-highlight
+        text-align center
+        line-height 30px
+        transition ease-in-out .2s
 
         &.disabled
             top -40px !important
@@ -58,10 +58,10 @@
         top 105%
         left 50%
         transform translateX(-50%)
+        z-index 3
         line-height 30px
         text-align center
         transition ease-in-out .2s
-        z-index 3
 
         &.disabled
             top 105% !important
@@ -80,10 +80,10 @@
         position absolute
         top 0
         left 0
-        opacity 0
-        background #000
-        transition ease-in-out .4s
         z-index 1
+        opacity 0
+        background game-hover-background-color
+        transition ease-in-out .4s
 
     .game-menu-btn
         width 20px
@@ -92,53 +92,53 @@
         position absolute
         top 15px
         right -30px
+        z-index 3
         background transparent
         cursor pointer
         transition .2s ease-in-out
-        z-index 3
 
         &:hover
             .hamburger
-                background #fff
+                background text-color-highlight
 
                 &:before, &:after
-                    background #fff
+                    background text-color-highlight
 
         &.active
             right 15px
 
             .hamburger
-                background: rgba(0, 0, 0, 0);
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0)
+                background rgba(0, 0, 0, 0)
+                box-shadow 0 2px 5px rgba(0, 0, 0, 0)
 
                 &:before
-                    top: 0;
-                    transform: rotate(45deg);
+                    top 0
+                    transform rotate(45deg)
 
                 &:after
-                    top: 0;
-                    transform: rotate(135deg);
+                    top 0
+                    transform rotate(135deg)
 
         .hamburger
             display block
             width 20px
-            height 3px
+            height 2px
             position absolute
             top 50%
             left 50%
             transform translate(-50%, -50%)
-            background #aaa
+            background game-menu-button-color
             box-shadow 0 2px 5px rgba(0, 0, 0, .2)
-            transition .5s
+            transition .3s ease-in-out
 
             &:before, &:after
                 content ' '
                 width 20px
-                height 3px
+                height 2px
                 position absolute
-                background #aaa
+                background game-menu-button-color
                 box-shadow 0 2px 5px rgba(0, 0, 0, .2)
-                transition .5s
+                transition .3s ease-in-out
 
             &:before
                 top -7px
@@ -154,8 +154,8 @@
         position relative
         top 0
         left 0
-        overflow hidden
         z-index 2
+        overflow hidden
 
         &.active
             + .background

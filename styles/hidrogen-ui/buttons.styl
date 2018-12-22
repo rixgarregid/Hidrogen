@@ -1,21 +1,58 @@
 .btn
     display inline-block
-    width 90px
-    height 70px
+    box-sizing border-box
+    width auto
+    min-width 30px
+    min-height 30px
     padding 10px
     border none
     border-radius 5px
-    background #37414d
+    background button-color-background
     cursor pointer
-    color #a9a9a9
+    color text-color
+    font-size 15px
     transition .2s ease-in-out
-    box-sizing border-box
+    text-align center
+    line-height normal
+    font-family default-font !important
 
     &:hover
         color #fff !important
         background #303d4d
 
-    &.btn-sec
+    &[type='success']
+        color button-color-success !important
+        background button-background-color-success
+        box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+
+        &:hover
+            background button-hover-background-color-success
+
+    &[type='warning']
+        color button-color-warning !important
+        background button-background-color-warning
+        box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+
+        &:hover
+            background button-hover-background-color-warning
+
+    &[type='danger']
+        color button-color-danger !important
+        background button-background-color-danger
+        box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+
+        &:hover
+            background button-hover-background-color-danger
+
+    &[type='highlight']
+        color button-color-highlight !important
+        background button-background-color-highlight
+        box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+
+        &:hover
+            background button-hover-background-color-highlight
+
+    &.outlined
         border solid 2px #37414d
         background transparent !important
 
@@ -23,6 +60,99 @@
             border solid 2px #303d4d
             color #fff !important
 
-    .icon
+        &[type='success']
+            color button-color-success !important
+            border-color button-background-color-success
+            box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+
+            &:hover
+                border-color button-hover-background-color-success
+
+        &[type='warning']
+            color button-color-warning !important
+            border-color button-background-color-warning
+            box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+
+            &:hover
+                border-color button-hover-background-color-warning
+
+        &[type='danger']
+            color button-color-danger !important
+            border-color button-background-color-danger
+            box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+
+            &:hover
+                border-color button-hover-background-color-danger
+
+        &[type='highlight']
+            color button-color-highlight !important
+            border-color button-background-color-highlight
+            box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+
+            &:hover
+                border-color button-hover-background-color-highlight
+
+    icon
         font-size 1em
         margin-right 10px
+
+        &.none
+            display none
+
+// .btn
+//     display inline-block
+//     width 90px
+//     height 70px
+//     padding 10px
+//     border none
+//     border-radius 5px
+//     background button-color-background
+//     cursor pointer
+//     color text-color
+//     transition .2s ease-in-out
+//     box-sizing border-box
+//
+//     &:hover
+//         color #fff !important
+//         background #303d4d
+//
+//     &.btn-sec
+//         border solid 2px #37414d
+//         background transparent !important
+//
+//         &:hover
+//             border solid 2px #303d4d
+//             color #fff !important
+//
+//     &.btn-mat
+//         border none
+//         background transparent
+//         text-transform uppercase
+//
+//     &.btn-success
+//         color button-color-success !important
+//         background button-background-color-success !important
+//         box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+//
+//         &:hover
+//             background button-hover-background-color-success
+//
+//     &.btn-danger
+//         color button-color-cancel !important
+//         background button-background-color-cancel !important
+//         box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+//
+//         &:hover
+//             background button-hover-background-color-cancel
+//
+//     &.btn-highlight
+//         color button-color-highlight
+//         background button-background-color-highlight
+//         box-shadow 0 5px 20px rgba(0, 0, 0, .2)
+//
+//         &:hover
+//             background button-hover-background-color-highlight
+//
+//     .icon
+//         font-size 1em
+//         margin-right 10px

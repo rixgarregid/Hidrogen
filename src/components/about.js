@@ -31,7 +31,7 @@ class About extends HidrogenComponent {
     super.render(`
       <span class="hidrogen-logo"></span>
       <text class="text version-text"> v.${app.getVersion()} </text>
-      <btn class="btn back-btn"> ${i18n.translate('Back')} </btn>
+      <hidrogen-btn text="${i18n.translate('Back')}" class="back-btn"></hidrogen-btn>
     `)
   }
 }

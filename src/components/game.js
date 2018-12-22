@@ -1,5 +1,7 @@
 const HidrogenComponent = require('./hidrogen-component')
+const Config = require('../config')
 const { shell } = require('electron')
+const { app } = require('electron').remote
 const path = require('path')
 const I18n = require('../translator')
 const i18n = new I18n()
@@ -8,9 +10,17 @@ class Game extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['game-card']
+
+    this.data = {
+      // id: this.gameId,
+      // title: this.gameTitle,
+      // path: this.path,
+      customBackground: this.customBackground
+    }
     this.gameTitle = this.gameTitle
 
     this.hidrogenLibrary = document.querySelector('hidrogen-library')
+    this.config = new Config()
 
     this.attachEvents()
   }
@@ -27,6 +37,18 @@ class Game extends HidrogenComponent {
     return this.getAttribute('game-id')
   }
 
+  get path () {
+    return this.getAttribute('path')
+  }
+
+  get customBackground () {
+    if (this.getAttribute('custom-bg') === 'undefined') {
+      this.setAttribute('custom-bg', '')
+    } else {
+      return this.getAttribute('custom-bg')
+    }
+  }
+
   toggleMenu () {
     this.child('.game-menu').classList.toggle('active')
     this.child('.game-menu-btn').classList.toggle('active')
@@ -36,59 +58,51 @@ class Game extends HidrogenComponent {
   }
 
   setBackgroundImage (imageURL) {
-    this.child('.custom-background').src = imageURL
+    document.querySelector('.custom-background').src = imageURL
+  }
+
+  play () {
+    shell.openExternal(this.path)
+
+    if (this.config.get('autoclose') && this.config.get('closingCountdown')) {
+      // Add modal
+    } else if (this.config.get('autoclose')) {
+      app.quit()
+    }
   }
 
   destroy (id) {
-    this.hidrogenLibrary.removeGame(id)
+    this.hidrogenLibrary.remove(id)
   }
 
   openGameFolder () {
-    shell.showItemInFolder(path.join(this.hidrogenLibrary.getGamesPath(), `${this.gameTitle}`, 'game.json'))
-    // shell.showItemInFolder(path.join(this.hidrogenLibrary.getGamesPath(), `${this.gameTitle}`))
+    shell.showItemInFolder(path.join(this.hidrogenLibrary.getGamesFolderPath(), `${this.gameTitle}`, 'game.json'))
   }
 
   attachEvents () {
-
-    const toggleGameMenu = () => {
-      // this.child('.game-menu').classList.toggle('active')
-      // this.child('.game-menu-btn').classList.toggle('active')
-      //
-      // this.child('.title').classList.toggle('disabled')
-      // this.child('.play-btn').classList.toggle('disabled')
-      this.toggleMenu()
-    }
-
-    const openGameFolder = () => {
-      this.openGameFolder()
-    }
+    const play = () => { this.play() }
+    const toggleMenu = () => { this.toggleMenu() }
+    const openGameFolder = () => { this.openGameFolder() }
 
     const deleteGame = () => {
-      // document.querySelector('.delete-game-modal').classList.add('active')
-      // document.querySelector('.delete-game-modal').setAttribute('game-id', this.gameId)
-      // Avoid showing the modal and delete game directly:
-      this.destroy(this.gameId)
+      document.querySelector('.delete-game-modal').classList.add('active')
+      document.querySelector('.delete-game-modal').setAttribute('game-id', this.gameId)
     }
 
-    this.child('.game-menu-btn').addEventListener('click', toggleGameMenu)
+    this.child('.play-btn').addEventListener('click', play)
+    this.child('.game-menu-btn').addEventListener('click', toggleMenu)
     this.child('.open-game-folder-item').addEventListener('click', openGameFolder)
     this.child('.delete-game-item').addEventListener('click', deleteGame)
-
-    // super.attachEvents(this.attachEvents())
   }
 
   render () {
     super.render(`
-      <text class="text title"> ${this.gameTitle} </text>
-      <btn class="btn play-btn"> ${i18n.translate('Play')} </btn>
-      <btn class="btn game-menu-btn"><span class="hamburger"></span></btn>
+      <span class="text title"> ${this.gameTitle} </span>
+      <hidrogen-btn type="highlight" text="${i18n.translate('Play')}" class="play-btn"></hidrogen-btn>
+      <hidrogen-btn class="game-menu-btn"><span class="hamburger"></span></hidrogen-btn>
 
       <hidrogen-panel class="game-menu" state="no-active">
         <ul class="list menu-list">
-
-          <li class="list-item">
-            <span class="icon icon-info"></span><text class="text"> ${i18n.translate('Information')} </text>
-          </li>
 
           <li class="list-item">
             <span class="icon icon-mode_edit"></span><text class="text"> ${i18n.translate('Edit information')} </text>
@@ -106,9 +120,7 @@ class Game extends HidrogenComponent {
       </hidrogen-panel>
 
       <hidrogen-panel class="background"></hidrogen-panel>
-      <img class="custom-background"></img>
-
-
+      <img src="${this.customBackground}" class="custom-background"></img>
     `)
   }
 }

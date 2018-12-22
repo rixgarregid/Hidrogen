@@ -1,4 +1,5 @@
 const HidrogenComponent = require('./hidrogen-component')
+const Config = require('../config')
 const binarySearch = require('../util')
 const mkdir = require('mkdirp')
 const rimraf = require('rimraf')
@@ -9,35 +10,39 @@ const fs = require('fs')
 // user and controls how they are shown.
 class Library extends HidrogenComponent {
   constructor () {
-    super()
+    super({ render: false })
     this.classNames = ['board-view', 'library']
-    this.libraryGamesFolder = path.resolve('games/')
+    this.gamesFolder = path.resolve('games/')
+    this.gameAmount = 0
 
     this.hidrogenBoard = document.querySelector('hidrogen-board')
     this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
+    this.config = new Config()
 
+    this.render()
     this.loadGamesFromFiles()
-
     this.attachEvents()
+
+    if (this.config.get('showGameCounter') === false) {
+      this.child('.total-game-counter').classList.add('no-display')
+    }
   }
 
   loadGamesFromFiles () {
-    fs.readdir(this.libraryGamesFolder, (err, files) => {
+    fs.readdir(this.gamesFolder, (err, files) => {
       if (err) console.log(err)
       // if (typeof files === undefined) console.log('No files were found'); return
 
       for (let folder of files) {
-        let gameData = JSON.parse(fs.readFileSync(path.join(this.libraryGamesFolder, `${folder}`, 'game.json')))
-        this.addGame(gameData)
+        let gameData = JSON.parse(fs.readFileSync(path.join(this.gamesFolder, `${folder}`, 'game.json')))
+        this.add(gameData)
       }
-
-      this.gamesLoaded = true
     })
   }
 
-  addGame (gameData) {
-    if (!fs.existsSync(this.libraryGamesFolder)) mkdir(this.libraryGamesFolder)
-    let gameFolder = path.join(this.libraryGamesFolder, `${gameData.name}`)
+  add (gameData) {
+    if (!fs.existsSync(this.gamesFolder)) mkdir(this.gamesFolder)
+    let gameFolder = path.join(this.gamesFolder, `${gameData.name}`)
     mkdir(gameFolder)
 
     // Generate and add Game ID.
@@ -46,28 +51,38 @@ class Library extends HidrogenComponent {
     fs.writeFileSync(path.join(gameFolder, 'game.json'), JSON.stringify(gameData, null, 2))
 
     this.querySelector('.game-container').innerHTML += `
-      <hidrogen-game-card game-id=${gameData.id} game-title='${gameData.name}'></hidrogen-game-card>
+      <hidrogen-game-card
+        game-id=${gameData.id}
+        game-title='${gameData.name}'
+        custom-bg='${gameData.customBackground}'
+        path='${gameData.path}'
+      ></hidrogen-game-card>
     `
 
+    this.updateGameCounter(this.getTotalGames() + 1)
+
     let addedGame = this.querySelector(`.game-container hidrogen-game-card[game-id='${gameData.id}']`)
-    if (gameData.thumbnailPath === '') {
+    if (gameData.customBackground === undefined) {
       addedGame.classList.add('no-bg')
-    } else {
-      addedGame.setBackgroundImage(gameData.thumbnailPath)
     }
+    // else {
+    //   addedGame.setBackgroundImage(gameData.customBackground)
+    // }
   }
 
-  removeGame (gameId) {
+  remove (gameId) {
     let removedGame = this.child(`.game-container hidrogen-game-card[game-id='${gameId}']`)
     this.child('.game-container').removeChild(removedGame)
 
-    rimraf(path.join(this.libraryGamesFolder, `${removedGame.gameTitle}`), (err) => {
+    this.updateGameCounter(this.getTotalGames() - 1)
+
+    rimraf(path.join(this.gamesFolder, `${removedGame.gameTitle}`), (err) => {
       if (err) console.log(err)
     })
   }
 
-  getGamesPath () {
-    return this.libraryGamesFolder
+  getGamesFolderPath () {
+    return this.gamesFolder
   }
 
   getGames () {
@@ -84,7 +99,7 @@ class Library extends HidrogenComponent {
     return gameNames
   }
 
-  searchGame (game) {
+  search (game) {
     // binarySearch(this.getGameNames(), game)
     for (let gameItem of this.getGames()) {
       if (gameItem.gameTitle.toUpperCase().indexOf(game) > -1) {
@@ -97,13 +112,30 @@ class Library extends HidrogenComponent {
 
   clean () {
     for (let game of this.getGames()) {
-      this.child('.game-container').removeChild(game)
+      // this.child('.game-container').removeChild(game)
+      this.remove(game.gameId)
     }
   }
 
   reload () {
     this.clean()
     this.loadGamesFromFiles()
+  }
+
+  getTotalGames () {
+    console.log(this.gameAmount)
+    return this.gameAmount
+  }
+
+  updateGameCounter (amount) {
+    this.gameAmount = amount
+    this.child('.game-counter').innerText = amount
+
+    if (this.getTotalGames() === 1) {
+      this.child('.game-counter-label').innerText = 'juego en la biblioteca!'
+    } else {
+      this.child('.game-counter-label').innerText = 'juegos en la biblioteca!'
+    }
   }
 
   generateGameId () {
@@ -127,7 +159,7 @@ class Library extends HidrogenComponent {
     }
 
     const search = () => {
-      this.searchGame(this.child('.input-search').value.toUpperCase())
+      this.search(this.child('.input-search').value.toUpperCase())
     }
 
     this.child('.icon-search').addEventListener('click', toggleSearchbox)
@@ -148,6 +180,11 @@ class Library extends HidrogenComponent {
         <hidrogen-panel class="searchbox">
           <span class="icon-search"></span>
           <input type="text" class="input-search">
+        </hidrogen-panel>
+
+        <hidrogen-panel class="total-game-counter">
+          <span class="game-counter"> ${this.getTotalGames()} </span>
+          <span class="game-counter-label"> juegos en la biblioteca! </span>
         </hidrogen-panel>
 
         <btn class="add-btn icon-add"></btn>

@@ -5,7 +5,10 @@ module.exports =
 class HidrogenComponent extends HTMLElement {
   constructor (options = {}) {
     super()
-    if (options.render !== false) this.render()
+    this.autorender = options.render
+    this.shadowElement = options.shadow
+
+    if (this.autorender !== false) this.render()
   }
 
   setClassNames (classNames) {
@@ -30,6 +33,12 @@ class HidrogenComponent extends HTMLElement {
 
   render (html) {
     if (html === undefined) return
-    this.innerHTML = html
+
+    if (this.shadowElement === true) {
+      let shadowRoot = this.attachShadow({ mode: 'open' })
+      shadowRoot.innerHTML = html
+    } else {
+      this.innerHTML = html
+    }
   }
 }

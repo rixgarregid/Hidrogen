@@ -1,58 +1,106 @@
 .settings
     display block
-    width 1270px
-    height 850px
-    // border-radius 0 0 10px 0
-    background #1e252e
-    position absolute
-    top 20px
-    left -970px
-    transition ease-in-out .2s
-    padding-top 60px
+    box-sizing border-box
 
-    &.active
-        left 300px
 
-    .field
-        margin-bottom 20px
-        line-height 40px
+    // .settings-nav
+    //     display inline-block
+    //     width 150px
+    //     height 850px
+    //     float left
+    //     // background #000
+    //
+    //     .list-container
+    //         height 850px
+    //         box-sizing border-box
+    //         padding 270px 0
 
-        &:nth-child(2)
-            margin-bottom 10px
+    .settings-panel
+        display inline-block
+        box-sizing border-box
+        width 100%
+        padding 60px
+        overflow-y scroll
 
-        &:nth-child(3)
-            margin-left 40px
+        .settings-group-title
+            display block
+            font-size 20px
+            color text-color-highlight
+            margin-bottom 20px
 
-        .lang-label
-            display inline-block
-            cursor pointer
-            color #a9a9a9
-            transition .2s ease-in-out
-            line-height 40px
+        .settings-field
+            display block
+            width 65%
+            margin-bottom 20px
+            line-height 30px
+            // border-bottom 1px solid #c1c1c1
 
-            &:hover
-                color #fff
+            &:nth-child(2)
+                margin-bottom 10px
 
-        .lang-dropdown
-            margin 0 15px
-            vertical-align middle
+            &:nth-child(3)
+                margin-left 40px
 
-            &:hover + .lang-label
+            label
+                display block
+
+            .setting-description
+                display none
+                padding 5px 30px
+                font-size 14px
+                color text-color
+
+            .lang-label
+                display inline-block
+                cursor pointer
                 color #a9a9a9
+                transition .2s ease-in-out
+                line-height 40px
 
-            .dropdown-title
-                padding 0 20px
+                &:hover
+                    color #fff
 
-        .autolang-label
-            display inline-block
+            .lang-dropdown
+                margin 0 15px
+                vertical-align middle
+
+                &:hover + .lang-label
+                    color #a9a9a9
+
+                .dropdown-title
+                    padding 0 20px
+
+            .autolang-label
+                display inline-block
+                height 40px
+                vertical-align middle
+
+        .theme-field
+            height auto
+            margin-bottom 50px !important
+
+        .lang-field
+            margin-bottom 50px
+
+        .library-field
+            margin-bottom 50px !important
+
+        .save-btn
+            width 150px
+            height 50px
+            margin-right 50px
+            line-height 30px
+            text-align center
+            float right
+
+        .clean-library-btn
+            width 250px
+            // height 40px
+            text-align center
+            line-height 20px
+
+        .restore-settings-btn
+            width 200px
             height 40px
-            vertical-align middle
-
-    .cancel-btn
-        width 200px
-        height 50px
-        position absolute
-        bottom 170px
-        right 380px
-        line-height 30px
-        text-align center
+            text-align center
+            line-height 20px

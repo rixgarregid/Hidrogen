@@ -9,7 +9,6 @@ module.exports =
 class Config {
   constructor () {
     this.configFile = path.join(__dirname, '..', 'config.json')
-
     this.checkConfigFile()
   }
 
@@ -43,6 +42,7 @@ class Config {
       closingCountdown: false,
       allowMultiInstance: false,
       askBeforeLeave: false,
+      showGameCounter: true,
       autolang: true,
       lang: 'en'
     }

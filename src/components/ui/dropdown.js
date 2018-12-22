@@ -1,4 +1,4 @@
-const HidrogenComponent = require('./hidrogen-component')
+const HidrogenComponent = require('../hidrogen-component')
 
 class DropdownMenu extends HidrogenComponent {
   constructor () {
@@ -36,22 +36,32 @@ class DropdownMenu extends HidrogenComponent {
       this.classList.toggle('active')
     }
 
-    const itemClickHandler = () => {
-      this.classList.remove('active')
-      this.child('.dropdown-title').innerText = item.innerText
-
-      for (let item of this.getDropdownItems()) {
-        if (item.classList.contains('selected')) item.classList.remove('selected')
-      }
-
-      item.classList.add('selected')
-      this.selectItem()
-    }
+    // const itemClickHandler = () => {
+    //   this.classList.remove('active')
+    //   this.child('.dropdown-title').innerText = item.innerText
+    //
+    //   for (let item of this.getDropdownItems()) {
+    //     if (item.classList.contains('selected')) item.classList.remove('selected')
+    //   }
+    //
+    //   item.classList.add('selected')
+    //   this.selectItem()
+    // }
 
     this.child('.text').addEventListener('click', toggleDropdown)
 
     for (let item of this.getDropdownItems()) {
-      item.addEventListener('click', itemClickHandler)
+      item.addEventListener('click', () => {
+        this.classList.remove('active')
+        this.child('.dropdown-title').innerText = item.innerText
+
+        for (let item of this.getDropdownItems()) {
+          if (item.classList.contains('selected')) item.classList.remove('selected')
+        }
+
+        item.classList.add('selected')
+        this.selectItem()
+      })
     }
   }
 

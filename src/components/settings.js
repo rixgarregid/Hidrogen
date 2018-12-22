@@ -29,6 +29,8 @@ class Settings extends HidrogenComponent {
     if (this.config.get('askBeforeLeave')) this.child('.ask-before-leave-checkbox').checked = true
 
     if (this.config.get('autolang')) this.child('.autolang-checkbox').checked = true
+
+    if (this.config.get('showGameCounter')) this.child('.total-games-checkbox').checked = true
   }
 
   attachEvents () {
@@ -94,51 +96,65 @@ class Settings extends HidrogenComponent {
       }
     })
 
-    this.querySelector('.cancel-btn').addEventListener('click', () => {
+    this.querySelector('.total-games-checkbox').addEventListener('click', () => {
+      if (this.querySelector('.total-games-checkbox').checked === true) {
+        this.config.set('showGameCounter', true)
+      } else {
+        this.config.set('showGameCounter', false)
+      }
+    })
+
+    this.querySelector('.save-btn').addEventListener('click', () => {
       this.classList.remove('active')
-      this.hidrogenBoard.updateView('home')
-      this.hidrogenSidebar.updateSelectedListItem('home')
+      this.hidrogenBoard.updateView('library')
+      this.hidrogenSidebar.updateSelectedListItem('library')
+    })
+
+    this.child('.clean-library-btn').addEventListener('click', () => {
+      document.querySelector('.clean-library-modal').classList.add('active')
+    })
+
+    this.child('.restore-settings-btn').addEventListener('click', () => {
+      document.querySelector('.reset-hidrogen-modal').classList.add('active')
     })
   }
 
   render () {
     super.render(`
-      <hidrogen-panel class="field">
+      <hidrogen-panel type="panel" class="settings-panel">
+      <span class="settings-group-title"> General </span>
+
+      <hidrogen-panel class="settings-field">
         <label class="checkbox-label autolaunch-label">
           <input type="checkbox" class="autolaunch-checkbox">
           <text class="label"> ${i18n.translate('Run Hidrogen when your computer starts.')} </text>
         </label>
+
+        <span class="setting-description"> Iniciar Hidrogen automáticamente al encender mi equipo. </span>
       </hidrogen-panel>
 
-      <hidrogen-panel class="field">
+      <hidrogen-panel class="settings-field">
         <label class="checkbox-label autoclose-label">
           <input type="checkbox" class="autoclose-checkbox">
           <text class="label"> ${i18n.translate('Close Hidrogen when launching a game.')} </text>
         </label>
       </hidrogen-panel>
 
-      <hidrogen-panel class="field">
+      <hidrogen-panel class="settings-field">
         <label class="checkbox-label autoclose-downdown-label">
           <input type="checkbox" class="autoclose-countdown-checkbox">
           <text class="label"> ${i18n.translate('Show countdown.')} </text>
         </label>
       </hidrogen-panel>
 
-      <hidrogen-panel class="field">
+      <hidrogen-panel class="settings-field">
         <label class="checkbox-label multiinstance-label">
           <input type="checkbox" class="multiinstance-checkbox">
           <text class="label"> ${i18n.translate('Allow multiple Hidrogen instances.')} </text>
         </label>
       </hidrogen-panel>
 
-      <hidrogen-panel class="field">
-        <label class="checkbox-label ask-before-leave-label">
-          <input type="checkbox" class="ask-before-leave-checkbox">
-          <text class="label"> ${i18n.translate('Ask before leaving Hidrogen.')} </text>
-        </label>
-      </hidrogen-panel>
-
-      <hidrogen-panel class="field">
+      <hidrogen-panel class="settings-field lang-field">
         <text class="text lang-label"> ${i18n.translate('Language.')} </text>
         <dropdown-menu class="lang-dropdown dropdown-menu">
           <span class="dropdown-item spanish-item selected"> ${i18n.translate('Spanish')} </span>
@@ -152,9 +168,44 @@ class Settings extends HidrogenComponent {
         </label>
       </hidrogen-panel>
 
-      <btn class="btn cancel-btn"> ${i18n.translate('Save settings!')} </btn>
+      <span class="settings-group-title"> Biblioteca </span>
+
+      <hidrogen-panel class="settings-field">
+        <label class="checkbox-label total-games-label">
+          <input type="checkbox" class="total-games-checkbox">
+          <text class="label"> Mostrar contador de juegos en la biblioteca. </text>
+        </label>
+      </hidrogen-panel>
+
+      <hidrogen-panel class="settings-field library-field">
+        <hidrogen-btn type="danger" class="outlined clean-library-btn" text="Eliminar toda mi biblioteca">
+      </hidrogen-panel>
+
+      <hidrogen-btn type="danger" text="Restaurar Hidrogen" class="outlined restore-settings-btn"></hidrogen-btn>
+
+      <hidrogen-btn type="success" text="${i18n.translate('Done!')}" class="save-btn"></hidrogen-btn>
+      </hidrogen-panel>
     `)
   }
 }
 
 customElements.define('hidrogen-settings', Settings)
+
+// <btn class="btn btn-sec btn-danger clean-library-btn"> Eliminar toda mi biblioteca </btn>
+// <hidrogen-panel type="panel" class="settings-nav">
+//   <hidrogen-list class="settings-list">
+//     <li class="list-item selected"> General </li>
+//     <li class="list-item"> Biblioteca </li>
+//   </hidrogen-list>
+// </hidrogen-panel>
+
+// <span class="settings-field-title"> Apariencia </span>
+//
+// <hidrogen-panel class="field theme-field">
+//   <hidrogen-list list-title="Tema" behaviour="checkgroup">
+//     <span class="list-item light-theme-item"> Claro </span>
+//     <span class="list-item nightly-theme-item"> 'Nightly' (por defecto) </span>
+//     <span class="list-item dark-theme-item"> Oscuro </span>
+//     <span class="list-item modern-theme-item"> Moderno </span>
+//   </hidrogen-list>
+// </hidrogen-panel>

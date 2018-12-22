@@ -1,6 +1,6 @@
 {
   "Welcome to Hidrogen,": "Bienvenido a Hidrogen,",
-  "your gaming library": "tu biblioteca de juegos",
+  "your gaming library": "tu biblioteca gaming",
   "Go to my library": "Ir a mi biblioteca",
   "Add a game": "Añadir juegos",
   "Home": "Inicio",
@@ -23,7 +23,7 @@
   "Detect language automatically.": "Detectar idioma automáticamente.",
   "My favorites": "Mis favoritos",
   "Allow multiple Hidrogen instances.": "Permitir varias instancias de Hidrogen.",
-  "Game title": "Nombre del juego",
+  "Game title": "Título del juego",
   "Game path": "Ruta de instalación",
   "Select path": "Seleccionar ruta",
   "Synopsis": "Sinopsis",
@@ -42,5 +42,9 @@
   "Information": "Información",
   "Edit information": "Editar información",
   "Open game folder": "Abrir carpeta del juego",
-  "Delete": "Eliminar"
+  "Delete": "Eliminar",
+  "Done!": "¡Hecho!",
+  "Hey! This action can't be reverted, once done there's no way back. Are you sure about what are you doing?": "¡Hey! Esta acción no se puede deshacer, una vez hecho no podrás hecharte atrás. ¿Estas seguro de lo que estas haciendo?",
+  "Yeah, n.n": "Sí, n.n",
+  "Nope, let me a moment...": "Nope, mejor dame un momento..."
 }

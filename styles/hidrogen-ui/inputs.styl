@@ -1,42 +1,82 @@
 input:focus
     outline none
 
+// .input-text
+//     display inline-block
+//     width 250px
+//     height 40px
+//     padding 10px 20px
+//     box-sizing border-box
+//     border-radius 5px
+//     border none
+//     background #232c37
+//     transition ease-in-out .2s
+//     color #a9a9a9
+//     cursor pointer
+//
+//     &:hover
+//         color #fff !important
+//         background #303d4d
+//
+//     &:focus
+//         color #fff !important
+//         background #303d4d
+//
+//     &.error
+//         border 1px solid darkred
+//         animation error .2s ease-in-out
+//
+//     @keyframes error
+//         0%
+//             transform translateX(0px)
+//         25%
+//             transform translateX(30px)
+//         100%
+//             transform translateX(0px)
+
 .input-text
     display inline-block
     width 250px
     height 40px
-    padding 10px 20px
-    box-sizing border-box
-    border-radius 5px
-    border none
-    background #232c37
-    transition ease-in-out .2s
-    color #a9a9a9
-    cursor pointer
+    position relative
 
-    &:hover
-        color #fff !important
-        background #303d4d
+    .input-element
+        display inline-block
+        box-sizing border-box
+        width 250px
+        height 40px
+        padding 5px 10px
+        position absolute
+        top 0
+        left 0
+        color text-color
+        border none
+        border-bottom 2px solid input-border-color
+        cursor pointer
+        background transparent
+        transition .2s ease-in-out
 
-    &:focus
-        color #fff !important
-        background #303d4d
+        &:focus, &:hover
+            border-bottom 2px solid text-color-highlight
 
-    &.error
-        border 1px solid darkred
-        animation error .2s ease-in-out
+    .input-text-label
+        position absolute
+        top 13px
+        left 5px
+        font-size 14px
+        font-family default-font
+        color text-color
+        transition .2s ease-in-out
 
-    @keyframes error
-        0%
-            transform translateX(0px)
-        25%
-            transform translateX(30px)
-        100%
-            transform translateX(0px)
+        &.active
+            top -10px
+            left 0
+            font-size 11px
+            color text-color-highlight
 
 ::selection
-    background #a9a9a9
-    color #232c37
+    background text-color-background-selected
+    color text-color-selected
 
 .input-textarea
     display inline-block
@@ -75,6 +115,7 @@ label
     cursor pointer
     color #a9a9a9
     transition .2s ease-in-out
+    font-size 15px
 
     &:hover
         color #fff

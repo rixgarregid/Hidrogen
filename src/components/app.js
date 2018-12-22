@@ -9,14 +9,15 @@ const os = require('os')
 class App extends HidrogenComponent {
   constructor () {
     super()
-    this.windowController = remote.getCurrentWindow()
+    // this.classNames = ['blurred']
+    this.appStateController = remote.getCurrentWindow()
+    this.appStateController.focus()
 
-    if (!this.windowController.isFocused()) {
-      this.windowController.focus()
-      this.classList.add('focused')
-    } else {
-      this.classList.add('focused')
-    }
+    // if (!this.windowController.isFocused()) {
+    //   this.windowController.focus()
+    // } else {
+    //   // this.classList.add('blurred')
+    // }
 
     this.logEnvironmentInfo()
     this.attachEvents()
@@ -53,18 +54,28 @@ class App extends HidrogenComponent {
 
   attachEvents () {
     const toggleAppState = () => {
-      this.classList.toggle('blurred')
-      this.classList.toggle('focused')
-
-      if (this.classList.contains('blurred')) {
+      if (!this.appStateController.isFocused()) {
+        this.classList.remove('focused')
+        this.classList.add('blurred')
         this.child('hidrogen-board').getView('home').pauseBackgroundVideo()
-      } else if (this.classList.contains('focused')) {
+      } else {
+        this.classList.remove('blurred')
+        this.classList.add('focused')
         this.child('hidrogen-board').getView('home').playBackgroundVideo()
       }
+
+      // this.classList.toggle('blurred')
+      // this.classList.toggle('focused')
+      //
+      // if (this.classList.contains('blurred')) {
+      //   this.child('hidrogen-board').getView('home').pauseBackgroundVideo()
+      // } else if (this.classList.contains('focused')) {
+      //   this.child('hidrogen-board').getView('home').playBackgroundVideo()
+      // }
     }
 
-    this.windowController.on('blur', toggleAppState)
-    this.windowController.on('focus', toggleAppState)
+    this.appStateController.on('blur', toggleAppState)
+    this.appStateController.on('focus', toggleAppState)
   }
 
   render () {

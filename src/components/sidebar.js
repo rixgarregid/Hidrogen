@@ -8,16 +8,12 @@ class Sidebar extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['sidebar']
-
+    this.items = this.children('.list-item')
     this.attachEvents()
   }
 
-  getListItems () {
-    return this.children('.list-item')
-  }
-
   updateSelectedListItem (item) {
-    for (let listItem of this.getListItems()) {
+    for (let listItem of this.items) {
       if (listItem.classList.contains('settings')) listItem.classList.remove('active')
       listItem.classList.remove('selected')
     }
@@ -66,33 +62,34 @@ class Sidebar extends HidrogenComponent {
   render () {
     // <li class="list-item"> <span class="icon-hidrogen"></span> </li>
     super.render(`
-      <ul class="list sidebar-list">
+      <hidrogen-list class="sidebar-list">
 
         <li class="list-item item-home selected">
-          <span class="icon icon-home"></span>
-          <text class="text"> ${i18n.translate('Home')} </text>
-        </li>
+          <icon class="icon-home"></icon>
+          <span> ${i18n.translate('Home')} </span>
+          </li>
 
         <li class="list-item item-library">
-          <span class="icon icon-local_library"></span>
-          <text class="text"> ${i18n.translate('My library')} </text>
+          <icon class="icon-dashboard"></icon>
+          <span> ${i18n.translate('My library')} </span>
         </li>
 
         <li class="list-item item-game-editor">
-          <span class="icon icon-add"></span>
-          <text class="text"> ${i18n.translate('Add games')} </text>
+          <icon class="icon-add"></icon>
+          <span> ${i18n.translate('Add games')} </span>
         </li>
 
         <li class="list-item item-settings">
-          <span class="icon icon-settings"></span>
-          <text class="text"> ${i18n.translate('Settings and customization')} </text>
+          <icon class="icon-settings"></icon>
+          <span> ${i18n.translate('Settings and customization')} </span>
         </li>
 
         <li class="list-item item-about">
-          <span class="icon icon-school"></span>
-          <text class="text"> ${i18n.translate('About')} </text>
+          <icon class="icon-school"></icon>
+          <span> ${i18n.translate('About')} </span>
         </li>
-      </ul>
+
+      </hidrogen-list>
     `)
   }
 }

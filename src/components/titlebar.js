@@ -9,7 +9,7 @@ class Titlebar extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['titlebar']
-    this.hidrogenWindow = remote.getCurrentWindow()
+    this.windowController = remote.getCurrentWindow()
 
     this.attachEvents()
   }
@@ -20,15 +20,15 @@ class Titlebar extends HidrogenComponent {
     }
 
     const toggleMaximizeHidrogen = () => {
-      if (this.hidrogenWindow.isMaximized()) {
-        this.hidrogenWindow.restore()
+      if (this.windowController.isMaximized()) {
+        this.windowController.restore()
       } else {
-        this.hidrogenWindow.maximize()
+        this.windowController.maximize()
       }
     }
 
     const minimizeHidrogen = () => {
-      this.hidrogenWindow.minimize()
+      this.windowController.minimize()
     }
 
     this.child('.btn-window-close').addEventListener('click', quitHidrogen)

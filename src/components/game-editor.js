@@ -26,23 +26,27 @@ class GameEditor extends HidrogenComponent {
 
   getInputsValue () {
     return {
-      name: this.querySelector('.game-name-input').value,
-      path: this.querySelector('.game-path-input').value,
-      synopsis: this.querySelector('.game-synopsis-input').value,
-      thumbnailPath: this.tempGameBackground,
-      developer: this.querySelector('.game-developer-input').value,
-      year: this.querySelector('.game-year-input').value,
-      genre: this.querySelector('.game-genre-input').value,
-      adquisitionDate: this.querySelector('.game-adquisition-date-input').value,
-      finishedOnDate: this.querySelector('.game-finished-date-input').value
+      name: this.child('.game-title-input').value,
+      path: this.child('.game-path-input').value,
+      customBackground: this.tempCustomBackgroundPath
     }
+  }
+
+  clean () {
+
   }
 
   attachEvents () {
 
     const openGamePathInputDialog = () => {
-      dialog.showOpenDialog({ properties: ['openDirectory'] }, folderPath => {
-        this.querySelector('.game-path-input').value = folderPath
+      dialog.showOpenDialog({
+        properties: ['openFiles'],
+        filters: [{name: 'Ejecutables'}],
+        extensions: ['exe']
+      }, filePath => {
+        if (filePath === undefined) return
+        this.child('.game-path-input').value = filePath
+        this.child('.game-path-input .input-text-label').classList.add('active')
       })
     }
 
@@ -52,9 +56,15 @@ class GameEditor extends HidrogenComponent {
         filters: [{name: `${i18n.translate('Images')} (*.jpg, *.png)`,
         extensions: ['jpg', 'png', 'gif']}] },
         files => {
-          if (files.length > 0) this.child('.preview').src = files[0]
-          // Guardar la ruta del fondo temporalmente.
-          this.tempGameBackground = files[0]
+          if (files !== undefined) {
+            this.child('.preview').classList.add('active')
+            this.child('.preview').src = files[0]
+
+            // Guardar la ruta del fondo temporalmente.
+            this.tempCustomBackgroundPath = files[0]
+          } else {
+            return
+          }
       })
     }
 
@@ -63,7 +73,7 @@ class GameEditor extends HidrogenComponent {
       // if (!this.validateInputs()) return
       let gameDataObj = this.getInputsValue()
 
-      this.hidrogenLibrary.addGame(gameDataObj)
+      this.hidrogenLibrary.add(gameDataObj)
 
       this.classList.remove('active')
       this.hidrogenBoard.updateView('library')
@@ -82,42 +92,61 @@ class GameEditor extends HidrogenComponent {
 
     this.querySelector('.btn-done').addEventListener('click', addGame)
 
-    this.querySelector('.btn-cancel').addEventListener('click', closeGameEditor)
+    this.querySelector('.cancel-btn').addEventListener('click', closeGameEditor)
   }
 
   render () {
     super.render(`
       <hidrogen-panel class="field">
-        <input type="text" class="input-text game-name-input" placeholder="${i18n.translate('Game title')}">
+        <hidrogen-input class="game-title-input" label="${i18n.translate('Game title')}"></hidrogen-input>
       </hidrogen-panel>
 
       <hidrogen-panel class="field">
-        <input type="text" class="input-text game-path-input" placeholder="${i18n.translate('Game path')}">
-        <btn class="btn game-path-btn"><span class="icon icon-folder"></span>${i18n.translate('Select path')}</btn>
+        <hidrogen-input class="game-path-input" label="${i18n.translate('Game path')}"></hidrogen-input>
+        <hidrogen-btn icon="icon-folder" text="${i18n.translate('Select path')}" class="game-path-btn"></hidrogen-btn>
       </hidrogen-panel>
 
-      <hidrogen-panel class="field huge-field">
-        <textarea class="input-textarea game-synopsis-input" placeholder="${i18n.translate('Synopsis')}"></textarea>
-
-        <hidrogen-panel class="panel game-image-preview-panel">
+      <hidrogen-panel class="field game-custom-bg-container">
+        <hidrogen-panel class="panel game-custom-bg-preview">
           <text class="text title">${i18n.translate('Preview')}</text>
           <text class="text sub-title">${i18n.translate('Recommended')} 200x300px</text>
-          <img src="" class="preview"></img>
+          <img src="../static/images/custom-background-template.gif" class="preview"></img>
         </hidrogen-panel>
-
-        <btn class="btn game-image-btn"><span class="icon icon-file_upload"></span>${i18n.translate('Upload image')}</btn>
-
-        <input type="text" class="input-text game-developer-input" placeholder="${i18n.translate('Developer')}">
-        <input type="text" class="input-text game-year-input" placeholder="${i18n.translate('Launch year')}">
-        <input type="text" class="input-text game-genre-input" placeholder="${i18n.translate('Genre')}">
-        <input type="text" class="input-text game-adquisition-date-input" placeholder="${i18n.translate('Adquisition date')}">
-        <input type="text" class="input-text game-finished-date-input" placeholder="${i18n.translate('Finished on')}">
+        <hidrogen-btn icon="icon-file_upload" text="${i18n.translate('Upload image')}" class="game-image-btn"></hidrogen-btn>
       </hidrogen-panel>
 
-      <btn class="btn btn-done"> ${i18n.translate('Add game')} </btn>
-      <btn class="btn btn-sec btn-cancel"> ${i18n.translate('Cancel')} </btn>
+      <hidrogen-btn type="success" text="${i18n.translate('Add game')}" class="btn-done"></hidrogen-btn>
+      <hidrogen-btn text="${i18n.translate('Cancel')}" class=" outlined cancel-btn"></hidrogen-btn>
     `)
   }
 }
 
 customElements.define('hidrogen-game-editor', GameEditor)
+
+// <hidrogen-input>
+//   <label class="input-text-label" for="game-name-input"> ${i18n.translate('Game title')} </label>
+//   <input type="text" class="input-text game-name-input" name="game-name-input">
+// </hidrogen-input>
+// <input type="text" class="input-text game-name-input" placeholder="${i18n.translate('Game title')}">
+// <hidrogen-panel class="field">
+//   <input type="text" class="input-text game-path-input" placeholder="${i18n.translate('Game path')}">
+//   <btn class="btn game-path-btn"><span class="icon icon-folder"></span>${i18n.translate('Select path')}</btn>
+// </hidrogen-panel>
+//
+// <hidrogen-panel class="field huge-field">
+//   <textarea class="input-textarea game-synopsis-input" placeholder="${i18n.translate('Synopsis')}"></textarea>
+//
+//   <hidrogen-panel class="panel game-image-preview-panel">
+//     <text class="text title">${i18n.translate('Preview')}</text>
+//     <text class="text sub-title">${i18n.translate('Recommended')} 200x300px</text>
+//     <img src="" class="preview"></img>
+//   </hidrogen-panel>
+//
+//   <btn class="btn game-image-btn"><span class="icon icon-file_upload"></span>${i18n.translate('Upload image')}</btn>
+//
+//   <input type="text" class="input-text game-developer-input" placeholder="${i18n.translate('Developer')}">
+//   <input type="text" class="input-text game-year-input" placeholder="${i18n.translate('Launch year')}">
+//   <input type="text" class="input-text game-genre-input" placeholder="${i18n.translate('Genre')}">
+//   <input type="text" class="input-text game-adquisition-date-input" placeholder="${i18n.translate('Adquisition date')}">
+//   <input type="text" class="input-text game-finished-date-input" placeholder="${i18n.translate('Finished on')}">
+// </hidrogen-panel>

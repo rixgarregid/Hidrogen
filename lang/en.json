@@ -42,5 +42,9 @@
   "Information": "Information",
   "Edit information": "Edit information",
   "Open game folder": "Open game folder",
-  "Delete": "Delete"
+  "Delete": "Delete",
+  "Done!": "Done!",
+  "Hey! This action can't be reverted, once done there's no way back. Are you sure about what are you doing?": "Hey! This action can't be reverted, once done there's no way back. Are you sure about what are you doing?",
+  "Yeah, n.n": "Yeah, n.n",
+  "Nope, let me a moment...": "Nope, let me a moment..."
 }
