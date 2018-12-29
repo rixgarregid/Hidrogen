@@ -7,13 +7,13 @@ class GameEditor extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['board-view', 'game-editor']
-
-    this.hidrogenLibrary = document.querySelector('hidrogen-library')
-    this.hidrogenBoard = document.querySelector('hidrogen-board')
-    this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
-
     this.attachEvents()
+  }
 
+  close () {
+    this.classList.remove('active')
+    this.hidrogen.board.updateView('library')
+    this.hidrogen.sidebar.updateSelectedListItem('library')
   }
 
   validateInputs () {
@@ -33,11 +33,15 @@ class GameEditor extends HidrogenComponent {
   }
 
   clean () {
-
+    this.child('.game-title-input').value = ''
+    this.child('.game-title-input .input-text-label').classList.remove('active')
+    this.child('.game-path-input').value = ''
+    this.child('.game-path-input .input-text-label').classList.remove('active')
+    this.child('.preview').src = '../static/images/custom-background-template.gif'
+    this.child('.preview').classList.remove('active')
   }
 
   attachEvents () {
-
     const openGamePathInputDialog = () => {
       dialog.showOpenDialog({
         properties: ['openFiles'],
@@ -59,8 +63,6 @@ class GameEditor extends HidrogenComponent {
           if (files !== undefined) {
             this.child('.preview').classList.add('active')
             this.child('.preview').src = files[0]
-
-            // Guardar la ruta del fondo temporalmente.
             this.tempCustomBackgroundPath = files[0]
           } else {
             return
@@ -73,36 +75,29 @@ class GameEditor extends HidrogenComponent {
       // if (!this.validateInputs()) return
       let gameDataObj = this.getInputsValue()
 
-      this.hidrogenLibrary.add(gameDataObj)
+      this.hidrogen.library.add(gameDataObj)
 
-      this.classList.remove('active')
-      this.hidrogenBoard.updateView('library')
-      this.hidrogenSidebar.updateSelectedListItem('library')
+      this.close()
+      this.clean()
     }
 
-    const closeGameEditor = () => {
-      this.classList.remove('active')
-      this.hidrogenBoard.updateView('library')
-      this.hidrogenSidebar.updateSelectedListItem('library')
-    }
+    this.child('.game-path-btn').addEventListener('click', openGamePathInputDialog)
 
-    this.querySelector('.game-path-btn').addEventListener('click', openGamePathInputDialog)
+    this.child('.game-image-btn').addEventListener('click', openGameBackgroundImgDialog)
 
-    this.querySelector('.game-image-btn').addEventListener('click', openGameBackgroundImgDialog)
+    this.child('.btn-done').addEventListener('click', addGame)
 
-    this.querySelector('.btn-done').addEventListener('click', addGame)
-
-    this.querySelector('.cancel-btn').addEventListener('click', closeGameEditor)
+    this.child('.cancel-btn').addEventListener('click', this.close)
   }
 
   render () {
     super.render(`
       <hidrogen-panel class="field">
-        <hidrogen-input class="game-title-input" label="${i18n.translate('Game title')}"></hidrogen-input>
+        <hidrogen-input type="text" class="game-title-input" label="${i18n.translate('Game title')}"></hidrogen-input>
       </hidrogen-panel>
 
       <hidrogen-panel class="field">
-        <hidrogen-input class="game-path-input" label="${i18n.translate('Game path')}"></hidrogen-input>
+        <hidrogen-input type="text" class="game-path-input" label="${i18n.translate('Game path')}"></hidrogen-input>
         <hidrogen-btn icon="icon-folder" text="${i18n.translate('Select path')}" class="game-path-btn"></hidrogen-btn>
       </hidrogen-panel>
 
@@ -115,8 +110,8 @@ class GameEditor extends HidrogenComponent {
         <hidrogen-btn icon="icon-file_upload" text="${i18n.translate('Upload image')}" class="game-image-btn"></hidrogen-btn>
       </hidrogen-panel>
 
+      <hidrogen-btn text="${i18n.translate('Cancel')}" class="outlined cancel-btn"></hidrogen-btn>
       <hidrogen-btn type="success" text="${i18n.translate('Add game')}" class="btn-done"></hidrogen-btn>
-      <hidrogen-btn text="${i18n.translate('Cancel')}" class=" outlined cancel-btn"></hidrogen-btn>
     `)
   }
 }

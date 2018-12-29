@@ -17,7 +17,7 @@ class I18n {
   constructor () {
     // Enable instancing {app} from electron from both the main and
     // renderer process.
-    this.app = electron.app ? electron.app : electron.remote.app
+    this.electronApp = electron.app ? electron.app : electron.remote.app
     this.config = new Config()
 
     this.loadLanguage()
@@ -25,7 +25,7 @@ class I18n {
 
   loadLanguage () {
     if (this.config.get('autolang')) {
-      this.language = this.app.getLocale()
+      this.language = this.electronApp.getLocale()
     } else {
       this.language = this.config.get('lang')
     }

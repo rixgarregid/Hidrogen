@@ -8,7 +8,6 @@ class Board extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['board']
-
     this.views = ['home', 'library', 'game-editor', 'settings', 'about']
     this.updateView('home')
   }

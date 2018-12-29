@@ -26,7 +26,6 @@ class Home extends HidrogenComponent {
   }
 
   attachEvents () {
-
     const showLibrary = () => {
       this.hidrogenBoard.updateView('library')
       this.hidrogenBoard.setAttribute('view', 'library')
@@ -40,7 +39,7 @@ class Home extends HidrogenComponent {
 
     this.child('.library-btn').addEventListener('click', showLibrary)
 
-    this.child('.add-btn').addEventListener('click', showGameEditor)
+    // this.child('.add-btn').addEventListener('click', showGameEditor)
   }
 
   render () {
@@ -53,14 +52,14 @@ class Home extends HidrogenComponent {
       <span class="main-title"> ${i18n.translate('Welcome to Hidrogen,')} </span>
       <span class="sub-title"> ${i18n.translate('your gaming library')} </span>
 
-      <hidrogen-panel class="home-btns">
-
-        <hidrogen-btn text="${i18n.translate('Go to my library')}" class="library-btn"></hidrogen-btn>
-        <hidrogen-btn text="${i18n.translate('Add a game')}" class="outlined add-btn"></hidrogen-btn>
-
-      </hidrogen-panel>
+      <hidrogen-btn text="${i18n.translate('Go to my library')}" class="library-btn"></hidrogen-btn>
     `)
   }
 }
 
 customElements.define('hidrogen-home', Home)
+
+// <hidrogen-btn text="${i18n.translate('Add a game')}" class="outlined add-btn"></hidrogen-btn>
+// <hidrogen-panel class="home-btns">
+//   <hidrogen-btn text="${i18n.translate('Go to my library')}" class="library-btn"></hidrogen-btn>
+// </hidrogen-panel>

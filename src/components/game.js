@@ -3,6 +3,7 @@ const Config = require('../config')
 const { shell } = require('electron')
 const { app } = require('electron').remote
 const path = require('path')
+const { Emitter, CompositeDisposable } = require('event-kit')
 const I18n = require('../translator')
 const i18n = new I18n()
 
@@ -10,7 +11,7 @@ class Game extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['game-card']
-
+    this.emitter = new Emitter()
     this.data = {
       // id: this.gameId,
       // title: this.gameTitle,
@@ -19,8 +20,7 @@ class Game extends HidrogenComponent {
     }
     this.gameTitle = this.gameTitle
 
-    this.hidrogenLibrary = document.querySelector('hidrogen-library')
-    this.config = new Config()
+    this.emitter.emit('did-create', this.data)
 
     this.attachEvents()
   }
@@ -64,29 +64,36 @@ class Game extends HidrogenComponent {
   play () {
     shell.openExternal(this.path)
 
-    if (this.config.get('autoclose') && this.config.get('closingCountdown')) {
-      // Add modal
-    } else if (this.config.get('autoclose')) {
+    if (this.hidrogen.config.get('autoclose') && this.hidrogen.config.get('closingCountdown')) {
+      this.hidrogen.modals.get('closing-countdown').show()
+    } else if (this.hidrogen.config.get('autoclose')) {
       app.quit()
     }
   }
 
   destroy (id) {
-    this.hidrogenLibrary.remove(id)
+    this.hidrogen.library.remove(id)
+    this.emitter.dispose()
   }
 
   openGameFolder () {
-    shell.showItemInFolder(path.join(this.hidrogenLibrary.getGamesFolderPath(), `${this.gameTitle}`, 'game.json'))
+    shell.showItemInFolder(path.join(this.hidrogen.library.getGamesFolderPath(), `${this.gameTitle}`, 'game.json'))
+  }
+
+  onDidCreate (callback) {
+    this.emitter.on('did-create', callback)
   }
 
   attachEvents () {
     const play = () => { this.play() }
     const toggleMenu = () => { this.toggleMenu() }
     const openGameFolder = () => { this.openGameFolder() }
-
     const deleteGame = () => {
       document.querySelector('.delete-game-modal').classList.add('active')
       document.querySelector('.delete-game-modal').setAttribute('game-id', this.gameId)
+
+      this.deleteGameModal = this.hidrogen.modals.get('delete-game')
+      this.deleteGameModal.show()
     }
 
     this.child('.play-btn').addEventListener('click', play)
@@ -99,7 +106,7 @@ class Game extends HidrogenComponent {
     super.render(`
       <span class="text title"> ${this.gameTitle} </span>
       <hidrogen-btn type="highlight" text="${i18n.translate('Play')}" class="play-btn"></hidrogen-btn>
-      <hidrogen-btn class="game-menu-btn"><span class="hamburger"></span></hidrogen-btn>
+      <hidrogen-btn custom-content class="game-menu-btn"><span class="hamburger"></span></hidrogen-btn>
 
       <hidrogen-panel class="game-menu" state="no-active">
         <ul class="list menu-list">

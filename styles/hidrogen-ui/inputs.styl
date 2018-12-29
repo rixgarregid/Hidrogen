@@ -40,7 +40,7 @@ input:focus
     height 40px
     position relative
 
-    .input-element
+    .input-text-element
         display inline-block
         box-sizing border-box
         width 250px
@@ -59,6 +59,12 @@ input:focus
         &:focus, &:hover
             border-bottom 2px solid text-color-highlight
 
+        &.active + .input-text-label
+            top -10px
+            left 0
+            font-size 11px
+            color text-color-highlight
+
     .input-text-label
         position absolute
         top 13px
@@ -68,11 +74,7 @@ input:focus
         color text-color
         transition .2s ease-in-out
 
-        &.active
-            top -10px
-            left 0
-            font-size 11px
-            color text-color-highlight
+
 
 ::selection
     background text-color-background-selected
@@ -111,31 +113,96 @@ textarea::-webkit-input-placeholder
     color #a9a9a9
     font-family 'Arial'
 
-label
-    cursor pointer
-    color #a9a9a9
-    transition .2s ease-in-out
+.input-toggle
+    display inline-block
     font-size 15px
+    color text-color
+    cursor pointer
+    transition .2s ease-in-out
+
+    &.disabled
+        cursor default !important
+        opacity 0.5
+
+        &:hover
+            color text-color !important
 
     &:hover
         color #fff
 
-    input[type='checkbox']
-        display none
+    &.active .tick-icon:before
+        content '\e834'
+        animation tick 250ms ease-in-out
 
-        + .label:before
-            content '\e835'
-            font-family 'icons'
-            font-size 1em
-            display inline-block
-            margin-right 5px
+    .tick-icon:before
+        content '\e835'
+        font-family 'icons'
+        font-size 1em
+        display inline-block
+        margin-right 5px
 
-        &:checked + .label:before
-            content '\e834'
-            animation tick 250ms ease-in-out
+    @keyframes tick
+        0%
+            transform scale(0)
+        100%
+            transform scale(1)
 
-        @keyframes tick
-            0%
-                transform scale(0)
-            100%
-                transform scale(1)
+
+// .input-toggle
+//     display inline-block
+//     font-size 15px
+//     color text-color
+//     cursor pointer
+//     transition .2s ease-in-out
+//
+//     &:hover
+//         color #fff
+//
+//     input[type='checkbox']
+//         display none
+//
+//         + label:before
+//             content '\e835'
+//             font-family 'icons'
+//             font-size 1em
+//             display inline-block
+//             margin-right 5px
+//
+//         &:checked + label:before
+//             content '\e834'
+//             animation tick 250ms ease-in-out
+//
+//         @keyframes tick
+//             0%
+//                 transform scale(0)
+//             100%
+//                 transform scale(1)
+
+// label
+//     cursor pointer
+//     color #a9a9a9
+//     transition .2s ease-in-out
+//     font-size 15px
+//
+//     &:hover
+//         color #fff
+//
+//     input[type='checkbox']
+//         display none
+//
+//         + .label:before
+//             content '\e835'
+//             font-family 'icons'
+//             font-size 1em
+//             display inline-block
+//             margin-right 5px
+//
+//         &:checked + .label:before
+//             content '\e834'
+//             animation tick 250ms ease-in-out
+//
+//         @keyframes tick
+//             0%
+//                 transform scale(0)
+//             100%
+//                 transform scale(1)

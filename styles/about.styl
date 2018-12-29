@@ -13,31 +13,51 @@
     //     left 300px
 
     .hidrogen-logo
-        width 200px
-        height 60px
+        font-family 'Adam'
+        // letter-spacing 30px
+        text-transform uppercase
+        font-size 70px
+
+        // width 200px
+        // height 60px
         position absolute
         top 32%
         // left 32.5%
         left 50%
         transform translateX(-50%)
-        transform scale(1.7)
-        background url('../static/images/logo-hidrogen.png') no-repeat
+        // transform scale(1.7)
+        // background url('../static/images/logo-hidrogen.png') no-repeat
+
+    .link
+        color text-color
+        cursor pointer
+        transition ease-in-out .2s
+
+        &:hover
+            color text-color-highlight
 
     .text
-        width 300px
+        width 500px
         height 30px
         position absolute
-        color #a9a9a9
-        font-size 16px
+        color text-color
+        font-size 15px
         text-align center
         // font-family 'GravityLight'
         // left 27%
         left 50%
         transform translateX(-50%)
+        transition ease-in-out .2s
 
     .version-text
-        top 45%
-        font-size 22px
+        top 42%
+        font-size 18px
+
+    .issues-web-link
+        top 48%
+
+    .emails
+        top 52%
 
     .copyright-disclaimer
         top 45%
@@ -47,9 +67,10 @@
         width 150px
         height 50px
         position absolute
-        top 55%
+        top 63%
         // left 33.5%
         left 50%
         transform translateX(-50%)
         text-align center
         line-height 30px
+        background #3d4146

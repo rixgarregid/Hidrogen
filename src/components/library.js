@@ -1,10 +1,11 @@
 const HidrogenComponent = require('./hidrogen-component')
 const Config = require('../config')
-const binarySearch = require('../util')
 const mkdir = require('mkdirp')
 const rimraf = require('rimraf')
 const path = require('path')
 const fs = require('fs')
+
+const util = require('../util')
 
 // The {Library} class displays all the games added by the
 // user and controls how they are shown.
@@ -13,31 +14,33 @@ class Library extends HidrogenComponent {
     super({ render: false })
     this.classNames = ['board-view', 'library']
     this.gamesFolder = path.resolve('games/')
-    this.gameAmount = 0
-
-    this.hidrogenBoard = document.querySelector('hidrogen-board')
-    this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
-    this.config = new Config()
 
     this.render()
-    this.loadGamesFromFiles()
+    this.initializeGameCounter()
+    this.loadGames()
     this.attachEvents()
+  }
 
-    if (this.config.get('showGameCounter') === false) {
+  initializeGameCounter () {
+    if (!this.hidrogen.config.get('showGameCounter')) {
       this.child('.total-game-counter').classList.add('no-display')
+    } else {
+      this.gameCounter = 0
+      this.child('.total-game-counter .game-counter').innerText = this.gameCounter
     }
   }
 
-  loadGamesFromFiles () {
-    fs.readdir(this.gamesFolder, (err, files) => {
-      if (err) console.log(err)
-      // if (typeof files === undefined) console.log('No files were found'); return
+  async loadGames () {
+    try {
+      let games = await util.readdir(this.gamesFolder)
 
-      for (let folder of files) {
-        let gameData = JSON.parse(fs.readFileSync(path.join(this.gamesFolder, `${folder}`, 'game.json')))
+      for (let game of games) {
+        let gameData = JSON.parse(fs.readFileSync(path.join(this.gamesFolder, `${game}`, 'game.json')))
         this.add(gameData)
       }
-    })
+    } catch (err) {
+      console.log(`Something went wrong in Library::loadGames(): ${err}`)
+    }
   }
 
   add (gameData) {
@@ -65,9 +68,6 @@ class Library extends HidrogenComponent {
     if (gameData.customBackground === undefined) {
       addedGame.classList.add('no-bg')
     }
-    // else {
-    //   addedGame.setBackgroundImage(gameData.customBackground)
-    // }
   }
 
   remove (gameId) {
@@ -81,22 +81,12 @@ class Library extends HidrogenComponent {
     })
   }
 
-  getGamesFolderPath () {
-    return this.gamesFolder
-  }
-
   getGames () {
     return this.children('.game-container hidrogen-game-card')
   }
 
-  getGameNames () {
-    let gameNames = []
-
-    for (let game of this.getGames()) {
-      gameNames.push(game.gameTitle)
-    }
-
-    return gameNames
+  getGamesFolderPath () {
+    return this.gamesFolder
   }
 
   search (game) {
@@ -119,16 +109,15 @@ class Library extends HidrogenComponent {
 
   reload () {
     this.clean()
-    this.loadGamesFromFiles()
+    this.loadGames()
   }
 
   getTotalGames () {
-    console.log(this.gameAmount)
-    return this.gameAmount
+    return this.gameCounter
   }
 
   updateGameCounter (amount) {
-    this.gameAmount = amount
+    this.gameCounter = amount
     this.child('.game-counter').innerText = amount
 
     if (this.getTotalGames() === 1) {
@@ -154,23 +143,15 @@ class Library extends HidrogenComponent {
     }
 
     const addGameHandler = () => {
-      this.hidrogenBoard.updateView('game-editor')
-      this.hidrogenSidebar.updateSelectedListItem('game-editor')
+      this.hidrogen.board.updateView('game-editor')
+      this.hidrogen.sidebar.updateSelectedListItem('game-editor')
     }
 
-    const search = () => {
-      this.search(this.child('.input-search').value.toUpperCase())
-    }
+    const search = () => { this.search(this.child('.input-search').value.toUpperCase()) }
 
     this.child('.icon-search').addEventListener('click', toggleSearchbox)
     this.child('.add-btn').addEventListener('click', addGameHandler)
     this.child('.input-search').addEventListener('keyup', search)
-
-    // Not working... #fixme
-    this.addEventListener('keydown', event => {
-      // Ctrl + S to toggle search box.
-      if (event.keyCode === 17 && event.keyCode === 83) toggleSearchbox()
-    })
   }
 
   render () {

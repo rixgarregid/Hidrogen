@@ -1,12 +1,43 @@
 const HidrogenComponent = require('./hidrogen-component')
+const { app } = require('electron').remote
 const I18n = require('../translator')
 const i18n = new I18n()
 
-class ModalContainer extends HidrogenComponent {
+class ModalManager extends HidrogenComponent {
   constructor () {
     super()
-    this.classNames = ['modal-container']
+    this.classNames = ['modal-manager']
+    this.subscribeToDOMEvents()
     this.attachEvents()
+  }
+
+  get (modal) {
+    return this.child(`.${modal}-modal`)
+  }
+
+  subscribeToDOMEvents () {
+    const cleanLibrary = () => { this.hidrogen.library.clean() }
+    const resetHidrogen = () => { this.hidrogen.restoreDefaults() }
+
+    const updateCountdownModalTimer = () => {
+      let counter = 6
+      let interval = setInterval(() => {
+        this.get('closing-countdown').child('.custom-content').innerText = counter
+        this.get('closing-countdown').onDidCancel(() => { clearInterval(interval) })
+
+        counter--
+
+        if (counter < 0) {
+          app.quit()
+          clearInterval(interval)
+        }
+      }, 1000)
+    }
+
+    this.get('clean-library').onDidConfirm(cleanLibrary)
+    this.get('reset-hidrogen').onDidConfirm(resetHidrogen)
+    this.get('closing-countdown').onDidShow(updateCountdownModalTimer)
+    this.get('closing-countdown').onDidConfirm(() => { app.quit() })
   }
 
   attachEvents () {
@@ -22,8 +53,8 @@ class ModalContainer extends HidrogenComponent {
     const resetHidrogenDefaults = () => { document.querySelector('hidrogen-app').restoreDefaults() }
 
     this.child('.delete-game-modal .btn-confirm').addEventListener('click', deleteGame)
-    this.child('.clean-library-modal .btn-confirm').addEventListener('click', cleanLibrary)
-    this.child('.reset-hidrogen-modal .btn-confirm').addEventListener('click', resetHidrogenDefaults)
+    // this.child('.clean-library-modal .btn-confirm').addEventListener('click', cleanLibrary)
+    // this.child('.reset-hidrogen-modal .btn-confirm').addEventListener('click', resetHidrogenDefaults)
   }
 
   render () {
@@ -35,9 +66,10 @@ class ModalContainer extends HidrogenComponent {
       ></hidrogen-modal>
 
       <hidrogen-modal
-        type="info"
+        type="confirm"
+        modal-title="Hidrogen se cerrará en"
         class="closing-countdown-modal"
-        content=" I'm a countdown! "
+        content="6"
       ></hidrogen-modal>
 
       <hidrogen-modal
@@ -55,4 +87,4 @@ class ModalContainer extends HidrogenComponent {
   }
 }
 
-customElements.define('hidrogen-modals', ModalContainer)
+customElements.define('hidrogen-modals', ModalManager)

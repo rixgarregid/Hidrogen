@@ -14,6 +14,10 @@ class DropdownMenu extends HidrogenComponent {
     this.attachEvents()
   }
 
+  getSelectedItem () {
+
+  }
+
   getDropdownItems () {
     return this.children('.dropdown-item')
   }

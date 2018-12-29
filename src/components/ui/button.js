@@ -2,9 +2,13 @@ const HidrogenComponent = require('../hidrogen-component')
 
 class Button extends HidrogenComponent {
   constructor () {
-    super()
+    super({ render: false })
     this.classNames = ['btn']
     this.type = this.type
+    this.customContent = this.innerHTML
+    this.render()
+
+    if (this.hasAttribute('custom-content')) this.innerHTML += this.customContent
   }
 
   set type (type) {
@@ -12,29 +16,26 @@ class Button extends HidrogenComponent {
   }
 
   get type () {
-    console.log(`Button type: ${this.getAttribute('type')}`)
-    if (this.getAttribute('type') === undefined) {
-      this.setAttribute('type', 'default')
-    } else {
+    if (this.hasAttribute('type')) {
       return this.getAttribute('type')
+    } else {
+      this.type = 'default'
     }
   }
 
   get icon () {
-    console.log(`Button icon: ${this.getAttribute('icon')}`)
-    if (this.getAttribute('icon') === undefined) {
-      this.child('icon').classList.add('none')
-    } else {
+    if (this.hasAttribute('icon')) {
       return this.getAttribute('icon')
+    } else {
+      this.classList.add('no-icon')
     }
   }
 
   get text () {
-    console.log(`Button text: ${this.getAttribute('text')}`)
-    if (this.getAttribute('text') === undefined) {
-      this.child('span').classList.add('none')
-    } else {
+    if (this.hasAttribute('text')) {
       return this.getAttribute('text')
+    } else {
+      this.classList.add('no-text')
     }
   }
 

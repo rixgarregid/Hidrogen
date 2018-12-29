@@ -6,7 +6,7 @@
     min-height 30px
     padding 10px
     border none
-    border-radius 5px
+    // border-radius 5px
     background button-color-background
     cursor pointer
     color text-color
@@ -16,6 +16,12 @@
     line-height normal
     font-family default-font !important
 
+    &.no-icon icon
+        display none
+
+    &.no-text span
+        display none
+
     &:hover
         color #fff !important
         background #303d4d
@@ -23,7 +29,6 @@
     &[type='success']
         color button-color-success !important
         background button-background-color-success
-        box-shadow 0 5px 20px rgba(0, 0, 0, .2)
 
         &:hover
             background button-hover-background-color-success
@@ -31,7 +36,6 @@
     &[type='warning']
         color button-color-warning !important
         background button-background-color-warning
-        box-shadow 0 5px 20px rgba(0, 0, 0, .2)
 
         &:hover
             background button-hover-background-color-warning
@@ -39,7 +43,6 @@
     &[type='danger']
         color button-color-danger !important
         background button-background-color-danger
-        box-shadow 0 5px 20px rgba(0, 0, 0, .2)
 
         &:hover
             background button-hover-background-color-danger
@@ -47,7 +50,6 @@
     &[type='highlight']
         color button-color-highlight !important
         background button-background-color-highlight
-        box-shadow 0 5px 20px rgba(0, 0, 0, .2)
 
         &:hover
             background button-hover-background-color-highlight
@@ -63,7 +65,6 @@
         &[type='success']
             color button-color-success !important
             border-color button-background-color-success
-            box-shadow 0 5px 20px rgba(0, 0, 0, .2)
 
             &:hover
                 border-color button-hover-background-color-success
@@ -71,7 +72,6 @@
         &[type='warning']
             color button-color-warning !important
             border-color button-background-color-warning
-            box-shadow 0 5px 20px rgba(0, 0, 0, .2)
 
             &:hover
                 border-color button-hover-background-color-warning
@@ -79,7 +79,6 @@
         &[type='danger']
             color button-color-danger !important
             border-color button-background-color-danger
-            box-shadow 0 5px 20px rgba(0, 0, 0, .2)
 
             &:hover
                 border-color button-hover-background-color-danger
@@ -87,17 +86,14 @@
         &[type='highlight']
             color button-color-highlight !important
             border-color button-background-color-highlight
-            box-shadow 0 5px 20px rgba(0, 0, 0, .2)
 
             &:hover
                 border-color button-hover-background-color-highlight
 
     icon
+        display inline-block
         font-size 1em
         margin-right 10px
-
-        &.none
-            display none
 
 // .btn
 //     display inline-block

@@ -1,16 +1,5 @@
 .home-screen
-    // display inline-block
-    // width 1270px
-    // height 850px
-    // float right
-    // position absolute
     font-family 'GravityLight'
-    // transition ease-in-out .2s
-    // top 20px
-    // left -970px
-    //
-    // &.active
-    //     left 300px
 
     .background-video
         position absolute
@@ -23,7 +12,6 @@
         video
             min-width 100%
             min-height 100%
-            // border-radius 10px 0 0 0
 
     .background-video-overlay
         position absolute
@@ -35,7 +23,6 @@
         background sidebar-background-color
         opacity .5
         z-index 1
-        // border-radius 10px 0 0 0
 
     .main-title
         position absolute
@@ -56,38 +43,53 @@
         letter-spacing 0.3px
         z-index 2
 
-    .home-btns
-        display block
-        position relative
-        width 420px
-        height 60px
-        top 70%
+    .library-btn
+        position absolute
+        top 65%
         left 50%
-        transform translateX(-50%)
+        width 200px
+        height 60px
+        font-size 17px
+        line-height 40px
+        border-radius 0
         z-index 2
+        box-shadow 0 0 20px rgba(0, 0, 0, 0.2)
+        transform translateX(-50%)
 
-        .library-btn
-            position absolute
-            top 0
-            left 0
-            width 200px
-            height 60px
-            font-size 17px
-            line-height 40px
-            // background home-button-primary-color
-
-        .add-btn
-            position absolute
-            top 0
-            right 0
-            width 200px
-            height 60px
-            font-size 17px
-            line-height 36px
-            color #adadad
-            // color #37414d
-            // font-weight bold
-            // border-color home-button-primary-color
-
-            &:hover
-                color #fff
+    // .home-btns
+    //     display block
+    //     position relative
+    //     width 420px
+    //     height 60px
+    //     top 70%
+    //     left 50%
+    //     transform translateX(-50%)
+    //     z-index 2
+    //
+    //     .library-btn, .add-btn
+    //         border-radius 0
+    //
+    //     .library-btn
+    //         position absolute
+    //         top 0
+    //         left 0
+    //         width 200px
+    //         height 60px
+    //         font-size 17px
+    //         line-height 40px
+    //
+    //     .add-btn
+    //         position absolute
+    //         top 0
+    //         right 0
+    //         width 200px
+    //         height 60px
+    //         font-size 17px
+    //         line-height 36px
+    //         color #adadad
+    //         // color #37414d
+    //         // font-weight bold
+    //         // border-color home-button-primary-color
+    //
+    //         &:hover
+    //             color #fff

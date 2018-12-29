@@ -9,6 +9,17 @@ module.exports =
 class Config {
   constructor () {
     this.configFile = path.join(__dirname, '..', 'config.json')
+
+    this.defaults = {
+      autorun: false,
+      autoclose: false,
+      closingCountdown: false,
+      showGameCounter: true,
+      multiInstance: false,
+      autolang: true,
+      lang: 'en'
+    }
+
     this.checkConfigFile()
   }
 
@@ -36,17 +47,11 @@ class Config {
   }
 
   loadDefaultSettings () {
-    this.defaults = {
-      autorun: false,
-      autoclose: false,
-      closingCountdown: false,
-      allowMultiInstance: false,
-      askBeforeLeave: false,
-      showGameCounter: true,
-      autolang: true,
-      lang: 'en'
-    }
-
     return this.defaults
+  }
+
+  setDefaults () {
+    fs.writeFileSync(this.configFile, JSON.stringify(this.loadDefaultSettings(), null, 2))
+    this.currentConfig = JSON.parse(fs.readFileSync(this.configFile))
   }
 }

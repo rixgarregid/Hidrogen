@@ -11,12 +11,21 @@ class List extends HidrogenComponent {
     this.attachEvents()
   }
 
-  getListItems () {
+  getItems () {
     return this.children('.list-item')
   }
 
+  getSelectedItem () {
+    for (let item of this.getItems()) {
+      if (item.classList.contains('selected')) return item
+    }
+  }
+
+  selectItemByValue (itemValue) {
+    this.child(`.list-container li[value=${itemValue}]`).classList.add('selected')
+  }
+
   get listTitle () {
-    console.log(this.getAttribute('list-title'))
     if (this.getAttribute('list-title') !== null) {
       return this.getAttribute('list-title')
     } else {
@@ -38,10 +47,22 @@ class List extends HidrogenComponent {
     }
   }
 
+  enable () {
+    // this.addEventListener('click', this.toggle)
+    this.classList.remove('disabled')
+    this.disabled = false
+  }
+
+  disable () {
+    // this.removeEventListener('click', this.toggle)
+    this.classList.add('disabled')
+    this.disabled = true
+  }
+
   attachEvents () {
-    for (let item of this.getListItems()) {
+    for (let item of this.getItems()) {
       item.addEventListener('click', () => {
-        for (let item of this.getListItems()) {
+        for (let item of this.getItems()) {
           if (item.classList.contains('selected')) item.classList.remove('selected')
         }
 
