@@ -1,7 +1,8 @@
 const HidrogenWindow = require('./hidrogen-window')
 const Config = require('../config')
 const { EventEmitter } = require('events')
-const { app } = require('electron')
+const { autoUpdater } = require('electron-updater')
+const { app, globalShortcut, ipcMain } = require('electron')
 
 // This is Hidrogen's main class. {HidrogenApp} manages all
 // the app's processes in the main process, such as window
@@ -9,7 +10,6 @@ const { app } = require('electron')
 // life cycle.
 module.exports =
 class HidrogenApp extends EventEmitter {
-  // Entry point to the app.
   static start (options) {
     if (HidrogenApp.isSecondInstance()) app.quit()
     new HidrogenApp(options)
@@ -17,21 +17,38 @@ class HidrogenApp extends EventEmitter {
 
   constructor (options) {
     super()
-    this.version = app.getVersion()
     this.dev = options.dev
-
-    this.hidrogenWindow = new HidrogenWindow(options)
+    this.version = app.getVersion()
+    this.window = new HidrogenWindow(options)
     this.config = new Config()
+
+    autoUpdater.checkForUpdates()
+
+    this.registerKeyboardCommands()
+    this.subscribeToEvents()
+  }
+
+  registerKeyboardCommands () {
+    globalShortcut.register('Ctrl+Alt+I', () => { this.window.webContents.openDevTools() })
+  }
+
+  subscribeToEvents () {
+    autoUpdater.on('update-downloaded', info => { this.window.webContents.send('updateReady') })
+    ipcMain.on('quitAndInstall', (event, arg) => { autoUpdater.quitAndInstall() })
   }
 
   static isSecondInstance () {
-    const quit = app.makeSingleInstance(() => {
-      if (this.hidrogenWindow) {
-        if (this.hidrogenWindow.isMinimized()) this.hidrogenWindow.restore()
-        this.hidrogenWindow.focus()
-      }
-    })
+    if (Config.getMultipleInstanceSettings()) {
+      return false
+    } else {
+      const quit = app.makeSingleInstance(() => {
+        if (this.window) {
+          if (this.window.isMinimized()) this.window.restore()
+          this.window.focus()
+        }
+      })
 
-    return quit
+      return quit
+    }
   }
 }

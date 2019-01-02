@@ -1,5 +1,8 @@
 const HidrogenComponent = require('./hidrogen-component')
 const { dialog } = require('electron').remote
+const { Emitter } = require('event-kit')
+const fs = require('fs')
+const path = require('path')
 const I18n = require('../translator')
 const i18n = new I18n()
 
@@ -7,29 +10,87 @@ class GameEditor extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['board-view', 'game-editor']
-    this.attachEvents()
+    this.emitter = new Emitter()
+    this.subscribeToDOMEvents()
   }
 
-  close () {
-    this.classList.remove('active')
-    this.hidrogen.board.updateView('library')
-    this.hidrogen.sidebar.updateSelectedListItem('library')
+  get mode () {
+    return this.getAttribute('mode') || 'add-game'
   }
 
-  validateInputs () {
-    if (this.child('.game-name-input').value == '') {
-      this.child('.game-name-input').classList.add('error')
-    } else {
-      this.child('.game-name-input').classList.remove('error')
+  set mode (mode) {
+    this.setAttribute('mode', mode)
+  }
+
+  setMode (mode) {
+    this.mode = mode
+    if (mode === 'edit-game') {
+      this.child('.btn-done span').innerText = 'Guardar cambios'
+    } else if (mode === 'add-game') {
+      this.child('.btn-done span').innerText = i18n.translate('Add game')
     }
   }
 
-  getInputsValue () {
+  getUserInput () {
     return {
-      name: this.child('.game-title-input').value,
+      title: this.child('.game-title-input').value,
       path: this.child('.game-path-input').value,
       customBackground: this.tempCustomBackgroundPath
     }
+  }
+
+  addGameToLibrary (gameObject) {
+    if (this.validate(gameObject)) {
+      this.hidrogen.library.add(gameObject)
+      this.close()
+      this.clean()
+    } else {
+      console.log(`{GameEditor}: Not valid input to create a game data object.`)
+    }
+  }
+
+  updateGame (data) {
+    if (!this.validate(data)) return false
+    let gameDataPath = path.join(this.hidrogen.library.getGamesFolderPath(), this.edittedGameData.id, 'game.json')
+    data.id = this.edittedGameData.id
+    fs.writeFileSync(gameDataPath, JSON.stringify(data, null, 2))
+    this.close()
+    this.clean()
+  }
+
+  validate (gameDataObj) {
+    let titleIsValid, pathIsValid
+
+    if (gameDataObj.title) {
+      this.child('.game-title-input').classList.remove('error')
+      titleIsValid = true
+    } else {
+      this.child('.game-title-input').classList.add('error')
+      titleIsValid = false
+    }
+
+    if (gameDataObj.path) {
+      this.child('.game-path-input').classList.remove('error')
+      pathIsValid = true
+    } else {
+      this.child('.game-path-input').classList.add('error')
+      pathIsValid = false
+    }
+
+    if (titleIsValid && pathIsValid) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  fill (gameObject) {
+    console.log(gameObject)
+    this.edittedGameData = gameObject
+    this.child('.game-title-input').value = this.edittedGameData.title
+    this.child('.game-path-input').value = this.edittedGameData.path
+    this.child('.preview').src = this.edittedGameData.customBackground
+    this.child('.preview').classList.add('active')
   }
 
   clean () {
@@ -39,9 +100,34 @@ class GameEditor extends HidrogenComponent {
     this.child('.game-path-input .input-text-label').classList.remove('active')
     this.child('.preview').src = '../static/images/custom-background-template.gif'
     this.child('.preview').classList.remove('active')
+    this.emitter.emit('did-clean')
   }
 
-  attachEvents () {
+  close () {
+    this.classList.remove('active')
+    this.hidrogen.setView('library')
+    this.emitter.emit('did-close')
+  }
+
+  onDidClean (callback) {
+    this.emitter.on('did-clean', callback)
+  }
+
+  onDidClose (callback) {
+    this.emitter.on('did-close', callback)
+  }
+
+  subscribeToDOMEvents () {
+    this.child('.btn-done').onDidClick(() => {
+      if (this.mode === 'add-game') {
+        this.addGameToLibrary(this.getUserInput())
+      } else if (this.mode === 'edit-game') {
+        this.updateGame(this.getUserInput())
+      }
+    })
+
+    this.child('.cancel-btn').onDidClick(() => { this.close() })
+
     const openGamePathInputDialog = () => {
       dialog.showOpenDialog({
         properties: ['openFiles'],
@@ -85,9 +171,9 @@ class GameEditor extends HidrogenComponent {
 
     this.child('.game-image-btn').addEventListener('click', openGameBackgroundImgDialog)
 
-    this.child('.btn-done').addEventListener('click', addGame)
+    // this.child('.btn-done').addEventListener('click', addGame)
 
-    this.child('.cancel-btn').addEventListener('click', this.close)
+    // this.child('.cancel-btn').addEventListener('click', this.close)
   }
 
   render () {
@@ -98,7 +184,7 @@ class GameEditor extends HidrogenComponent {
 
       <hidrogen-panel class="field">
         <hidrogen-input type="text" class="game-path-input" label="${i18n.translate('Game path')}"></hidrogen-input>
-        <hidrogen-btn icon="icon-folder" text="${i18n.translate('Select path')}" class="game-path-btn"></hidrogen-btn>
+        <hidrogen-btn icon="folder" text="${i18n.translate('Select path')}" class="game-path-btn"></hidrogen-btn>
       </hidrogen-panel>
 
       <hidrogen-panel class="field game-custom-bg-container">
@@ -107,11 +193,14 @@ class GameEditor extends HidrogenComponent {
           <text class="text sub-title">${i18n.translate('Recommended')} 200x300px</text>
           <img src="../static/images/custom-background-template.gif" class="preview"></img>
         </hidrogen-panel>
-        <hidrogen-btn icon="icon-file_upload" text="${i18n.translate('Upload image')}" class="game-image-btn"></hidrogen-btn>
+        <hidrogen-btn icon="file_upload" text="${i18n.translate('Upload image')}" class="game-image-btn"></hidrogen-btn>
       </hidrogen-panel>
 
       <hidrogen-btn text="${i18n.translate('Cancel')}" class="outlined cancel-btn"></hidrogen-btn>
-      <hidrogen-btn type="success" text="${i18n.translate('Add game')}" class="btn-done"></hidrogen-btn>
+
+      <hidrogen-btn type="success" text="
+      ${ this.mode === 'add-game' ? i18n.translate('Add game') : 'Guardar cambios'}
+      " class="btn-done"></hidrogen-btn>
     `)
   }
 }

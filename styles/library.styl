@@ -29,24 +29,23 @@
             position relative
 
             &.active
-                .icon-search
+                .search-icon
                     opacity 1
 
                 .input-search
                     width 215px
 
-            .icon-search
-                display inline-block
+            .search-icon
                 width 40px
                 height 40px
-                text-align center
                 line-height 40px
-                cursor pointer
-                transition ease-in-out .2s
                 opacity 0.8
+                padding 0
+                background none
 
                 &:hover
                     opacity 1
+                    background none
 
             .input-search
                 position absolute
@@ -75,19 +74,20 @@
                 line-height 40px
 
         .add-btn
-            display inline-block
             width 40px
             height 40px
-            text-align center
             line-height 40px
             float right
             margin-right 20px
-            cursor pointer
-            transition ease-in-out .2s
             opacity 0.8
+            background none
+            font-size 17px
+            padding 0
+            border none
 
             &:hover
                 opacity 1
+                background none
 
     .game-container
         display grid

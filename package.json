@@ -1,6 +1,6 @@
 {
   "name": "hidrogen",
-  "version": "0.3.0-alpha",
+  "version": "0.2.0-alpha",
   "description": "Your gaming library",
   "main": "./src/main-process/main.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "dev": "electron . --development && npm run watch",
     "watch": "npm run watch:styles",
     "watch:styles": "gulp styles:compile && gulp styles:watch",
-    "dist": "electron-packager . Hidrogen --overwrite --prune=true --out=./dist2 --icon=./static/images/hidrogen-icon.ico --version-string.CompanyName=\"Hidrogen\" --version-string.FileDescription \"Your gaming library\" --version-string.ProductName=\"Hidrogen\""
+    "dist": "build --win",
+    "ship": "build --win -p always"
   },
   "keywords": [
     "hidrogen",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "devtron": "^1.4.0",
     "electron": "^3.0.10",
+    "electron-builder": "^20.38.4",
     "electron-reload": "^1.2.5",
     "gulp": "^4.0.0",
     "gulp-plumber": "^1.2.0",
@@ -29,6 +31,7 @@
     "gulp-stylus": "^2.7.0"
   },
   "dependencies": {
+    "electron-updater": "^4.0.6",
     "event-kit": "^2.5.3",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.6.2"

@@ -9,12 +9,7 @@ class Home extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['board-view', 'home-screen']
-
-    this.hidrogenBoard = document.querySelector('hidrogen-board')
-    this.hidrogenSidebar = document.querySelector('hidrogen-sidebar')
-    this.hidrogenGameEditor = document.querySelector('hidrogen-game-editor')
-
-    this.attachEvents()
+    this.subscribeToDOMEvents()
   }
 
   playBackgroundVideo () {
@@ -25,21 +20,8 @@ class Home extends HidrogenComponent {
     this.child('video').pause()
   }
 
-  attachEvents () {
-    const showLibrary = () => {
-      this.hidrogenBoard.updateView('library')
-      this.hidrogenBoard.setAttribute('view', 'library')
-      this.hidrogenSidebar.updateSelectedListItem('library')
-    }
-
-    const showGameEditor = () => {
-      this.hidrogenBoard.updateView('game-editor')
-      this.hidrogenSidebar.updateSelectedListItem('game-editor')
-    }
-
-    this.child('.library-btn').addEventListener('click', showLibrary)
-
-    // this.child('.add-btn').addEventListener('click', showGameEditor)
+  subscribeToDOMEvents () {
+    this.child('.library-btn').onDidClick(() => { this.hidrogen.setView('library') })
   }
 
   render () {

@@ -1,4 +1,5 @@
 const HidrogenComponent = require('./hidrogen-component')
+const { ipcRenderer } = require('electron')
 const I18n = require('../translator')
 const i18n = new I18n()
 
@@ -9,10 +10,10 @@ class Sidebar extends HidrogenComponent {
     super()
     this.classNames = ['sidebar']
     this.items = this.children('.list-item')
-    this.attachEvents()
+    this.subscribeToDOMEvents()
   }
 
-  updateSelectedListItem (item) {
+  updateSelectedItem (item) {
     for (let listItem of this.items) {
       if (listItem.classList.contains('settings')) listItem.classList.remove('active')
       listItem.classList.remove('selected')
@@ -21,53 +22,25 @@ class Sidebar extends HidrogenComponent {
     document.querySelector(`.item-${item}`).classList.add('selected')
   }
 
-  attachEvents () {
+  subscribeToDOMEvents () {
+    this.child('.item-home').addEventListener('click', () => { this.hidrogen.setView('home') })
+    this.child('.item-library').addEventListener('click', () => { this.hidrogen.setView('library') })
+    this.child('.item-game-editor').addEventListener('click', () => { this.hidrogen.setView('game-editor') })
+    this.child('.item-settings').addEventListener('click', () => { this.hidrogen.setView('settings') })
+    this.child('.item-about').addEventListener('click', () => { this.hidrogen.setView('about') })
 
-    const showHome = () => {
-      document.querySelector('hidrogen-board').updateView('home')
-      this.updateSelectedListItem('home')
-    }
-
-    const showLibrary = () => {
-      document.querySelector('hidrogen-board').updateView('library')
-      this.updateSelectedListItem('library')
-    }
-
-    const showGameEditor = () => {
-      document.querySelector('hidrogen-board').updateView('game-editor')
-      this.updateSelectedListItem('game-editor')
-    }
-
-    const showSettings = () => {
-      document.querySelector('hidrogen-board').updateView('settings')
-      this.updateSelectedListItem('settings')
-    }
-
-    const showAbout = () => {
-      document.querySelector('hidrogen-board').updateView('about')
-      this.updateSelectedListItem('about')
-    }
-
-    this.child('.item-home').addEventListener('click', showHome)
-
-    this.child('.item-library').addEventListener('click', showLibrary)
-
-    this.child('.item-game-editor').addEventListener('click', showGameEditor)
-
-    this.child('.item-settings').addEventListener('click', showSettings)
-
-    this.child('.item-about').addEventListener('click', showAbout)
+    this.child('.update-ready-btn').onDidClick(() => { ipcRenderer.send('quitAndInstall') })
+    ipcRenderer.on('updateReady', (event, text) => { this.child('.update-ready-btn').classList.add('active') })
   }
 
   render () {
-    // <li class="list-item"> <span class="icon-hidrogen"></span> </li>
     super.render(`
       <hidrogen-list class="sidebar-list">
 
         <li class="list-item item-home selected">
           <icon class="icon-home"></icon>
           <span> ${i18n.translate('Home')} </span>
-          </li>
+        </li>
 
         <li class="list-item item-library">
           <icon class="icon-dashboard"></icon>
@@ -90,6 +63,11 @@ class Sidebar extends HidrogenComponent {
         </li>
 
       </hidrogen-list>
+
+      <hidrogen-btn custom-content class="update-ready-btn">
+        <icon class="update-icon icon-get_app"></icon>
+        <span class="update-ready-label"> ¡Actualización disponible! </span>
+      </hidrogen-btn>
     `)
   }
 }

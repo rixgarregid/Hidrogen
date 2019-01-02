@@ -22,8 +22,6 @@ class Settings extends HidrogenComponent {
 
     // Disabling some toggles while development.
     this.child('.autorun-toggle').disable()
-    this.child('.multiinstance-toggle').disable()
-    this.child('.hardware-ac-toggle').disable()
   }
 
   load () {
@@ -110,13 +108,7 @@ class Settings extends HidrogenComponent {
 
         <hidrogen-input type="toggle" label="${i18n.translate('Run Hidrogen when your computer starts.')}" class="autorun-toggle"></hidrogen-input>
 
-        <hidrogen-input type="toggle" label="${i18n.translate('Close Hidrogen when launching a game.')}" class="autoclose-toggle"></hidrogen-input>
-
-        <hidrogen-input type="toggle" label="${i18n.translate('Show countdown.')}" class="autoclose-countdown-toggle"></hidrogen-input>
-
         <hidrogen-input type="toggle" label="${i18n.translate('Allow multiple Hidrogen instances.')}" class="multiinstance-toggle"></hidrogen-input>
-
-        <hidrogen-input type="toggle" label="Usar aceleración por hardware si es posible." class="hardware-ac-toggle"></hidrogen-input>
 
         <hidrogen-input type="toggle" label="${i18n.translate('Detect language automatically.')}" class="autolang-toggle"></hidrogen-input>
 
@@ -129,8 +121,15 @@ class Settings extends HidrogenComponent {
 
         <span class="settings-group-title"> Biblioteca </span>
 
+        <hidrogen-input type="toggle" label="${i18n.translate('Close Hidrogen when launching a game.')}" class="autoclose-toggle"></hidrogen-input>
+        <hidrogen-input type="toggle" label="${i18n.translate('Show countdown.')}" class="autoclose-countdown-toggle"></hidrogen-input>
         <hidrogen-input type="toggle" label="Mostrar contador de juegos en la biblioteca." class="show-game-counter-toggle"></hidrogen-input>
+        <hidrogen-input type="toggle" label="Ocultar biblioteca de favoritos." class="fav-lib-toggle"></hidrogen-input>
         <hidrogen-btn type="danger" class="outlined clean-library-btn" text="Eliminar toda mi biblioteca"></hidrogen-btn>
+
+        <span class="settings-group-title"> Inicio </span>
+
+        <hidrogen-input type="toggle" label="Deshabilitar vídeo de inicio. (Recomendado para ordenadores de gama baja)." class="disable-home-video-toggle"></hidrogen-input>
 
         <hidrogen-btn type="success" text="${i18n.translate('Done!')}" class="save-btn"></hidrogen-btn>
       </hidrogen-panel>

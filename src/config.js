@@ -42,16 +42,25 @@ class Config {
 
   createConfigFile () {
     fs.closeSync(fs.openSync(this.configFile, 'w'))
-    fs.writeFileSync(this.configFile, JSON.stringify(this.loadDefaultSettings(), null, 2))
+    fs.writeFileSync(this.configFile, JSON.stringify(this.loadDefaults(), null, 2))
     this.currentConfig = JSON.parse(fs.readFileSync(this.configFile))
   }
 
-  loadDefaultSettings () {
+  loadDefaults () {
     return this.defaults
   }
 
-  setDefaults () {
-    fs.writeFileSync(this.configFile, JSON.stringify(this.loadDefaultSettings(), null, 2))
+  restoreDefaults () {
+    fs.writeFileSync(this.configFile, JSON.stringify(this.loadDefaults(), null, 2))
     this.currentConfig = JSON.parse(fs.readFileSync(this.configFile))
+  }
+
+  static getMultipleInstanceSettings () {
+    if (fs.existsSync(this.configFile)) {
+      let config = JSON.parse(fs.readFileSync(this.configFile))
+      return config.multiInstance
+    } else {
+      console.log('Config: Multiple instance disabled by default.')
+    }
   }
 }

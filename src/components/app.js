@@ -36,6 +36,11 @@ class App extends HidrogenComponent {
     return this.child(`hidrogen-${component}`)
   }
 
+  setView (view) {
+    this.board.updateView(view)
+    this.sidebar.updateSelectedItem(view)
+  }
+
   focus () {
     this.classList.remove('blurred')
     this.classList.add('focused')
@@ -70,7 +75,7 @@ class App extends HidrogenComponent {
 
   restoreDefaults () {
     this.library.clean()
-    this.config.setDefaults()
+    this.config.restoreDefaults()
   }
 
   getSystemInfo () {

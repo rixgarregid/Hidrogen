@@ -10,19 +10,18 @@ class About extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['board-view', 'about']
-    this.attachEvents()
+    this.subscribeToDOMEvents()
   }
 
   close () {
     this.classList.remove('active')
-    this.hidrogen.board.updateView('library')
-    this.hidrogen.sidebar.updateSelectedListItem('library')
+    this.hidrogen.setView('library')
   }
 
-  attachEvents () {
+  subscribeToDOMEvents () {
     this.child('.hidrogen-logo').addEventListener('click', () => { shell.openExternal('https://github.com/rixgarregid/Hidrogen') })
     this.child('.issues-web-link').addEventListener('click', () => { shell.openExternal('https://github.com/rixgarregid/Hidrogen/issues') })
-    this.child('.back-btn').addEventListener('click', this.close)
+    this.child('.back-btn').onDidClick(() => { this.close() })
   }
 
   render () {
@@ -31,7 +30,7 @@ class About extends HidrogenComponent {
       <span class="text version-text"> v.${app.getVersion()} </span>
       <span class="text link issues-web-link"> ¿Has encontrado un fallo? ¡Puedes reportarlo aquí! </span>
       <span class="text emails"> ¿Echas en falta algo? ¿Alguna idea para mejorar Hidrogen? ¡Escríbenos! <br>
-        rix.frost@outlook.com <br> miguel_ff@hotmail.com
+        rix.frost@outlook.com <br> miguel_ff@hotmail.es
       </span>
 
       <hidrogen-btn text="${i18n.translate('Back')}" class="back-btn"></hidrogen-btn>

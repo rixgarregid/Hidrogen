@@ -3,23 +3,84 @@
 // --------------- COLORS ---------------
 
 primary-color = #161a1f
-secondary-color = lighten(#161a1f, 2%)
+secondary-color = lighten(primary-color, 2%)
 
-text-color = #a9a9a9
-text-color-highlight = #e3e3e3
-text-color-success = #29b905
-text-color-warning = #dfd600
-text-color-error = #dd2020
+subtle-color = #a9a9a9
+highlight-color = #e3e3e3
+info-color = #33b5e5
+success-color = #4db03d
+warning-color = #df8916
+danger-color = #e33a3c
+error-color = #c12828
+
+// Text colors --------------------------
+
+text-color = subtle-color
+text-color-highlight = highlight-color
+text-color-success = success-color
+text-color-warning = warning-color
+text-color-danger = danger-color
+text-color-error = error-color
 text-color-selected = text-color-highlight
 text-color-background-selected = #283b4f
 
-app-background-color = primary-color
-loader-background-color = primary-color
-titlebar-background-color = primary-color
-sidebar-background-color = primary-color
-board-background-color = secondary-color
-library-background-color = primary-color
-about-background-color = primary-color
+// Main components colors --------------------------
+
+app-bg-color = primary-color
+loader-bg-color = primary-color
+titlebar-bg-color = primary-color
+sidebar-bg-color = primary-color
+library-bg-color = primary-color
+about-bg-color = primary-color
+
+// Game colors --------------------------
+
+game-background-color = primary-color
+game-border-color = #3a3f44
+game-hover-background-color = #000
+game-menu-button-color = #aaa
+
+// Input colors --------------------------
+
+// #8a979d
+input-border-color = subtle-color
+input-border-color-error = error-color
+
+// Button colors --------------------------
+
+btn-text-color = highlight-color
+btn-bg-color = #3d4146
+btn-hover-bg-color = darken(btn-bg-color, 10%)
+
+btn-success-bg-color = success-color
+btn-success-hover-bg-color = darken(success-color, 10%)
+
+btn-warning-bg-color = warning-color
+btn-warning-hover-bg-color = darken(warning-color, 10%)
+
+btn-danger-bg-color = danger-color
+btn-danger-hover-bg-color = darken(danger-color, 10%)
+
+btn-highlight-bg-color = info-color
+btn-highlight-hover-bg-color = #0099cc
+
+
+
+// button-color-background = primary-color
+//
+// button-color-success = text-color-highlight
+// button-background-color-success = #008837
+// button-hover-background-color-success = #23a156
+//
+// button-color-danger = #b91e1e
+// button-background-color-danger = #7c0000
+// button-hover-background-color-danger = #c91e1e
+//
+// button-color-highlight = text-color-highlight
+// button-background-color-highlight = #33b5e5
+// button-hover-background-color-highlight = #0099cc
+
+home-btn-bg-color = primary-color
 
 // --------------- SIZES ---------------
 
@@ -54,30 +115,10 @@ list-font-size = 15px
 // board #232c37
 // sidebar bg #161a1f  // #191e25 // #1c2127
 
-panel-border-color = #000
 
-game-background-color = primary-color
-game-border-color = #3a3f44
-game-hover-background-color = #000
-game-menu-button-color = #aaa
-    // #202832
-
-input-border-color = #8a979d
 
 // Buttons -----------------------------------
-button-color-background = primary-color
 
-button-color-success = text-color-highlight
-button-background-color-success = #008837
-button-hover-background-color-success = #23a156
-
-button-color-danger = #b91e1e
-button-background-color-danger = #7c0000
-button-hover-background-color-danger = #c91e1e
-
-button-color-highlight = text-color-highlight
-button-background-color-highlight = #33b5e5
-button-hover-background-color-highlight = #0099cc
 //
 // button-background-color-highlight = #2ba0ce
 // button-hover-background-color-highlight = #1b799e

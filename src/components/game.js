@@ -11,18 +11,10 @@ class Game extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['game-card']
-    this.emitter = new Emitter()
-    this.data = {
-      // id: this.gameId,
-      // title: this.gameTitle,
-      // path: this.path,
-      customBackground: this.customBackground
-    }
     this.gameTitle = this.gameTitle
-
+    this.emitter = new Emitter()
     this.emitter.emit('did-create', this.data)
-
-    this.attachEvents()
+    this.subscribeToDOMEvents()
   }
 
   get gameTitle () {
@@ -49,6 +41,15 @@ class Game extends HidrogenComponent {
     }
   }
 
+  getData () {
+    return {
+      id: this.gameId,
+      title: this.gameTitle,
+      path: this.path,
+      customBackground: this.customBackground
+    }
+  }
+
   toggleMenu () {
     this.child('.game-menu').classList.toggle('active')
     this.child('.game-menu-btn').classList.toggle('active')
@@ -71,35 +72,40 @@ class Game extends HidrogenComponent {
     }
   }
 
+  edit () {
+    this.hidrogen.gameEditor.setMode('edit-game')
+    this.hidrogen.gameEditor.fill(this.getData())
+    this.hidrogen.board.updateView('game-editor')
+  }
+
   destroy (id) {
     this.hidrogen.library.remove(id)
+    this.emitter.emit('did-destroy')
     this.emitter.dispose()
   }
 
-  openGameFolder () {
-    shell.showItemInFolder(path.join(this.hidrogen.library.getGamesFolderPath(), `${this.gameTitle}`, 'game.json'))
+  openFolder () {
+    shell.showItemInFolder(this.path)
   }
 
   onDidCreate (callback) {
     this.emitter.on('did-create', callback)
   }
 
-  attachEvents () {
-    const play = () => { this.play() }
-    const toggleMenu = () => { this.toggleMenu() }
-    const openGameFolder = () => { this.openGameFolder() }
-    const deleteGame = () => {
-      document.querySelector('.delete-game-modal').classList.add('active')
-      document.querySelector('.delete-game-modal').setAttribute('game-id', this.gameId)
+  onDidDestroy (callback) {
+    this.emitter.on('did-destroy', callback)
+  }
 
+  subscribeToDOMEvents () {
+    this.child('.play-btn').onDidClick(() => { this.play() })
+    this.child('.game-menu-btn').onDidClick(() => { this.toggleMenu() })
+    this.child('.edit-btn').onDidClick(() => { this.edit() })
+    this.child('.open-folder-btn').onDidClick(() => { this.openFolder() })
+    this.child('.delete-btn').onDidClick(() => {
       this.deleteGameModal = this.hidrogen.modals.get('delete-game')
       this.deleteGameModal.show()
-    }
-
-    this.child('.play-btn').addEventListener('click', play)
-    this.child('.game-menu-btn').addEventListener('click', toggleMenu)
-    this.child('.open-game-folder-item').addEventListener('click', openGameFolder)
-    this.child('.delete-game-item').addEventListener('click', deleteGame)
+      this.deleteGameModal.setAttribute('game-id', this.gameId)
+    })
   }
 
   render () {
@@ -112,15 +118,15 @@ class Game extends HidrogenComponent {
         <ul class="list menu-list">
 
           <li class="list-item">
-            <span class="icon icon-mode_edit"></span><text class="text"> ${i18n.translate('Edit information')} </text>
+            <hidrogen-btn icon="mode_edit" text="${i18n.translate('Edit information')}" class="edit-btn"></hidrogen-btn>
           </li>
 
-          <li class="list-item open-game-folder-item">
-            <span class="icon icon-folder_open"></span><text class="text"> ${i18n.translate('Open game folder')} </text>
+          <li class="list-item">
+            <hidrogen-btn icon="folder_open" text="${i18n.translate('Open game folder')}" class="open-folder-btn"></hidrogen-btn>
           </li>
 
-          <li class="list-item delete-game-item">
-            <span class="icon icon-delete"></span><text class="text"> ${i18n.translate('Delete')} </text>
+          <li class="list-item">
+            <hidrogen-btn icon="mode_edit" text="${i18n.translate('Delete')}" class="delete-btn"></hidrogen-btn>
           </li>
 
         </ul>

@@ -10,32 +10,15 @@ class Titlebar extends HidrogenComponent {
     super()
     this.classNames = ['titlebar']
     this.windowController = remote.getCurrentWindow()
-
-    this.attachEvents()
+    this.subscribeToDOMEvents()
   }
 
-  attachEvents () {
-    const quitHidrogen = () => {
-      app.quit()
-    }
-
-    const toggleMaximizeHidrogen = () => {
-      if (this.windowController.isMaximized()) {
-        this.windowController.restore()
-      } else {
-        this.windowController.maximize()
-      }
-    }
-
-    const minimizeHidrogen = () => {
-      this.windowController.minimize()
-    }
-
-    this.child('.btn-window-close').addEventListener('click', quitHidrogen)
-
-    this.child('.btn-window-maximize').addEventListener('click', toggleMaximizeHidrogen)
-
-    this.child('.btn-window-minimize').addEventListener('click', minimizeHidrogen)
+  subscribeToDOMEvents () {
+    this.child('.btn-window-close').onDidClick(() => { app.quit() })
+    this.child('.btn-window-minimize').onDidClick(() => { this.windowController.minimize() })
+    this.child('.btn-window-maximize').onDidClick(() => {
+      this.windowController.isMaximized() ? this.windowController.restore() : this.windowController.maximize()
+    })
   }
 
   // render () {
@@ -58,15 +41,17 @@ class Titlebar extends HidrogenComponent {
     super.render(`
       <hidrogen-panel class="window-controls">
 
-        <btn class="btn win-control btn-window-close">
+        <hidrogen-btn custom-content class="win-control btn-window-close">
           <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="M 0,0 0,0.7 4.3,5 0,9.3 0,10 0.7,10 5,5.7 9.3,10 10,10 10,9.3 5.7,5 10,0.7 10,0 9.3,0 5,4.3 0.7,0 Z"></path></svg>
-        </btn>
-        <btn class="btn win-control btn-window-maximize">
+        </hidrogen-btn>
+
+        <hidrogen-btn custom-content class="win-control btn-window-maximize">
           <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="M 0,0 0,10 10,10 10,0 Z M 1,1 9,1 9,9 1,9 Z"></path></svg>
-        </btn>
-        <btn class="btn win-control btn-window-minimize">
+        </hidrogen-btn>
+
+        <hidrogen-btn custom-content class="win-control btn-window-minimize">
           <svg aria-hidden="true" version="1.1" width="10" height="10"><path d="M 0,5 10,5 10,6 0,6 Z"></path></svg>
-        </btn>
+        </hidrogen-btn>
 
       </hidrogen-panel>
     `)

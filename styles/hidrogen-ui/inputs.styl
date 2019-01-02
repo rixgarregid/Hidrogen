@@ -40,6 +40,19 @@ input:focus
     height 40px
     position relative
 
+    &.active .input-text-label
+        top -10px
+        left 0
+        font-size 11px
+        color text-color-highlight
+
+    &.error
+        .input-text-element
+            border-color input-border-color-error
+
+        .input-text-label
+            color text-color-error
+
     .input-text-element
         display inline-block
         box-sizing border-box

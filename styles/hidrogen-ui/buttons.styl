@@ -6,10 +6,9 @@
     min-height 30px
     padding 10px
     border none
-    // border-radius 5px
-    background button-color-background
+    background btn-bg-color
     cursor pointer
-    color text-color
+    color text-color-highlight
     font-size 15px
     transition .2s ease-in-out
     text-align center
@@ -19,136 +18,82 @@
     &.no-icon icon
         display none
 
-    &.no-text span
-        display none
+    &.no-text
+        span
+            display none
+
+        + icon
+            margin-right 0
 
     &:hover
         color #fff !important
-        background #303d4d
+        background btn-hover-bg-color
 
     &[type='success']
-        color button-color-success !important
-        background button-background-color-success
+        // color btn-success-bg-color !important
+        background btn-success-bg-color
 
         &:hover
-            background button-hover-background-color-success
+            background btn-success-hover-bg-color
 
     &[type='warning']
-        color button-color-warning !important
-        background button-background-color-warning
+        // color button-color-warning !important
+        background btn-warning-bg-color
 
         &:hover
-            background button-hover-background-color-warning
+            background btn-warning-hover-bg-color
 
     &[type='danger']
-        color button-color-danger !important
-        background button-background-color-danger
+        // color button-color-danger !important
+        background btn-danger-bg-color
 
         &:hover
-            background button-hover-background-color-danger
+            background btn-danger-hover-bg-color
 
     &[type='highlight']
-        color button-color-highlight !important
-        background button-background-color-highlight
+        // color button-color-highlight !important
+        background btn-highlight-bg-color
 
         &:hover
-            background button-hover-background-color-highlight
+            background btn-highlight-hover-bg-color
 
     &.outlined
-        border solid 2px #37414d
+        border solid 2px btn-bg-color
         background transparent !important
 
         &:hover
-            border solid 2px #303d4d
+            border solid 2px btn-hover-bg-color
             color #fff !important
 
         &[type='success']
-            color button-color-success !important
-            border-color button-background-color-success
+            color text-color-success !important
+            border-color btn-success-bg-color
 
             &:hover
-                border-color button-hover-background-color-success
+                border-color btn-success-hover-bg-color
 
         &[type='warning']
-            color button-color-warning !important
-            border-color button-background-color-warning
+            color text-color-warning !important
+            border-color btn-warning-bg-color
 
             &:hover
-                border-color button-hover-background-color-warning
+                border-color btn-warning-hover-bg-color
 
         &[type='danger']
-            color button-color-danger !important
-            border-color button-background-color-danger
+            color text-color-danger !important
+            border-color btn-danger-bg-color
 
             &:hover
-                border-color button-hover-background-color-danger
+                border-color btn-danger-hover-bg-color
 
         &[type='highlight']
-            color button-color-highlight !important
-            border-color button-background-color-highlight
+            color text-color-highlight !important
+            border-color btn-highlight-bg-color
 
             &:hover
-                border-color button-hover-background-color-highlight
+                border-color btn-highlight-hover-bg-color
 
     icon
         display inline-block
         font-size 1em
         margin-right 10px
-
-// .btn
-//     display inline-block
-//     width 90px
-//     height 70px
-//     padding 10px
-//     border none
-//     border-radius 5px
-//     background button-color-background
-//     cursor pointer
-//     color text-color
-//     transition .2s ease-in-out
-//     box-sizing border-box
-//
-//     &:hover
-//         color #fff !important
-//         background #303d4d
-//
-//     &.btn-sec
-//         border solid 2px #37414d
-//         background transparent !important
-//
-//         &:hover
-//             border solid 2px #303d4d
-//             color #fff !important
-//
-//     &.btn-mat
-//         border none
-//         background transparent
-//         text-transform uppercase
-//
-//     &.btn-success
-//         color button-color-success !important
-//         background button-background-color-success !important
-//         box-shadow 0 5px 20px rgba(0, 0, 0, .2)
-//
-//         &:hover
-//             background button-hover-background-color-success
-//
-//     &.btn-danger
-//         color button-color-cancel !important
-//         background button-background-color-cancel !important
-//         box-shadow 0 5px 20px rgba(0, 0, 0, .2)
-//
-//         &:hover
-//             background button-hover-background-color-cancel
-//
-//     &.btn-highlight
-//         color button-color-highlight
-//         background button-background-color-highlight
-//         box-shadow 0 5px 20px rgba(0, 0, 0, .2)
-//
-//         &:hover
-//             background button-hover-background-color-highlight
-//
-//     .icon
-//         font-size 1em
-//         margin-right 10px

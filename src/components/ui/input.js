@@ -76,13 +76,13 @@ class Input extends HidrogenComponent {
 
   focusInput () {
     this.classList.add('active')
-    // this.emitter.emit('did-focus')
+    this.emitter.emit('did-focus')
     this.focus = true
   }
 
   blur () {
     this.classList.remove('active')
-    // this.emitter.emit('did-blur')
+    this.emitter.emit('did-blur')
     this.focus = false
   }
 

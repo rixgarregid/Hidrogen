@@ -18,7 +18,7 @@ class Library extends HidrogenComponent {
     this.render()
     this.initializeGameCounter()
     this.loadGames()
-    this.attachEvents()
+    this.subscribeToDOMEvents()
   }
 
   initializeGameCounter () {
@@ -34,8 +34,8 @@ class Library extends HidrogenComponent {
     try {
       let games = await util.readdir(this.gamesFolder)
 
-      for (let game of games) {
-        let gameData = JSON.parse(fs.readFileSync(path.join(this.gamesFolder, `${game}`, 'game.json')))
+      for (let gameId of games) {
+        let gameData = JSON.parse(fs.readFileSync(path.join(this.gamesFolder, `${gameId}`, 'game.json')))
         this.add(gameData)
       }
     } catch (err) {
@@ -45,18 +45,18 @@ class Library extends HidrogenComponent {
 
   add (gameData) {
     if (!fs.existsSync(this.gamesFolder)) mkdir(this.gamesFolder)
-    let gameFolder = path.join(this.gamesFolder, `${gameData.name}`)
-    mkdir(gameFolder)
 
-    // Generate and add Game ID.
-    gameData.id = this.generateGameId()
+    if (!gameData.hasOwnProperty('id')) gameData.id = this.generateGameId()
+
+    let gameFolder = path.join(this.gamesFolder, `${gameData.id}`)
+    mkdir(gameFolder)
 
     fs.writeFileSync(path.join(gameFolder, 'game.json'), JSON.stringify(gameData, null, 2))
 
     this.querySelector('.game-container').innerHTML += `
       <hidrogen-game-card
         game-id=${gameData.id}
-        game-title='${gameData.name}'
+        game-title='${gameData.title}'
         custom-bg='${gameData.customBackground}'
         path='${gameData.path}'
       ></hidrogen-game-card>
@@ -76,12 +76,12 @@ class Library extends HidrogenComponent {
 
     this.updateGameCounter(this.getTotalGames() - 1)
 
-    rimraf(path.join(this.gamesFolder, `${removedGame.gameTitle}`), (err) => {
+    rimraf(path.join(this.gamesFolder, `${removedGame.gameId}`), (err) => {
       if (err) console.log(err)
     })
   }
 
-  getGames () {
+  getAllGames () {
     return this.children('.game-container hidrogen-game-card')
   }
 
@@ -91,7 +91,7 @@ class Library extends HidrogenComponent {
 
   search (game) {
     // binarySearch(this.getGameNames(), game)
-    for (let gameItem of this.getGames()) {
+    for (let gameItem of this.getAllGames()) {
       if (gameItem.gameTitle.toUpperCase().indexOf(game) > -1) {
         gameItem.classList.remove('hidden')
       } else {
@@ -101,7 +101,7 @@ class Library extends HidrogenComponent {
   }
 
   clean () {
-    for (let game of this.getGames()) {
+    for (let game of this.getAllGames()) {
       // this.child('.game-container').removeChild(game)
       this.remove(game.gameId)
     }
@@ -132,7 +132,7 @@ class Library extends HidrogenComponent {
     return Math.floor(Math.random() * (999999 - 111111) + 111111)
   }
 
-  attachEvents () {
+  subscribeToDOMEvents () {
     const toggleSearchbox = () => {
       if (!this.child('.searchbox').classList.contains('active')) {
         this.child('.searchbox').classList.add('active')
@@ -142,15 +142,10 @@ class Library extends HidrogenComponent {
       }
     }
 
-    const addGameHandler = () => {
-      this.hidrogen.board.updateView('game-editor')
-      this.hidrogen.sidebar.updateSelectedListItem('game-editor')
-    }
-
     const search = () => { this.search(this.child('.input-search').value.toUpperCase()) }
 
-    this.child('.icon-search').addEventListener('click', toggleSearchbox)
-    this.child('.add-btn').addEventListener('click', addGameHandler)
+    this.child('.search-icon').onDidClick(toggleSearchbox)
+    this.child('.add-btn').onDidClick(() => { this.hidrogen.setView('game-editor') })
     this.child('.input-search').addEventListener('keyup', search)
   }
 
@@ -159,7 +154,7 @@ class Library extends HidrogenComponent {
       <hidrogen-panel class="toolbar">
 
         <hidrogen-panel class="searchbox">
-          <span class="icon-search"></span>
+          <hidrogen-btn icon="search" class="search-icon"></hidrogen-btn>
           <input type="text" class="input-search">
         </hidrogen-panel>
 
@@ -168,7 +163,7 @@ class Library extends HidrogenComponent {
           <span class="game-counter-label"> juegos en la biblioteca! </span>
         </hidrogen-panel>
 
-        <btn class="add-btn icon-add"></btn>
+        <hidrogen-btn icon="add" class="add-btn" type="default"></hidrogen-btn>
 
       </hidrogen-panel>
 

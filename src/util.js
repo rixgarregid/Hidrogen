@@ -1,4 +1,4 @@
-const binarySearch = (arr, item) => {
+const binarySearchInt = (arr, item) => {
   let low = 0
   let high = arr.length - 1
 
@@ -16,6 +16,12 @@ const binarySearch = (arr, item) => {
   }
 
   return null
+}
+
+// https:://github.com/posabsolute/javascript-binary-search-algorithm/blob/master/searchBinary.js
+const binarySearchIterative = (item, array) => {
+  let arrayLength = array.length
+  let itemLetterNumber = item.length
 }
 
 const fs = require('fs')

@@ -6,7 +6,7 @@
     z-index 5
     float left
     // border-right 1px solid panel-border-color
-    background sidebar-background-color
+    background sidebar-bg-color
     transition .3s ease-in-out
 
     .sidebar-list
@@ -25,3 +25,39 @@
 
             &:nth-child(5)
                 margin-top 490px
+
+    .update-ready-btn
+        display none
+        width 150px
+        height 150px
+        position absolute
+        top 60%
+        left 50%
+        transform translateX(-50%)
+        background transparent
+        text-align center
+
+        &.active
+            display block
+            animation highlight 2s ease-in-out infinite
+
+        .update-icon
+            display block !important
+            color #3fab2e
+            font-size 50px
+            margin-bottom 20px
+            margin-right 0
+
+        .update-ready-label
+            display block !important
+            color #3fab2e
+            font-size 15px
+            font-family 'Roboto'
+
+        @keyframes highlight
+            0%
+                opacity 0.4
+            50%
+                opacity 1
+            100%
+                opacity 0.4

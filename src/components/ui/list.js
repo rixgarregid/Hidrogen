@@ -59,6 +59,12 @@ class List extends HidrogenComponent {
     this.disabled = true
   }
 
+  subscribeToDOMEvents () {
+    for (let item of this.getItems()) {
+      item.addEventListener('click', () => { this.emitter.emit('did-click-item') })
+    }
+  }
+
   attachEvents () {
     for (let item of this.getItems()) {
       item.addEventListener('click', () => {

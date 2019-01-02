@@ -1,4 +1,5 @@
 const HidrogenComponent = require('../hidrogen-component')
+const { Emitter } = require('event-kit')
 
 class Button extends HidrogenComponent {
   constructor () {
@@ -6,9 +7,10 @@ class Button extends HidrogenComponent {
     this.classNames = ['btn']
     this.type = this.type
     this.customContent = this.innerHTML
+    this.emitter = new Emitter()
     this.render()
-
-    if (this.hasAttribute('custom-content')) this.innerHTML += this.customContent
+    this.subscribeToDOMEvents()
+    this.addCustomContent(this.customContent)
   }
 
   set type (type) {
@@ -39,9 +41,21 @@ class Button extends HidrogenComponent {
     }
   }
 
+  addCustomContent (content) {
+    if (this.hasAttribute('custom-content')) this.innerHTML += content
+  }
+
+  subscribeToDOMEvents () {
+    this.addEventListener('click', () => { this.emitter.emit('did-click') })
+  }
+
+  onDidClick (callback) {
+    this.emitter.on('did-click', callback)
+  }
+
   render () {
     super.render(`
-      <icon class="${this.icon}"></icon>
+      <icon class="icon-${this.icon}"></icon>
       <span> ${this.text} </span>
     `)
   }
