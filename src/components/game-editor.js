@@ -35,7 +35,7 @@ class GameEditor extends HidrogenComponent {
     return {
       title: this.child('.game-title-input').value,
       path: this.child('.game-path-input').value,
-      customBackground: this.tempCustomBackgroundPath
+      customBackground: this.tempCustomBackgroundPath || this.child('.preview').src
     }
   }
 
@@ -51,9 +51,12 @@ class GameEditor extends HidrogenComponent {
 
   updateGame (data) {
     if (!this.validate(data)) return false
-    let gameDataPath = path.join(this.hidrogen.library.getGamesFolderPath(), this.edittedGameData.id, 'game.json')
+
+    let gameDataPath = path.join(this.hidrogen.library.getGamesFolderPath(), `${this.edittedGameData.id}.json`)
     data.id = this.edittedGameData.id
     fs.writeFileSync(gameDataPath, JSON.stringify(data, null, 2))
+
+    this.hidrogen.library.reload()
     this.close()
     this.clean()
   }
@@ -85,7 +88,6 @@ class GameEditor extends HidrogenComponent {
   }
 
   fill (gameObject) {
-    console.log(gameObject)
     this.edittedGameData = gameObject
     this.child('.game-title-input').value = this.edittedGameData.title
     this.child('.game-path-input').value = this.edittedGameData.path
@@ -136,7 +138,7 @@ class GameEditor extends HidrogenComponent {
       }, filePath => {
         if (filePath === undefined) return
         this.child('.game-path-input').value = filePath
-        this.child('.game-path-input .input-text-label').classList.add('active')
+        this.child('.game-path-input').classList.add('active')
       })
     }
 

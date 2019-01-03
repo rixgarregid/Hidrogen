@@ -8,7 +8,6 @@ class ModalManager extends HidrogenComponent {
     super()
     this.classNames = ['modal-manager']
     this.subscribeToDOMEvents()
-    this.attachEvents()
   }
 
   get (modal) {
@@ -16,9 +15,6 @@ class ModalManager extends HidrogenComponent {
   }
 
   subscribeToDOMEvents () {
-    const cleanLibrary = () => { this.hidrogen.library.clean() }
-    const resetHidrogen = () => { this.hidrogen.restoreDefaults() }
-
     const updateCountdownModalTimer = () => {
       let counter = 6
       let interval = setInterval(() => {
@@ -34,27 +30,11 @@ class ModalManager extends HidrogenComponent {
       }, 1000)
     }
 
-    this.get('clean-library').onDidConfirm(cleanLibrary)
-    this.get('reset-hidrogen').onDidConfirm(resetHidrogen)
+    this.get('clean-library').onDidConfirm(() => { this.hidrogen.library.clean() })
+    this.get('reset-hidrogen').onDidConfirm(() => { this.hidrogen.restoreDefaults() })
     this.get('closing-countdown').onDidShow(updateCountdownModalTimer)
     this.get('closing-countdown').onDidConfirm(() => { app.quit() })
-  }
-
-  attachEvents () {
-    const deleteGame = () => {
-      this.child('.delete-game-modal').classList.remove('active')
-
-      let delId = this.child('.delete-game-modal').getAttribute('game-id')
-      document.querySelector(`hidrogen-game-card[game-id='${delId}']`).destroy(delId)
-    }
-
-    const cleanLibrary = () => { document.querySelector('hidrogen-library').clean() }
-
-    const resetHidrogenDefaults = () => { document.querySelector('hidrogen-app').restoreDefaults() }
-
-    this.child('.delete-game-modal .btn-confirm').addEventListener('click', deleteGame)
-    // this.child('.clean-library-modal .btn-confirm').addEventListener('click', cleanLibrary)
-    // this.child('.reset-hidrogen-modal .btn-confirm').addEventListener('click', resetHidrogenDefaults)
+    this.get('delete-game').onDidConfirm(() => { this.hidrogen.library.remove(this.get('delete-game').getAttribute('game-id')) })
   }
 
   render () {

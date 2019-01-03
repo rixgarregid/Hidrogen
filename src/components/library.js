@@ -35,7 +35,7 @@ class Library extends HidrogenComponent {
       let games = await util.readdir(this.gamesFolder)
 
       for (let gameId of games) {
-        let gameData = JSON.parse(fs.readFileSync(path.join(this.gamesFolder, `${gameId}`, 'game.json')))
+        let gameData = JSON.parse(fs.readFileSync(path.join(this.gamesFolder, `${gameId}`)))
         this.add(gameData)
       }
     } catch (err) {
@@ -43,42 +43,46 @@ class Library extends HidrogenComponent {
     }
   }
 
-  add (gameData) {
-    if (!fs.existsSync(this.gamesFolder)) mkdir(this.gamesFolder)
+  getGame (gameId) {
+    return this.child(`hidrogen-game-card[game-id='${gameId}']`)
+  }
 
-    if (!gameData.hasOwnProperty('id')) gameData.id = this.generateGameId()
-
-    let gameFolder = path.join(this.gamesFolder, `${gameData.id}`)
-    mkdir(gameFolder)
-
-    fs.writeFileSync(path.join(gameFolder, 'game.json'), JSON.stringify(gameData, null, 2))
-
-    this.querySelector('.game-container').innerHTML += `
+  createGameElement (gameData) {
+    this.child('.game-container').innerHTML += `
       <hidrogen-game-card
         game-id=${gameData.id}
         game-title='${gameData.title}'
-        custom-bg='${gameData.customBackground}'
         path='${gameData.path}'
+        custom-bg='${gameData.customBackground}'
       ></hidrogen-game-card>
     `
+  }
 
+  // A `gameData` object looks like this.
+  // {
+  //   id: 111111,
+  //   title: 'Some cool name',
+  //   path: '../Program Files/Cool Game/coolgame.exe',
+  //   customBackground: '../Program Files/Cool Game/Splash.png'
+  // }
+  add (gameData) {
+    // If we're adding a brand-new game it won't have any Id, so we assign
+    // it one randomly generated.
+    if (!gameData.hasOwnProperty('id')) gameData.id = this.generateGameId()
+
+    let gameDataFile = path.join(this.getGamesFolderPath(), `${gameData.id}.json`)
+    fs.writeFileSync(gameDataFile, JSON.stringify(gameData, null, 2))
+
+    this.createGameElement(gameData)
     this.updateGameCounter(this.getTotalGames() + 1)
-
-    let addedGame = this.querySelector(`.game-container hidrogen-game-card[game-id='${gameData.id}']`)
-    if (gameData.customBackground === undefined) {
-      addedGame.classList.add('no-bg')
-    }
   }
 
   remove (gameId) {
-    let removedGame = this.child(`.game-container hidrogen-game-card[game-id='${gameId}']`)
-    this.child('.game-container').removeChild(removedGame)
+    let game = this.getGame(gameId)
 
     this.updateGameCounter(this.getTotalGames() - 1)
-
-    rimraf(path.join(this.gamesFolder, `${removedGame.gameId}`), (err) => {
-      if (err) console.log(err)
-    })
+    rimraf(path.join(this.gamesFolder, `${game.gameId}`), err => { if (err) console.log(err) })
+    game.destroy()
   }
 
   getAllGames () {
@@ -90,7 +94,6 @@ class Library extends HidrogenComponent {
   }
 
   search (game) {
-    // binarySearch(this.getGameNames(), game)
     for (let gameItem of this.getAllGames()) {
       if (gameItem.gameTitle.toUpperCase().indexOf(game) > -1) {
         gameItem.classList.remove('hidden')
@@ -102,7 +105,6 @@ class Library extends HidrogenComponent {
 
   clean () {
     for (let game of this.getAllGames()) {
-      // this.child('.game-container').removeChild(game)
       this.remove(game.gameId)
     }
   }

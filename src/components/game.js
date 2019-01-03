@@ -35,7 +35,8 @@ class Game extends HidrogenComponent {
 
   get customBackground () {
     if (this.getAttribute('custom-bg') === 'undefined') {
-      this.setAttribute('custom-bg', '')
+      this.removeAttribute('custom-bg')
+      this.classList.add('no-bg')
     } else {
       return this.getAttribute('custom-bg')
     }
@@ -78,8 +79,8 @@ class Game extends HidrogenComponent {
     this.hidrogen.board.updateView('game-editor')
   }
 
-  destroy (id) {
-    this.hidrogen.library.remove(id)
+  destroy () {
+    this.remove()
     this.emitter.emit('did-destroy')
     this.emitter.dispose()
   }

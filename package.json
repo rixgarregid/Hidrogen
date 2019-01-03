@@ -8,7 +8,7 @@
     "dev": "electron . --development && npm run watch",
     "watch": "npm run watch:styles",
     "watch:styles": "gulp styles:compile && gulp styles:watch",
-    "dist": "build --win",
+    "dist": "electron-packager . Hidrogen --overwrite --prune=true --out=./dist2 --icon=./static/images/hidrogen-icon.ico --version-string.CompanyName=\"Hidrogen\" --version-string.FileDescription \"Your gaming library\" --version-string.ProductName=\"Hidrogen\"",
     "ship": "build --win -p always"
   },
   "keywords": [
