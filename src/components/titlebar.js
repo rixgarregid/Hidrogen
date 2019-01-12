@@ -1,5 +1,5 @@
 const HidrogenComponent = require('./hidrogen-component')
-const { remote } = require('electron')
+const { remote, ipcRenderer } = require('electron')
 const { app } = remote
 
 // The {Titlebar} class represents the upper element of the
@@ -9,16 +9,31 @@ class Titlebar extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['titlebar']
-    this.windowController = remote.getCurrentWindow()
+    // this.windowController = remote.getCurrentWindow()
+
+    // this.appWindowState = 'window'
+
     this.subscribeToDOMEvents()
   }
 
   subscribeToDOMEvents () {
-    this.child('.btn-window-close').onDidClick(() => { app.quit() })
-    this.child('.btn-window-minimize').onDidClick(() => { this.windowController.minimize() })
-    this.child('.btn-window-maximize').onDidClick(() => {
-      this.windowController.isMaximized() ? this.windowController.restore() : this.windowController.maximize()
-    })
+    this.child('.btn-window-close').onDidClick(() => { this.hidrogen.window.close() })
+    this.child('.btn-window-minimize').onDidClick(() => { this.hidrogen.window.minimize() })
+    this.child('.btn-window-maximize').onDidClick(() => { this.hidrogen.window.toggle() })
+
+    // this.child('.btn-window-maximize').onDidClick(() => {
+    //   // ipcRenderer.send('window:toggle')
+    //   if (this.appWindowState === 'maximized') {
+    //     this.appWindowState = 'window'
+    //     this.hidrogen.classList.remove('maximized')
+    //   } else {
+    //     this.appWindowState = 'maximized'
+    //     this.hidrogen.classList.add('maximized')
+    //     this.windowController.setPosition(0, 0)
+    //   }
+    //   // this.windowController.isMaximized() ? this.windowController.unmaximize() : this.windowController.maximize()
+    //   // this.windowController.maximize()
+    // })
   }
 
   // render () {

@@ -1,4 +1,5 @@
-const { BrowserWindow } = require('electron')
+const { BrowserWindow, ipcMain } = require('electron')
+const { EventEmitter } = require('events')
 const path = require('path')
 const url = require('url')
 
@@ -6,8 +7,9 @@ const url = require('url')
 // events and states throught a electron's {BrowserWindow}
 // instance.
 module.exports =
-class HidrogenWindow {
+class HidrogenWindow extends EventEmitter {
   constructor (options) {
+    super()
     this.dev = options.dev
 
     this.preferences = {
@@ -16,8 +18,8 @@ class HidrogenWindow {
       show: false,
       frame: false,
       transparent: true,
-      maximizable: false,
-      resizable: false,
+      maximizable: true,
+      resizable: true,
       icon: path.resolve('./static/images/hidrogen-icon.png')
     }
 
@@ -37,6 +39,13 @@ class HidrogenWindow {
     if (this.dev) this.browserWindow.webContents.openDevTools()
 
     this.browserWindow.on('ready-to-show', () => this.browserWindow.show())
+
+    this.subscribeToEvents()
+  }
+
+  subscribeToEvents () {
+    this.on('open-devtools', () => { this.browserWindow.webContents.openDevTools() })
+    ipcMain.on('window:toggle', () => { this.toggle() })
   }
 
   close () {
@@ -69,5 +78,17 @@ class HidrogenWindow {
 
   restore () {
     this.browserWindow.restore()
+  }
+
+  toggle () {
+    if (this.browserWindow.isMaximized()) {
+      this.browserWindow.unmaximize()
+    } else {
+      this.browserWindow.maximize()
+    }
+  }
+
+  openDevTools () {
+    this.emit('open-devtools')
   }
 }

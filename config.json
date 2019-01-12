@@ -1,10 +1,9 @@
 {
   "autorun": false,
   "autoclose": false,
-  "closingCountdown": true,
-  "allowMultiInstance": false,
-  "askBeforeLeave": false,
+  "closingCountdown": false,
+  "showGameCounter": true,
+  "multiInstance": false,
   "autolang": true,
-  "lang": "de",
-  "showGameCounter": true
+  "lang": "en"
 }

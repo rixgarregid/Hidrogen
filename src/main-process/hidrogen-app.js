@@ -29,7 +29,7 @@ class HidrogenApp extends EventEmitter {
   }
 
   registerKeyboardCommands () {
-    globalShortcut.register('Ctrl+Alt+I', () => { this.window.webContents.openDevTools() })
+    globalShortcut.register('Ctrl+Shift+I', () => { this.window.openDevTools() })
   }
 
   subscribeToEvents () {

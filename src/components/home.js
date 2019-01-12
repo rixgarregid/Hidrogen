@@ -27,7 +27,7 @@ class Home extends HidrogenComponent {
   render () {
     super.render(`
       <hidrogen-panel class="panel background-video">
-        <video src="../static/video/video_sample.mp4" autoplay muted loop="true"></video>
+        <video src="../static/video/video_sample.mp4" muted loop="true"></video>
       </hidrogen-panel>
       <hidrogen-panel class="background-video-overlay"></hidrogen-panel>
 
@@ -40,8 +40,3 @@ class Home extends HidrogenComponent {
 }
 
 customElements.define('hidrogen-home', Home)
-
-// <hidrogen-btn text="${i18n.translate('Add a game')}" class="outlined add-btn"></hidrogen-btn>
-// <hidrogen-panel class="home-btns">
-//   <hidrogen-btn text="${i18n.translate('Go to my library')}" class="library-btn"></hidrogen-btn>
-// </hidrogen-panel>

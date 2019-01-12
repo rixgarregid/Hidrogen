@@ -1,9 +1,9 @@
 const HidrogenComponent = require('./hidrogen-component')
+const WindowController = require('../window-controller')
 const Config = require('../config')
+const util = require('../util')
 const { Emitter } = require('event-kit')
 const { remote } = require('electron')
-const { app } = remote
-const os = require('os')
 
 // The {App} class links all the main components that builds
 // the Hidrogen UI. Also sends debug information for the renderer
@@ -11,6 +11,10 @@ const os = require('os')
 class App extends HidrogenComponent {
   constructor () {
     super()
+    this.startTime = Date.now()
+    this.emitter = new Emitter()
+
+    this.loader = this.getComponent('loader')
     this.sidebar = this.getComponent('sidebar')
     this.board = this.getComponent('board')
     this.home = this.getComponent('home')
@@ -20,16 +24,26 @@ class App extends HidrogenComponent {
     this.about = this.getComponent('about')
     this.modals = this.getComponent('modals')
     this.config = new Config()
-
-    this.emitter = new Emitter()
+    this.window = new WindowController()
 
     this.initializeState()
-    this.attachEvents()
+    this.subscribeToDOMEvents()
+    this.logDebugInfo()
   }
 
   initializeState () {
     this.appStateController = remote.getCurrentWindow()
     this.appStateController.focus()
+
+    this.states = {
+      focus: true,
+      loaded: false
+    }
+
+    this.loadedComponents = {
+      dom: false,
+      library: false
+    }
   }
 
   getComponent (component) {
@@ -39,6 +53,47 @@ class App extends HidrogenComponent {
   setView (view) {
     this.board.updateView(view)
     this.sidebar.updateSelectedItem(view)
+
+    if (view === 'game-editor') {
+      this.gameEditor.setMode('add-game')
+      this.gameEditor.clean()
+    }
+  }
+
+  toggleAppState () {
+    if (this.isReady()) {
+      if (!this.appStateController.isFocused()) {
+        this.blur()
+        this.getComponent('board').getView('home').pauseBackgroundVideo()
+      } else {
+        this.focus()
+        this.getComponent('board').getView('home').playBackgroundVideo()
+      }
+    }
+  }
+
+  logDebugInfo () {
+    util.logEnvironmentInfo()
+  }
+
+  logReadyDelayTime () {
+    // We need to substract 1000ms due to the delayed game loading.
+    console.log(`App delay time: ${Date.now() - this.startTime - 1000}ms`)
+  }
+
+  restoreDefaults () {
+    this.library.clean()
+    this.config.restoreDefaults()
+  }
+
+  isReady () {
+    return this.states.loaded
+  }
+
+  areComponentsLoaded () {
+    if (this.loadedComponents.library) {
+      this.emitter.emit('ready')
+    }
   }
 
   focus () {
@@ -55,6 +110,10 @@ class App extends HidrogenComponent {
     this.emitter.emit('did-blur')
   }
 
+  onReady (callback) {
+    this.emitter.on('ready', callback)
+  }
+
   onDidFocus (callback) {
     this.emitter.on('did-focus', callback)
   }
@@ -63,58 +122,22 @@ class App extends HidrogenComponent {
     this.emitter.on('did-blur', callback)
   }
 
-  toggleAppState () {
-    if (!this.appStateController.isFocused()) {
-      this.blur()
-      this.getComponent('board').getView('home').pauseBackgroundVideo()
-    } else {
-      this.focus()
-      this.getComponent('board').getView('home').playBackgroundVideo()
-    }
-  }
-
-  restoreDefaults () {
-    this.library.clean()
-    this.config.restoreDefaults()
-  }
-
-  getSystemInfo () {
-    let systemOS
-    let arch
-
-    switch (process.platform) {
-      case 'win32': systemOS = 'Windows'; break
-      case 'linux': systemOS = 'Linux'; break
-      case 'darwin': systemOS = 'MacOS'; break
-    }
-
-    switch (os.arch()) {
-      case 'ia32': arch = '32-bit'; break
-      case 'arm64': arch = '64-bit'; break
-      case 'x32': arch = '32-bit'; break
-      case 'x64': arch = '64-bit'; break
-    }
-
-    let platformRelease = os.release()
-
-    return `${systemOS} ${platformRelease} ${arch}`
-  }
-
-  attachEvents () {
-    const toggleAppState = () => {
-      if (!this.appStateController.isFocused()) {
-        this.blur()
-        this.getComponent('board').getView('home').pauseBackgroundVideo()
-      } else {
-        this.focus()
-        this.getComponent('board').getView('home').playBackgroundVideo()
+  subscribeToDOMEvents () {
+    this.onReady(() => {
+      if (!this.states.loaded) {
+        this.logReadyDelayTime()
+        this.home.playBackgroundVideo()
+        this.loader.hide()
+        this.states.loaded = true
       }
-    }
+    })
 
     // Attemping to call a function in a renderer window that has
     // been closed or released.
-    this.appStateController.on('blur', toggleAppState)
-    this.appStateController.on('focus', toggleAppState)
+    this.appStateController.on('blur', () => { this.toggleAppState() })
+    this.appStateController.on('focus', () => { this.toggleAppState() })
+
+    document.addEventListener('DOMContentLoaded', () => { this.loadedComponents.dom = true })
   }
 
   render () {

@@ -51,14 +51,6 @@ class Game extends HidrogenComponent {
     }
   }
 
-  toggleMenu () {
-    this.child('.game-menu').classList.toggle('active')
-    this.child('.game-menu-btn').classList.toggle('active')
-
-    this.child('.title').classList.toggle('disabled')
-    this.child('.play-btn').classList.toggle('disabled')
-  }
-
   setBackgroundImage (imageURL) {
     document.querySelector('.custom-background').src = imageURL
   }
@@ -79,18 +71,30 @@ class Game extends HidrogenComponent {
     this.hidrogen.board.updateView('game-editor')
   }
 
-  destroy () {
-    this.remove()
-    this.emitter.emit('did-destroy')
-    this.emitter.dispose()
+  toggleMenu () {
+    this.child('.game-menu').classList.toggle('active')
+    this.child('.game-menu-btn').classList.toggle('active')
+
+    this.child('.title').classList.toggle('disabled')
+    this.child('.play-btn').classList.toggle('disabled')
   }
 
   openFolder () {
     shell.showItemInFolder(this.path)
   }
 
+  destroy () {
+    this.remove()
+    this.emitter.emit('did-destroy')
+    this.emitter.dispose()
+  }
+
   onDidCreate (callback) {
     this.emitter.on('did-create', callback)
+  }
+
+  onDidEdit (callback) {
+    this.emitter.on('did-edit', callback)
   }
 
   onDidDestroy (callback) {

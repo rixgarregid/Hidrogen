@@ -32,11 +32,16 @@ class GameEditor extends HidrogenComponent {
   }
 
   getUserInput () {
-    return {
+    let data = {
       title: this.child('.game-title-input').value,
-      path: this.child('.game-path-input').value,
-      customBackground: this.tempCustomBackgroundPath || this.child('.preview').src
+      path: this.child('.game-path-input').value
     }
+
+    if (this.tempCustomBackgroundPath !== undefined) {
+      data.customBackground = this.tempCustomBackgroundPath
+    }
+
+    return data
   }
 
   addGameToLibrary (gameObject) {
@@ -56,7 +61,7 @@ class GameEditor extends HidrogenComponent {
     data.id = this.edittedGameData.id
     fs.writeFileSync(gameDataPath, JSON.stringify(data, null, 2))
 
-    this.hidrogen.library.reload()
+    this.hidrogen.library.reloadGame(data)
     this.close()
     this.clean()
   }
@@ -90,16 +95,18 @@ class GameEditor extends HidrogenComponent {
   fill (gameObject) {
     this.edittedGameData = gameObject
     this.child('.game-title-input').value = this.edittedGameData.title
+    this.child('.game-title-input').classList.add('active')
     this.child('.game-path-input').value = this.edittedGameData.path
+    this.child('.game-path-input').classList.add('active')
     this.child('.preview').src = this.edittedGameData.customBackground
     this.child('.preview').classList.add('active')
   }
 
   clean () {
     this.child('.game-title-input').value = ''
-    this.child('.game-title-input .input-text-label').classList.remove('active')
+    this.child('.game-title-input').classList.remove('active')
     this.child('.game-path-input').value = ''
-    this.child('.game-path-input .input-text-label').classList.remove('active')
+    this.child('.game-path-input').classList.remove('active')
     this.child('.preview').src = '../static/images/custom-background-template.gif'
     this.child('.preview').classList.remove('active')
     this.emitter.emit('did-clean')

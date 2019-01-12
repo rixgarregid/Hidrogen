@@ -31,4 +31,39 @@ const readdir = promisify(fs.readdir)
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 
-module.exports = { readdir, readFile, writeFile }
+const os = require('os')
+
+const getSystemInfo = () => {
+  let systemOS
+  let arch
+
+  switch (process.platform) {
+    case 'win32': systemOS = 'Windows'; break
+    case 'linux': systemOS = 'Linux'; break
+    case 'darwin': systemOS = 'MacOS'; break
+  }
+
+  switch (os.arch()) {
+    case 'ia32': arch = '32-bit'; break
+    case 'arm64': arch = '64-bit'; break
+    case 'x32': arch = '32-bit'; break
+    case 'x64': arch = '64-bit'; break
+  }
+
+  let platformRelease = os.release()
+
+  return `${systemOS} ${platformRelease} ${arch}`
+}
+
+const { app } = require('electron').remote
+
+const logEnvironmentInfo = () => {
+  console.log(`Hidrogen version: v${app.getVersion()}`)
+  console.log(`Node version: ${process.version}`)
+  console.log(`Electron version: ${process.versions.electron}`)
+  console.log(`PID: ${process.pid}`)
+  console.log(`Running on ${getSystemInfo()}`)
+  console.log(`Exec path: ${process.execPath}`)
+}
+
+module.exports = { readdir, readFile, writeFile, getSystemInfo, logEnvironmentInfo }

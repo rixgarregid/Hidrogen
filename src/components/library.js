@@ -1,11 +1,9 @@
 const HidrogenComponent = require('./hidrogen-component')
-const Config = require('../config')
-const mkdir = require('mkdirp')
+const util = require('../util')
 const rimraf = require('rimraf')
 const path = require('path')
 const fs = require('fs')
-
-const util = require('../util')
+const { Emitter } = require('event-kit')
 
 // The {Library} class displays all the games added by the
 // user and controls how they are shown.
@@ -14,37 +12,74 @@ class Library extends HidrogenComponent {
     super({ render: false })
     this.classNames = ['board-view', 'library']
     this.gamesFolder = path.resolve('games/')
+    this.emitter = new Emitter()
 
     this.render()
     this.initializeGameCounter()
-    this.loadGames()
     this.subscribeToDOMEvents()
+
+    // We delay loading games until the DOM is fully loaded in order
+    // to avoid the app from freezing while loading those games.
+    // document.addEventListener('DOMContentLoaded', () => { this.loadGames() })
+    // this.loadGames()
+    setTimeout(() => { this.loadGames() }, 1000)
   }
 
-  initializeGameCounter () {
-    if (!this.hidrogen.config.get('showGameCounter')) {
-      this.child('.total-game-counter').classList.add('no-display')
-    } else {
-      this.gameCounter = 0
-      this.child('.total-game-counter .game-counter').innerText = this.gameCounter
+  getGame (gameId) {
+    return this.child(`hidrogen-game-card[game-id='${gameId}']`)
+  }
+
+  getAllGames () {
+    return this.children('.game-container hidrogen-game-card')
+  }
+
+  getGamesFolderPath () {
+    return this.gamesFolder
+  }
+
+  getTotalGames () {
+    return this.gameCounter
+  }
+
+  add (gameData) {
+    // If we're adding a brand-new game it won't have any Id, so we assign
+    // it one randomly generated.
+    if (!gameData.hasOwnProperty('id')) {
+      gameData.id = this.generateGameId()
+
+      let gameDataFile = path.join(this.getGamesFolderPath(), `${gameData.id}.json`)
+      fs.writeFileSync(gameDataFile, JSON.stringify(gameData, null, 2))
     }
+
+    this.createGameElement(gameData)
+    this.updateGameCounter(this.getTotalGames() + 1)
+  }
+
+  remove (gameId) {
+    let game = this.getGame(gameId)
+
+    this.updateGameCounter(this.getTotalGames() - 1)
+    rimraf(path.join(this.gamesFolder, `${game.gameId}.json`), err => { if (err) console.log(err) })
+    game.destroy()
   }
 
   async loadGames () {
     try {
       let games = await util.readdir(this.gamesFolder)
+      let startTime = Date.now()
 
       for (let gameId of games) {
         let gameData = JSON.parse(fs.readFileSync(path.join(this.gamesFolder, `${gameId}`)))
         this.add(gameData)
       }
+
+      let loadDelayTime = `Game loading delay time: ${Date.now() - startTime}ms`
+      console.log(loadDelayTime)
+
+      this.emitter.emit('did-load-games')
     } catch (err) {
       console.log(`Something went wrong in Library::loadGames(): ${err}`)
     }
-  }
-
-  getGame (gameId) {
-    return this.child(`hidrogen-game-card[game-id='${gameId}']`)
   }
 
   createGameElement (gameData) {
@@ -58,63 +93,14 @@ class Library extends HidrogenComponent {
     `
   }
 
-  // A `gameData` object looks like this.
-  // {
-  //   id: 111111,
-  //   title: 'Some cool name',
-  //   path: '../Program Files/Cool Game/coolgame.exe',
-  //   customBackground: '../Program Files/Cool Game/Splash.png'
-  // }
-  add (gameData) {
-    // If we're adding a brand-new game it won't have any Id, so we assign
-    // it one randomly generated.
-    if (!gameData.hasOwnProperty('id')) gameData.id = this.generateGameId()
-
-    let gameDataFile = path.join(this.getGamesFolderPath(), `${gameData.id}.json`)
-    fs.writeFileSync(gameDataFile, JSON.stringify(gameData, null, 2))
-
-    this.createGameElement(gameData)
-    this.updateGameCounter(this.getTotalGames() + 1)
-  }
-
-  remove (gameId) {
-    let game = this.getGame(gameId)
-
-    this.updateGameCounter(this.getTotalGames() - 1)
-    rimraf(path.join(this.gamesFolder, `${game.gameId}`), err => { if (err) console.log(err) })
-    game.destroy()
-  }
-
-  getAllGames () {
-    return this.children('.game-container hidrogen-game-card')
-  }
-
-  getGamesFolderPath () {
-    return this.gamesFolder
-  }
-
-  search (game) {
-    for (let gameItem of this.getAllGames()) {
-      if (gameItem.gameTitle.toUpperCase().indexOf(game) > -1) {
-        gameItem.classList.remove('hidden')
-      } else {
-        gameItem.classList.add('hidden')
-      }
+  initializeGameCounter () {
+    if (!this.hidrogen.config.get('showGameCounter')) {
+      this.child('.total-game-counter').classList.add('no-display')
+    } else {
+      this.gameCounter = 0
+      this.child('.total-game-counter .game-counter').innerText = this.gameCounter
     }
-  }
 
-  clean () {
-    for (let game of this.getAllGames()) {
-      this.remove(game.gameId)
-    }
-  }
-
-  reload () {
-    this.clean()
-    this.loadGames()
-  }
-
-  getTotalGames () {
     return this.gameCounter
   }
 
@@ -129,26 +115,77 @@ class Library extends HidrogenComponent {
     }
   }
 
+  search (game) {
+    for (let gameItem of this.getAllGames()) {
+      if (gameItem.gameTitle.toUpperCase().indexOf(game) > -1) {
+        gameItem.classList.remove('hidden')
+      } else {
+        gameItem.classList.add('hidden')
+      }
+    }
+  }
+
+  toggleSearchbox () {
+    if (!this.child('.searchbox').classList.contains('active')) {
+      this.child('.searchbox').classList.add('active')
+      this.child('.input-search').focus()
+    } else {
+      this.child('.searchbox').classList.remove('active')
+    }
+  }
+
+  clean () {
+    for (let game of this.getAllGames()) {
+      this.remove(game.gameId)
+    }
+  }
+
+  // Remove games only from the DOM and load their files again.
+  reload () {
+    for (let game of this.getAllGames()) {
+      game.destroy()
+      this.updateGameCounter(this.getTotalGames() - 1)
+    }
+
+    this.loadGames()
+  }
+
   generateGameId () {
     // A Game ID is a integer number between 111.111 and 999.999.
     return Math.floor(Math.random() * (999999 - 111111) + 111111)
   }
 
+  onDidAddGame (callback) {
+    this.emitter.on('did-add-game', callback)
+  }
+
+  onDidRemoveGame (callback) {
+    this.emitter.on('did-remove-game', callback)
+  }
+
+  onDidLoadGames (callback) {
+    this.emitter.on('did-load-games', callback)
+  }
+
+  onDidClean (callback) {
+    this.emitter.on('did-clean', callback)
+  }
+
+  reloadGame (gameData) {
+    this.getGame(gameData.id).destroy()
+    this.updateGameCounter(this.getTotalGames() - 1)
+    this.add(gameData)
+  }
+
   subscribeToDOMEvents () {
-    const toggleSearchbox = () => {
-      if (!this.child('.searchbox').classList.contains('active')) {
-        this.child('.searchbox').classList.add('active')
-        this.child('.input-search').focus()
-      } else {
-        this.child('.searchbox').classList.remove('active')
-      }
-    }
+    this.onDidLoadGames(() => {
+      this.hidrogen.loadedComponents.library = true
+      this.hidrogen.areComponentsLoaded()
+    })
 
-    const search = () => { this.search(this.child('.input-search').value.toUpperCase()) }
-
-    this.child('.search-icon').onDidClick(toggleSearchbox)
+    this.child('.search-icon').onDidClick(() => { this.toggleSearchbox() })
     this.child('.add-btn').onDidClick(() => { this.hidrogen.setView('game-editor') })
-    this.child('.input-search').addEventListener('keyup', search)
+    this.child('.input-search').addEventListener('keyup', () => { this.search(this.child('.input-search').value.toUpperCase()) })
   }
 
   render () {

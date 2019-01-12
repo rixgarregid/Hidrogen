@@ -1,22 +1,32 @@
 const HidrogenComponent = require('./hidrogen-component')
+const { Emitter } = require('event-kit')
 
 class Loader extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['loader']
-
-    this.attachEvents()
+    this.emitter = new Emitter()
+    this.subscribeToDOMEvents()
   }
 
-  attachEvents () {
+  hide () {
+    this.classList.add('inactive')
+    this.emitter.emit('did-hide')
+  }
+
+  onDidHide (callback) {
+    this.emitter.on('did-hide', callback)
+  }
+
+  subscribeToDOMEvents () {
     // document.addEventListener('DOMContentLoaded', () => {
     //   this.classList.add('inactive')
     //   console.log('Dom is ready!')
     // })
 
-    let timer = setInterval(() => {
-        this.classList.add('inactive')
-    }, 1000)
+    // let timer = setInterval(() => {
+    //     this.classList.add('inactive')
+    // }, 1000)
   }
 
   render () {
