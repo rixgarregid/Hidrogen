@@ -35,6 +35,7 @@ class ModalManager extends HidrogenComponent {
     this.get('closing-countdown').onDidShow(updateCountdownModalTimer)
     this.get('closing-countdown').onDidConfirm(() => { app.quit() })
     this.get('delete-game').onDidConfirm(() => { this.hidrogen.library.remove(this.get('delete-game').getAttribute('game-id')) })
+    this.get('edit-library-name').onDidConfirm(() => {  })
   }
 
   render () {
@@ -62,6 +63,18 @@ class ModalManager extends HidrogenComponent {
         type="confirm"
         class="reset-hidrogen-modal"
         content="${i18n.translate('Hey! This action can\'t be reverted, once done there\'s no way back. Are you sure about what are you doing?')}"
+      ></hidrogen-modal>
+
+      <hidrogen-modal
+        type="custom"
+        class="new-custom-library-modal"
+        content="Library name"
+      ></hidrogen-modal>
+
+      <hidrogen-modal
+        type="custom"
+        class="edit-library-name-modal"
+        content="Library name"
       ></hidrogen-modal>
     `)
   }

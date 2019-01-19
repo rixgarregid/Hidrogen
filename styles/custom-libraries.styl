@@ -1,0 +1,89 @@
+.custom-library-manager
+    display block
+    width 100%
+    height 100%
+    position absolute
+    top 0
+    transform scale(3)
+    transition .3s cubic-bezier(0.165, 0.840, 0.440, 1.000)
+    background rgba(0, 0, 0, .8)
+    z-index -1
+    opacity 0
+
+    &.active
+        transform scale(1)
+        opacity 1
+        z-index 3
+
+    .library-container
+        display grid
+        grid-template-columns repeat(3, 410px)
+        box-sizing border-box
+        width 100%
+        height 100%
+        padding 30px
+        overflow-y scroll
+
+    .floating-btns
+        display block
+        width 100%
+        position fixed
+        bottom 40px
+        right 40px
+
+        .btn
+            float right
+
+        .add-btn
+            width 50px
+            height 50px
+            margin-right 30px
+            border-radius 50%
+
+            icon
+                margin 0
+                font-size 25px
+                line-height 30px
+
+.custom-library
+    display inline-block
+    width 350px
+    height 200px
+    border solid 1px gray
+    transition ease-in-out .2s
+    cursor pointer
+    overflow hidden
+    position relative
+
+    &.active
+        width 100%
+        height 100%
+
+    &:hover
+        background rgba(0, 0, 0, .5)
+
+        .title
+            // top 50%
+            transform translate(-50%, -50%) scale(1)
+
+        .delete-btn
+            transform scale(1)
+
+    .title
+        position absolute
+        // top -20px
+        top 50%
+        left 50%
+        transform translate(-50%, -50%) scale(0)
+        transition .2s ease-in-out
+        font-size 18px
+
+    .delete-btn
+        background none
+        color red
+        font-size 16px
+        position absolute
+        top 30px
+        right 30px
+        transform scale(0)
+        transition .2s ease-in-out

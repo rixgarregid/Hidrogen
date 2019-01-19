@@ -15,6 +15,9 @@ class Library extends HidrogenComponent {
     this.emitter = new Emitter()
 
     this.render()
+
+    this.customs = this.child('hidrogen-library-manager')
+    
     this.initializeGameCounter()
     this.subscribeToDOMEvents()
 
@@ -183,6 +186,7 @@ class Library extends HidrogenComponent {
       this.hidrogen.areComponentsLoaded()
     })
 
+    this.child('.custom-libs-btn').onDidClick(() => { this.customs.show() })
     this.child('.search-icon').onDidClick(() => { this.toggleSearchbox() })
     this.child('.add-btn').onDidClick(() => { this.hidrogen.setView('game-editor') })
     this.child('.input-search').addEventListener('keyup', () => { this.search(this.child('.input-search').value.toUpperCase()) })
@@ -191,6 +195,8 @@ class Library extends HidrogenComponent {
   render () {
     super.render(`
       <hidrogen-panel class="toolbar">
+
+        <hidrogen-btn text="Mis bibliotecas" class="custom-libs-btn"></hidrogen-btn>
 
         <hidrogen-panel class="searchbox">
           <hidrogen-btn icon="search" class="search-icon"></hidrogen-btn>
@@ -206,7 +212,9 @@ class Library extends HidrogenComponent {
 
       </hidrogen-panel>
 
-      <hidrogen-panel class="game-container"></hidrogen-panel>`
+      <hidrogen-panel class="game-container"></hidrogen-panel>
+      <hidrogen-library-manager></hidrogen-library-manager>
+      `
     )
   }
 }
