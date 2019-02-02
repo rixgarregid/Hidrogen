@@ -27,7 +27,7 @@ class Home extends HidrogenComponent {
   render () {
     super.render(`
       <hidrogen-panel class="panel background-video">
-        <video src="../static/video/video_sample.mp4" muted loop="true"></video>
+        <video src="../static/video/World of Warcraft Official Hellfire Citadel Trailer.mp4" muted loop="true"></video>
       </hidrogen-panel>
       <hidrogen-panel class="background-video-overlay"></hidrogen-panel>
 

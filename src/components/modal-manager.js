@@ -30,7 +30,7 @@ class ModalManager extends HidrogenComponent {
       }, 1000)
     }
 
-    this.get('clean-library').onDidConfirm(() => { this.hidrogen.library.clean() })
+    this.get('clean-library').onDidConfirm(() => { this.hidrogen.library.clean(); this.hidrogen.setView('library') })
     this.get('reset-hidrogen').onDidConfirm(() => { this.hidrogen.restoreDefaults() })
     this.get('closing-countdown').onDidShow(updateCountdownModalTimer)
     this.get('closing-countdown').onDidConfirm(() => { app.quit() })
@@ -67,8 +67,12 @@ class ModalManager extends HidrogenComponent {
 
       <hidrogen-modal
         type="custom"
+        modal-title="Añadir biblioteca"
         class="new-custom-library-modal"
-        content="Library name"
+        content="
+          <hidrogen-input type='text'></hidrogen-input>
+          <span> Añadir biblioteca </span>
+        "
       ></hidrogen-modal>
 
       <hidrogen-modal

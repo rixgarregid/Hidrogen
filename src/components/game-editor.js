@@ -33,20 +33,23 @@ class GameEditor extends HidrogenComponent {
 
   getUserInput () {
     let data = {
-      title: this.child('.game-title-input').value,
-      path: this.child('.game-path-input').value
+      name: this.child('.game-title-input').value,
+      execPath: this.child('.game-path-input').value
     }
 
     if (this.tempCustomBackgroundPath !== undefined) {
-      data.customBackground = this.tempCustomBackgroundPath
+      data.bgImage = this.tempCustomBackgroundPath
     }
 
     return data
   }
 
-  addGameToLibrary (gameObject) {
-    if (this.validate(gameObject)) {
-      this.hidrogen.library.add(gameObject)
+  addGameToLibrary (gameDataObject) {
+    if (this.validate(gameDataObject)) {
+
+      let game = this.hidrogen.library.renderGame(gameDataObject)
+      this.hidrogen.library.add(game)
+
       this.close()
       this.clean()
     } else {

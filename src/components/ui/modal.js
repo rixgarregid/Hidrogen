@@ -105,6 +105,18 @@ class Modal extends HidrogenComponent {
             </hidrogen-panel>
           </hidrogen-panel>
         `)
+
+      case 'custom':
+        super.render(`
+          <hidrogen-panel class="content">
+            <span class="title"> ${this.modalTitle} </span>
+            <span class="custom-content"> ${this.content} </span>
+            <hidrogen-panel class="btn-container">
+              <hidrogen-btn text="${i18n.translate('Nope, let me a moment...')}" class="btn-cancel"></hidrogen-btn>
+              <hidrogen-btn type="success" text="${i18n.translate('Yeah, n.n')}" class="btn-confirm"></btn>
+            </hidrogen-panel>
+          </hidrogen-panel>
+        `)
     }
   }
 }

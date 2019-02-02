@@ -42,12 +42,29 @@ class Game extends HidrogenComponent {
     }
   }
 
+  get libraries () {
+    return this.getAttribute('libraries').split(' ')
+  }
+
+  set libraries (libs) {
+
+  }
+
+  setData (data) {
+    if (typeof data !== Object) return
+    this.gameId = data.id
+    this.gameName = data.name
+    this.execPath = data.execPath
+    this.bgImage = data.bgImage
+  }
+
   getData () {
     return {
       id: this.gameId,
-      title: this.gameTitle,
-      path: this.path,
-      customBackground: this.customBackground
+      name: this.gameTitle,
+      execPath: this.path,
+      bgImage: this.customBackground,
+      libraries: this.libraries
     }
   }
 
@@ -81,6 +98,14 @@ class Game extends HidrogenComponent {
 
   openFolder () {
     shell.showItemInFolder(this.path)
+  }
+
+  hide () {
+    this.style.display = 'none'
+  }
+
+  show () {
+    this.style.display = 'inline-block'
   }
 
   destroy () {

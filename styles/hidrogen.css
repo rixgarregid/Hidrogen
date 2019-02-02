@@ -981,6 +981,14 @@ textarea::-webkit-input-placeholder {
 #app.disable-animations * {
   transition: none;
 }
+#app .test {
+  font-size: 25px;
+  opacity: 0.2;
+  position: absolute;
+  bottom: 50px;
+  right: 100px;
+  z-index: 20;
+}
 .titlebar {
   display: block;
   box-sizing: border-box;
@@ -1140,8 +1148,11 @@ textarea::-webkit-input-placeholder {
   overflow: hidden;
 }
 .home-screen .background-video video {
-  min-width: 100%;
-  min-height: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .home-screen .background-video-overlay {
   position: absolute;
@@ -1149,8 +1160,8 @@ textarea::-webkit-input-placeholder {
   right: 0;
   width: 100%;
   height: 100%;
-  background: #161a1f;
-  opacity: 0.5;
+  background: #4b5058;
+  opacity: 0.9;
   z-index: 1;
 }
 .home-screen .main-title {
@@ -1191,6 +1202,7 @@ textarea::-webkit-input-placeholder {
 }
 .library {
   background: library-background-color;
+  overflow: hidden;
 }
 .library .toolbar {
   display: block;
@@ -1203,13 +1215,41 @@ textarea::-webkit-input-placeholder {
   background: none;
   height: 40px;
   float: left;
+  color: #a9a9a9;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+  padding: 10px 0 10px 10px;
+}
+.library .toolbar .custom-libs-btn:hover {
+  color: #e3e3e3;
+}
+.library .toolbar .custom-libs-btn:hover + .icon-expand_more {
+  color: #e3e3e3;
+}
+.library .toolbar .icon-expand_more {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  float: left;
+  font-size: 16px;
+  color: #a9a9a9;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+}
+.library .toolbar .icon-expand_more:hover {
+  color: #e3e3e3;
+}
+.library .toolbar .icon-expand_more:hover + .custom-libs-btn {
+  color: #e3e3e3;
 }
 .library .toolbar .searchbox {
   display: inline-block;
   float: left;
   width: 250px;
   height: 40px;
-  margin-left: 20px;
+  margin-left: 50px;
   margin-right: 30px;
   position: relative;
 }
@@ -1250,6 +1290,8 @@ textarea::-webkit-input-placeholder {
   height: 40px;
   font-size: 13px;
   color: #a9a9a9;
+  float: right;
+  margin-right: 50px;
 }
 .library .toolbar .total-game-counter.no-display {
   display: none;
@@ -1934,7 +1976,7 @@ textarea::-webkit-input-placeholder {
   position: absolute;
   top: 0;
   transform: scale(3);
-  transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
   background: rgba(0,0,0,0.8);
   z-index: -1;
   opacity: 0;
@@ -1949,30 +1991,49 @@ textarea::-webkit-input-placeholder {
   grid-template-columns: repeat(3, 410px);
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  height: 85%;
   padding: 30px;
   overflow-y: scroll;
 }
 .custom-library-manager .floating-btns {
   display: block;
   width: 100%;
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
+  height: 15%;
+  position: relative;
+  bottom: 0;
+  right: 0;
 }
 .custom-library-manager .floating-btns .btn {
   float: right;
 }
 .custom-library-manager .floating-btns .add-btn {
-  width: 50px;
+  width: 250px;
   height: 50px;
-  margin-right: 30px;
-  border-radius: 50%;
+  top: 20px;
+  margin: auto;
+  border-radius: 50px;
+  line-height: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .custom-library-manager .floating-btns .add-btn icon {
-  margin: 0;
-  font-size: 25px;
+  font-size: 21px;
   line-height: 30px;
+  vertical-align: middle;
+}
+.custom-library-manager .floating-btns .add-btn span {
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+}
+.custom-library-manager .floating-btns .return-btn {
+  width: 150px;
+  height: 50px;
+  margin-top: 20px;
+  line-height: 30px;
+  border-radius: 50px;
+  margin-right: 300px;
 }
 .custom-library {
   display: inline-block;
@@ -1983,6 +2044,7 @@ textarea::-webkit-input-placeholder {
   cursor: pointer;
   overflow: hidden;
   position: relative;
+  margin-bottom: 70px;
 }
 .custom-library.active {
   width: 100%;
@@ -2001,17 +2063,23 @@ textarea::-webkit-input-placeholder {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(1);
   transition: 0.2s ease-in-out;
   font-size: 18px;
 }
 .custom-library .delete-btn {
   background: none;
   color: #f00;
-  font-size: 16px;
+  font-size: 20px;
   position: absolute;
-  top: 30px;
-  right: 30px;
+  top: 10px;
+  right: 10px;
   transform: scale(0);
   transition: 0.2s ease-in-out;
+}
+.custom-library .delete-btn:hover {
+  background: none;
+}
+.custom-library .delete-btn icon {
+  margin: 0;
 }

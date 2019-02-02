@@ -78,7 +78,7 @@ class App extends HidrogenComponent {
 
   logReadyDelayTime () {
     // We need to substract 1000ms due to the delayed game loading.
-    console.log(`App delay time: ${Date.now() - this.startTime - 1000}ms`)
+    console.log('%c[RendererProcess]:', 'color:blue;', `Ready load time: ${Date.now() - this.startTime - 1000}ms`)
   }
 
   restoreDefaults () {

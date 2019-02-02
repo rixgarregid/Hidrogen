@@ -1,8 +1,5 @@
 const HidrogenComponent = require('./hidrogen-component')
-const util = require('../util')
-const rimraf = require('rimraf')
-const path = require('path')
-const fs = require('fs')
+const GameDB = require('../local-databases/game-db')
 const { Emitter } = require('event-kit')
 
 // The {Library} class displays all the games added by the
@@ -10,14 +7,22 @@ const { Emitter } = require('event-kit')
 class Library extends HidrogenComponent {
   constructor () {
     super({ render: false })
+    this.games = []
+    this.gameObjects = []
+    this.gameDB = new GameDB()
+    this.activeLibrary = 'Mis juegos'
+
     this.classNames = ['board-view', 'library']
-    this.gamesFolder = path.resolve('games/')
     this.emitter = new Emitter()
+
+    this.gamesToRender = ''
+    this.gameContainer = this.child('.game-container')
 
     this.render()
 
+    this.games = this.getGames()
     this.customs = this.child('hidrogen-library-manager')
-    
+
     this.initializeGameCounter()
     this.subscribeToDOMEvents()
 
@@ -29,71 +34,98 @@ class Library extends HidrogenComponent {
   }
 
   getGame (gameId) {
-    return this.child(`hidrogen-game-card[game-id='${gameId}']`)
+    return this.child(`hidrogen-game[game-id='${gameId}']`)
+  }
+
+  getGames () {
+    return this.children('hidrogen-game-card')
   }
 
   getAllGames () {
-    return this.children('.game-container hidrogen-game-card')
-  }
-
-  getGamesFolderPath () {
-    return this.gamesFolder
+    return this.games
   }
 
   getTotalGames () {
     return this.gameCounter
   }
 
-  add (gameData) {
-    // If we're adding a brand-new game it won't have any Id, so we assign
-    // it one randomly generated.
-    if (!gameData.hasOwnProperty('id')) {
-      gameData.id = this.generateGameId()
+  add (game, libraries = []) {
+    this.gameDB.add(game.getData())
+    this.gameContainer.appendChild(game)
+    this.updateGameCounter(this.getTotalGames() + 1)
 
-      let gameDataFile = path.join(this.getGamesFolderPath(), `${gameData.id}.json`)
-      fs.writeFileSync(gameDataFile, JSON.stringify(gameData, null, 2))
+    if (libraries === []) return
+    for (let library in libraries) {
+      this.customs.add(library, game)
+      this.customs.updateGameCounter(library, this.customs.get(library).updateGameCounter(this.customs.get(library).getTotalGames() + 1))
+    }
+  }
+
+  remove (game, all = true) {
+    game.destroy()
+    this.updateGameCounter(this.getTotalGames() - 1)
+    if (all) this.gameDB.remove(game.getData())
+  }
+
+  loadGames () {
+    this.gameDB.load()
+  }
+
+  // add (game, libraries = {}) {
+  //   // If we're adding a brand-new game it won't have any Id, so we assign
+  //   // it one randomly generated.
+  //   // if (!gameData.hasOwnProperty('id')) {
+  //   //   gameData.id = this.generateGameId()
+  //   //
+  //   //   let gameDataFile = path.join(this.getGamesFolderPath(), `${gameData.id}.json`)
+  //   //   fs.writeFileSync(gameDataFile, JSON.stringify(gameData, null, 2))
+  //   // }
+  //
+  //   this.gameObject[`${gameData.id.toString()}`] = gameData
+  //
+  //   this.renderGameIntoLibrary(gameData)
+  //   this.updateGameCounter(this.getTotalGames() + 1)
+  // }
+
+  renderGame (gameData) {
+    let parsedGameLibraryArray = ''
+    for (let library of gameData.libraries) {
+      let parsedLib = library + ' '
+      parsedGameLibraryArray += parsedLib
     }
 
-    this.createGameElement(gameData)
+    let game = `
+      <hidrogen-game-card
+        game-id=${gameData.id}
+        game-title='${gameData.name}'
+        path='${gameData.execPath}'
+        custom-bg='${gameData.bgImage}'
+        libraries='${parsedGameLibraryArray}'
+      ></hidrogen-game-card>
+    `
+
+    this.gamesToRender += game
     this.updateGameCounter(this.getTotalGames() + 1)
   }
 
-  remove (gameId) {
-    let game = this.getGame(gameId)
-
-    this.updateGameCounter(this.getTotalGames() - 1)
-    rimraf(path.join(this.gamesFolder, `${game.gameId}.json`), err => { if (err) console.log(err) })
-    game.destroy()
+  addRendererGamesToLibrary () {
+    this.child('.game-container').innerHTML = this.gamesToRender
   }
 
-  async loadGames () {
-    try {
-      let games = await util.readdir(this.gamesFolder)
-      let startTime = Date.now()
+  setActiveLibrary (libraryId) {
+    this.activeLibrary = libraryId
 
-      for (let gameId of games) {
-        let gameData = JSON.parse(fs.readFileSync(path.join(this.gamesFolder, `${gameId}`)))
-        this.add(gameData)
+    for (let game of this.getGames()) {
+      if (!game.getData().libraries.includes(libraryId)) {
+        this.activeLibrary !== 'Mis juegos' ? game.hide() : game.show()
+      } else {
+        game.show()
       }
-
-      let loadDelayTime = `Game loading delay time: ${Date.now() - startTime}ms`
-      console.log(loadDelayTime)
-
-      this.emitter.emit('did-load-games')
-    } catch (err) {
-      console.log(`Something went wrong in Library::loadGames(): ${err}`)
     }
   }
 
-  createGameElement (gameData) {
-    this.child('.game-container').innerHTML += `
-      <hidrogen-game-card
-        game-id=${gameData.id}
-        game-title='${gameData.title}'
-        path='${gameData.path}'
-        custom-bg='${gameData.customBackground}'
-      ></hidrogen-game-card>
-    `
+  getActiveLibrary () {
+    return this.activeLibrary
   }
 
   initializeGameCounter () {
@@ -112,9 +144,9 @@ class Library extends HidrogenComponent {
     this.child('.game-counter').innerText = amount
 
     if (this.getTotalGames() === 1) {
-      this.child('.game-counter-label').innerText = 'juego en la biblioteca!'
+      this.child('.game-counter-label').innerText = 'juego en la biblioteca'
     } else {
-      this.child('.game-counter-label').innerText = 'juegos en la biblioteca!'
+      this.child('.game-counter-label').innerText = 'juegos en la biblioteca'
     }
   }
 
@@ -138,19 +170,24 @@ class Library extends HidrogenComponent {
   }
 
   clean () {
-    for (let game of this.getAllGames()) {
-      this.remove(game.gameId)
+    for (let game of this.getGames()) {
+      this.remove(game)
     }
   }
 
-  // Remove games only from the DOM and load their files again.
   reload () {
-    for (let game of this.getAllGames()) {
+    for (let game of this.getGames()) {
       game.destroy()
       this.updateGameCounter(this.getTotalGames() - 1)
     }
 
     this.loadGames()
+  }
+
+  reloadGame (game) {
+    game.destroy()
+    this.updateGameCounter(this.getTotalGames() - 1)
+    this.add(game)
   }
 
   generateGameId () {
@@ -174,12 +211,6 @@ class Library extends HidrogenComponent {
     this.emitter.on('did-clean', callback)
   }
 
-  reloadGame (gameData) {
-    this.getGame(gameData.id).destroy()
-    this.updateGameCounter(this.getTotalGames() - 1)
-    this.add(gameData)
-  }
-
   subscribeToDOMEvents () {
     this.onDidLoadGames(() => {
       this.hidrogen.loadedComponents.library = true
@@ -196,7 +227,8 @@ class Library extends HidrogenComponent {
     super.render(`
       <hidrogen-panel class="toolbar">
 
-        <hidrogen-btn text="Mis bibliotecas" class="custom-libs-btn"></hidrogen-btn>
+        <hidrogen-btn text="Mis juegos" class="custom-libs-btn"></hidrogen-btn>
+        <icon class="icon-expand_more"></icon>
 
         <hidrogen-panel class="searchbox">
           <hidrogen-btn icon="search" class="search-icon"></hidrogen-btn>
@@ -205,7 +237,7 @@ class Library extends HidrogenComponent {
 
         <hidrogen-panel class="total-game-counter">
           <span class="game-counter"> ${this.getTotalGames()} </span>
-          <span class="game-counter-label"> juegos en la biblioteca! </span>
+          <span class="game-counter-label"> juegos en la biblioteca </span>
         </hidrogen-panel>
 
         <hidrogen-btn icon="add" class="add-btn" type="default"></hidrogen-btn>
