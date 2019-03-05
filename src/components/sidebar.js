@@ -22,6 +22,11 @@ class Sidebar extends HidrogenComponent {
     document.querySelector(`.item-${item}`).classList.add('selected')
   }
 
+  updateUserProfilePanel (user) {
+    this.child('.profile-pic').src = user.picture
+    this.child('.username').src = user.name
+  }
+
   subscribeToDOMEvents () {
     this.child('.item-home').addEventListener('click', () => { this.hidrogen.setView('home') })
     this.child('.item-library').addEventListener('click', () => { this.hidrogen.setView('library') })
@@ -57,12 +62,12 @@ class Sidebar extends HidrogenComponent {
           <span> ${i18n.translate('Settings and customization')} </span>
         </li>
 
-        <li class="list-item item-about">
-          <icon class="icon-school"></icon>
-          <span> ${i18n.translate('About')} </span>
-        </li>
-
       </hidrogen-list>
+
+      <hidrogen-panel class="user-profile-panel">
+        <img class="profile-pic"></img>
+        <span class="username"> Rix Garregid </span>
+      </hidrogen-panel>
 
       <hidrogen-btn custom-content class="update-ready-btn">
         <icon class="update-icon icon-get_app"></icon>
@@ -73,3 +78,8 @@ class Sidebar extends HidrogenComponent {
 }
 
 customElements.define('hidrogen-sidebar', Sidebar)
+
+// <li class="list-item item-about">
+//   <icon class="icon-school"></icon>
+//   <span> ${i18n.translate('About')} </span>
+// </li>

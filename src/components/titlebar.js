@@ -1,4 +1,5 @@
 const HidrogenComponent = require('./hidrogen-component')
+const { Emitter } = require('event-kit')
 const { remote, ipcRenderer } = require('electron')
 const { app } = remote
 
@@ -9,6 +10,7 @@ class Titlebar extends HidrogenComponent {
   constructor () {
     super()
     this.classNames = ['titlebar']
+    this.emitter = new Emitter()
     // this.windowController = remote.getCurrentWindow()
 
     // this.appWindowState = 'window'
@@ -17,6 +19,8 @@ class Titlebar extends HidrogenComponent {
   }
 
   subscribeToDOMEvents () {
+    this.onDidDrag(() => { this.hidrogen.window.restore() })
+    this.onDidDblClick(() => { this.hidrogen.window.toggleState() })
     this.child('.btn-window-close').onDidClick(() => { this.hidrogen.window.close() })
     this.child('.btn-window-minimize').onDidClick(() => { this.hidrogen.window.minimize() })
     this.child('.btn-window-maximize').onDidClick(() => { this.hidrogen.window.toggle() })
@@ -34,6 +38,17 @@ class Titlebar extends HidrogenComponent {
     //   // this.windowController.isMaximized() ? this.windowController.unmaximize() : this.windowController.maximize()
     //   // this.windowController.maximize()
     // })
+
+    this.addEventListener('drag', () => { this.emitter.emit('did-drag') })
+    this.addEventListener('dblclick', () => { this.emitter.emit('did-dblclick') })
+  }
+
+  onDidDrag (callback) {
+    this.emitter.on('did-drag', callback)
+  }
+
+  onDidDblClick (callback) {
+    this.emitter.on('did-dbl-click', callback)
   }
 
   // render () {

@@ -11,16 +11,31 @@ class Config {
     this.configFile = path.join(__dirname, '..', 'config.json')
 
     this.defaults = {
-      autorun: false,
-      autoclose: false,
-      closingCountdown: false,
-      showGameCounter: true,
-      multiInstance: false,
-      autolang: true,
-      lang: 'en'
+      core: {
+        autorun: false,
+        autolang: true,
+        lang: 'en',
+        multiInstance: false
+      },
+      library: {
+        autoclose: false,
+        closingCountdown: false,
+        showGameCounter: true,
+        favouritesLibrary: true
+      },
+      sidebar: {
+        userPanelMode: 'bigPicture'
+      },
+      home: {
+        disableBackgroundVideo: false
+      }
     }
 
     this.checkConfigFile()
+  }
+
+  getCurrentSettings () {
+    return this.currentConfig
   }
 
   set (keyPath, value) {

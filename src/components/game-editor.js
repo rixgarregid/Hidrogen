@@ -6,6 +6,8 @@ const path = require('path')
 const I18n = require('../translator')
 const i18n = new I18n()
 
+// const Authentication = require('../authentication')
+
 class GameEditor extends HidrogenComponent {
   constructor () {
     super()
@@ -21,6 +23,13 @@ class GameEditor extends HidrogenComponent {
   set mode (mode) {
     this.setAttribute('mode', mode)
   }
+
+
+  createUser (user) {
+    Authentication.signUpUser(user)
+  }
+
+
 
   setMode (mode) {
     this.mode = mode
@@ -132,7 +141,12 @@ class GameEditor extends HidrogenComponent {
   subscribeToDOMEvents () {
     this.child('.btn-done').onDidClick(() => {
       if (this.mode === 'add-game') {
-        this.addGameToLibrary(this.getUserInput())
+
+
+        this.createUser(this.getUserInput())
+
+
+        // this.addGameToLibrary(this.getUserInput())
       } else if (this.mode === 'edit-game') {
         this.updateGame(this.getUserInput())
       }

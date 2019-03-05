@@ -71,22 +71,6 @@ class Library extends HidrogenComponent {
     this.gameDB.load()
   }
 
-  // add (game, libraries = {}) {
-  //   // If we're adding a brand-new game it won't have any Id, so we assign
-  //   // it one randomly generated.
-  //   // if (!gameData.hasOwnProperty('id')) {
-  //   //   gameData.id = this.generateGameId()
-  //   //
-  //   //   let gameDataFile = path.join(this.getGamesFolderPath(), `${gameData.id}.json`)
-  //   //   fs.writeFileSync(gameDataFile, JSON.stringify(gameData, null, 2))
-  //   // }
-  //
-  //   this.gameObject[`${gameData.id.toString()}`] = gameData
-  //
-  //   this.renderGameIntoLibrary(gameData)
-  //   this.updateGameCounter(this.getTotalGames() + 1)
-  // }
-
   renderGame (gameData) {
     let parsedGameLibraryArray = ''
     for (let library of gameData.libraries) {
@@ -114,6 +98,7 @@ class Library extends HidrogenComponent {
 
   setActiveLibrary (libraryId) {
     this.activeLibrary = libraryId
+    this.updateLibrariesDropdown(libraryId)
 
     for (let game of this.getGames()) {
       if (!game.getData().libraries.includes(libraryId)) {
@@ -122,10 +107,16 @@ class Library extends HidrogenComponent {
         game.show()
       }
     }
+
+    this.updateGameCounter(this.customs.getLibrary(libraryId).getTotalGames())
   }
 
   getActiveLibrary () {
     return this.activeLibrary
+  }
+
+  updateLibrariesDropdown (libraryName) {
+    this.child('.custom-libs-btn span').innerText = libraryName
   }
 
   initializeGameCounter () {
@@ -220,6 +211,7 @@ class Library extends HidrogenComponent {
     this.child('.custom-libs-btn').onDidClick(() => { this.customs.show() })
     this.child('.search-icon').onDidClick(() => { this.toggleSearchbox() })
     this.child('.add-btn').onDidClick(() => { this.hidrogen.setView('game-editor') })
+    this.child('.floating-add-btn').onDidClick(() => { this.hidrogen.setView('game-editor') })
     this.child('.input-search').addEventListener('keyup', () => { this.search(this.child('.input-search').value.toUpperCase()) })
   }
 
@@ -245,6 +237,7 @@ class Library extends HidrogenComponent {
       </hidrogen-panel>
 
       <hidrogen-panel class="game-container"></hidrogen-panel>
+      <hidrogen-btn type="success" text="Añadir juegos a mi biblioteca" icon="add" class="floating-add-btn"></hidrogen-btn>
       <hidrogen-library-manager></hidrogen-library-manager>
       `
     )

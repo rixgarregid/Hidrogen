@@ -12,6 +12,11 @@ class Home extends HidrogenComponent {
     this.subscribeToDOMEvents()
   }
 
+  updateWelcomeMessage (username) {
+    this.child('.main-title').innerText = `¡Hola de nuevo, ${username}!`
+    this.child('.sub-title').style.display = 'none'
+  }
+
   playBackgroundVideo () {
     this.child('video').play()
   }

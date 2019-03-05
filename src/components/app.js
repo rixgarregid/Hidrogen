@@ -20,6 +20,7 @@ class App extends HidrogenComponent {
     this.home = this.getComponent('home')
     this.library = this.getComponent('library')
     this.gameEditor = this.getComponent('game-editor')
+    this.libraryEditor = this.getComponent('custom-library-editor')
     this.settings = this.getComponent('settings')
     this.about = this.getComponent('about')
     this.modals = this.getComponent('modals')
@@ -145,6 +146,7 @@ class App extends HidrogenComponent {
       <hidrogen-loader></hidrogen-loader>
 
       <hidrogen-titlebar></hidrogen-titlebar>
+      <hidrogen-login></hidrogen-login>
       <hidrogen-sidebar></hidrogen-sidebar>
 
       <hidrogen-board>
@@ -156,6 +158,8 @@ class App extends HidrogenComponent {
         <hidrogen-about></hidrogen-about>
 
       </hidrogen-board>
+
+      <hidrogen-custom-library-editor></hidrogen-custom-library-editor>
 
       <hidrogen-modals></hidrogen-modals>
     `)

@@ -84,4 +84,16 @@ class WindowController extends EventEmitter {
   loadState () {
 
   }
+
+  subscribeToDOMEvents () {
+    this.hidrogen.titlebar.onDidDoubleClick(() => { this.toggle() })
+
+    this.hidrogen.titlebar.onDidDrag(() => {
+      if (this.state.maximized) {
+        this.restore()
+      } else {
+        return
+      }
+    })
+  }
 }

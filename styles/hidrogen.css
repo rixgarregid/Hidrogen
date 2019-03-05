@@ -947,6 +947,60 @@ textarea::-webkit-input-placeholder {
 .modal .btn-container .btn-confirm {
   margin-right: 20px;
 }
+.form {
+  display: block;
+  width: 400px;
+  height: 500px;
+  padding: 30px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  background: rgba(0,0,0,0.5);
+}
+.form .form-content {
+  display: block;
+  width: 80%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.form .form-content .form-title {
+  display: block;
+  width: 100%;
+  margin-bottom: 60px;
+  font-size: 25px;
+  text-align: center;
+  color: #e3e3e3;
+}
+.form .form-content .input-text {
+  display: block;
+  width: 100%;
+  margin-bottom: 50px;
+}
+.form .form-content .input-text.active .input-text-label,
+.form .form-content .input-text.active .input-text-element {
+  color: #e3e3e3;
+}
+.form .form-content .input-text.active .input-text-element {
+  border-color: #a9a9a9;
+}
+.form .form-content .input-text .input-text-label {
+  color: #a9a9a9;
+  position: absolute;
+  top: -25px;
+  font-size: 16px;
+}
+.form .form-content .input-text .input-text-element {
+  width: 100%;
+  background: #3d4146;
+  border: 1px solid #373a3f;
+  border-radius: 5px;
+  color: #a9a9a9;
+}
+.form .form-content .submit-btn {
+  width: 100%;
+  border-radius: 5px;
+}
 #app {
   display: block;
   width: 1570px;
@@ -1044,8 +1098,45 @@ textarea::-webkit-input-placeholder {
 .sidebar .sidebar-list .list-item:nth-child(1) {
   margin-top: 30px;
 }
-.sidebar .sidebar-list .list-item:nth-child(5) {
-  margin-top: 490px;
+.sidebar .sidebar-list .list-item:nth-child(4) {
+  margin-top: 520px;
+}
+.sidebar .user-profile-panel {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  position: absolute;
+  top: 60%;
+  left: 0;
+  box-sizing: border-box;
+}
+.sidebar .user-profile-panel .profile-pic {
+  display: block;
+  background: #fff;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  margin-bottom: 30px;
+  opacity: 0.8;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+  margin: auto;
+}
+.sidebar .user-profile-panel .profile-pic:hover {
+  opacity: 1;
+}
+.sidebar .user-profile-panel .username {
+  font-size: 17px;
+  width: 100%;
+  display: block;
+  text-align: center;
+  opacity: 0.8;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+  margin-top: 30px;
+}
+.sidebar .user-profile-panel .username:hover {
+  opacity: 1;
 }
 .sidebar .update-ready-btn {
   display: none;
@@ -1136,6 +1227,39 @@ textarea::-webkit-input-placeholder {
 .board .board-view.active {
   left: 300px;
 }
+.editor {
+  display: block;
+  width: 1570px;
+  height: 870px;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  background: rgba(255,255,255,0.5);
+  transform: scale(0);
+  transition: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.editor.opened {
+  transform: scale(1);
+}
+.editor.opened .editor-content {
+  transform: scale(1) translate(-50%, -50%);
+}
+.editor .editor-content {
+  display: block;
+  width: 1000px;
+  height: 700px;
+  padding: 80px;
+  box-sizing: border-box;
+  background: #161a1f;
+  font-size: 15px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  box-shadow: 0 0 50px rgba(0,0,0,0.7);
+  transition: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  color: #a9a9a9;
+}
 .home-screen {
   font-family: 'GravityLight';
 }
@@ -1203,6 +1327,10 @@ textarea::-webkit-input-placeholder {
 .library {
   background: library-background-color;
   overflow: hidden;
+}
+.library.active .floating-add-btn {
+  display: block;
+  position: fixed;
 }
 .library .toolbar {
   display: block;
@@ -1323,6 +1451,48 @@ textarea::-webkit-input-placeholder {
   height: 100%;
   padding: 30px;
   overflow-y: scroll;
+}
+.library .floating-add-btn {
+  display: block;
+  width: 45px;
+  height: 45px;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+  right: 75px;
+  bottom: 75px;
+  border-radius: 50%;
+  line-height: 45px;
+  padding: 0;
+  overflow: hidden;
+}
+.library .floating-add-btn span {
+  opacity: 0;
+  width: 300px;
+  position: absolute;
+  left: -100px;
+  transition: ease-in-out 0.2s;
+  text-align: center;
+}
+.library .floating-add-btn icon {
+  margin: 0;
+  text-align: center;
+  font-size: 22px;
+  line-height: 45px;
+}
+.library .floating-add-btn:hover {
+  min-width: 250px;
+  width: auto;
+  border-radius: 60px;
+}
+.library .floating-add-btn:hover span {
+  width: auto;
+  opacity: 1;
+  left: 45px;
+}
+.library .floating-add-btn:hover icon {
+  margin-right: 10px;
+  margin-left: 20px;
+  float: left;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -1988,11 +2158,11 @@ textarea::-webkit-input-placeholder {
 }
 .custom-library-manager .library-container {
   display: grid;
-  grid-template-columns: repeat(3, 410px);
+  grid-template-columns: repeat(4, 300px);
   box-sizing: border-box;
   width: 100%;
   height: 85%;
-  padding: 30px;
+  padding: 50px;
   overflow-y: scroll;
 }
 .custom-library-manager .floating-btns {
@@ -2037,14 +2207,14 @@ textarea::-webkit-input-placeholder {
 }
 .custom-library {
   display: inline-block;
-  width: 350px;
-  height: 200px;
+  width: 280px;
+  height: 150px;
   border: solid 1px #808080;
   transition: ease-in-out 0.2s;
   cursor: pointer;
   overflow: hidden;
   position: relative;
-  margin-bottom: 70px;
+  margin-bottom: 30px;
 }
 .custom-library.active {
   width: 100%;
@@ -2053,9 +2223,6 @@ textarea::-webkit-input-placeholder {
 .custom-library:hover {
   background: rgba(0,0,0,0.5);
 }
-.custom-library:hover .title {
-  transform: translate(-50%, -50%) scale(1);
-}
 .custom-library:hover .delete-btn {
   transform: scale(1);
 }
@@ -2063,9 +2230,13 @@ textarea::-webkit-input-placeholder {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%);
   transition: 0.2s ease-in-out;
-  font-size: 18px;
+  font-size: 15px;
+  line-height: 30px;
+}
+.custom-library .title icon {
+  margin-right: 5px;
 }
 .custom-library .delete-btn {
   background: none;
@@ -2082,4 +2253,116 @@ textarea::-webkit-input-placeholder {
 }
 .custom-library .delete-btn icon {
   margin: 0;
+}
+.lib-name-field,
+.custom-icon-toggle {
+  display: block;
+  margin-bottom: 40px;
+}
+.custom-icons-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 40px);
+  width: 320px;
+  height: 0px;
+  transition: 0.2s ease-in-out;
+  overflow-y: scroll;
+  color: #a9a9a9;
+}
+.custom-icons-grid.active {
+  height: 80px;
+}
+.custom-icons-grid span {
+  font-size: 20px;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+.custom-icons-grid span.selected {
+  color: #e3e3e3;
+  text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+.custom-icons-grid span:hover {
+  color: #e3e3e3;
+  text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+.editor-btns {
+  display: block;
+  width: 370px;
+  height: 60px;
+  position: absolute;
+  right: 80px;
+  bottom: 80px;
+}
+.editor-btns .btn {
+  padding: 0;
+  float: right;
+  line-height: 60px;
+}
+.editor-btns .create-lib-btn {
+  width: 200px;
+  height: 60px;
+  margin-right: 20px;
+}
+.editor-btns .cancel-btn {
+  width: 150px;
+  height: 60px;
+}
+.login {
+  display: block;
+  width: 1570px;
+  height: 850px;
+  position: relative;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: url("../static/images/login-background.jpg") no-repeat center;
+  z-index: 90;
+}
+.login .form {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: ease-in-out 0.2s;
+}
+.login .login-form.active,
+.login .signup-form.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+.login .login-form .input-text:nth-child(3) {
+  margin-bottom: 15px;
+}
+.login .login-form .forgot-password-btn,
+.login .login-form .show-signup-form-btn {
+  background: none;
+  padding: 0;
+  font-size: 14px;
+  cursor: pointer;
+  color: #a9a9a9;
+  transition: 0.2s ease-in-out;
+}
+.login .login-form .forgot-password-btn:hover,
+.login .login-form .show-signup-form-btn:hover {
+  color: #e3e3e3;
+}
+.login .login-form .submit-btn {
+  margin: 30px 0;
+}
+.login .signup-form .show-login-form-btn {
+  background: none;
+  padding: 0;
+  font-size: 14px;
+  cursor: pointer;
+  color: #a9a9a9;
+  transition: 0.2s ease-in-out;
+}
+.login .signup-form .show-login-form-btn:hover {
+  color: #e3e3e3;
+}
+.login .signup-form .submit-btn {
+  margin-bottom: 30px;
 }

@@ -1,0 +1,53 @@
+.form
+    display block
+    width 400px
+    height 500px
+    padding 30px
+    border 1px solid #000
+    border-radius 5px
+    background rgba(0, 0, 0, .5)
+
+    .form-content
+        display block
+        width 80%
+        position absolute
+        top 50%
+        left 50%
+        transform translate(-50%, -50%)
+
+        .form-title
+            display block
+            width 100%
+            margin-bottom 60px
+            font-size 25px
+            text-align center
+            color text-color-highlight
+
+        .input-text
+            display block
+            width 100%
+            margin-bottom 50px
+
+            &.active
+                .input-text-label, .input-text-element
+                    color text-color-highlight
+
+                .input-text-element
+                    border-color text-color
+
+            .input-text-label
+                color text-color
+                position absolute
+                top -25px
+                font-size 16px
+
+            .input-text-element
+                width 100%
+                background btn-bg-color
+                border 1px solid btn-hover-bg-color
+                border-radius 5px
+                color text-color
+
+        .submit-btn
+            width 100%
+            border-radius 5px

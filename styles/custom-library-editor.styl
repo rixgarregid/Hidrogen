@@ -1,0 +1,54 @@
+.lib-name-field, .custom-icon-toggle
+    display block
+    margin-bottom 40px
+
+.custom-icons-grid
+    display grid
+    grid-template-columns repeat(8, 40px)
+    width 320px
+    height 0px
+    transition .2s ease-in-out
+    overflow-y scroll
+    color text-color
+
+    &.active
+        height 80px
+
+    span
+        font-size 20px
+        text-align center
+        width 40px
+        height 40px
+        line-height 40px
+        transition .2s ease-in-out
+        cursor pointer
+
+        &.selected
+            color text-color-highlight
+            text-shadow 0 0 10px rgba(255, 255, 255, .2)
+
+        &:hover
+            color text-color-highlight
+            text-shadow 0 0 10px rgba(255, 255, 255, .2)
+
+.editor-btns
+    display block
+    width 370px
+    height 60px
+    position absolute
+    right 80px
+    bottom 80px
+
+    .btn
+        padding 0
+        float right
+        line-height 60px
+
+    .create-lib-btn
+        width 200px
+        height 60px
+        margin-right 20px
+
+    .cancel-btn
+        width 150px
+        height 60px

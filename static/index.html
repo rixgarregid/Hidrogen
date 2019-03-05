@@ -13,7 +13,10 @@
 
     <hidrogen-app id="app"></hidrogen-app>
 
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
     <script>
+        require('../src/firebase')
+        require('../src/authentication')
         require('../src/window-controller')
 
         require('../src/components/ui/modal')
@@ -21,6 +24,7 @@
         require('../src/components/ui/input')
         require('../src/components/ui/list')
         require('../src/components/ui/button')
+        require('../src/components/ui/form')
 
         require('../src/local-databases/local-database')
         require('../src/local-databases/game-db')
@@ -28,9 +32,11 @@
 
         require('../src/components/app')
         require('../src/components/loader')
+        require('../src/components/login')
         require('../src/components/titlebar')
         require('../src/components/sidebar')
         require('../src/components/board')
+        require('../src/components/editor')
         require('../src/components/home')
         require('../src/components/library')
         require('../src/components/about')
@@ -38,6 +44,7 @@
         require('../src/components/game-editor')
         require('../src/components/game')
         require('../src/components/modal-manager')
+        require('../src/components/custom-library-editor')
         require('../src/components/custom-library-manager')
         require('../src/components/custom-library')
 

@@ -108,6 +108,14 @@ class Game extends HidrogenComponent {
     this.style.display = 'inline-block'
   }
 
+  isVisible () {
+    if (this.style.display === 'none') {
+      return false
+    } else {
+      return true
+    }
+  }
+
   destroy () {
     this.remove()
     this.emitter.emit('did-destroy')

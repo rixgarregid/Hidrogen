@@ -18,7 +18,7 @@ class CustomLibraryManager extends HidrogenComponent {
   }
 
   getLibrary(libraryName) {
-    return this.child(`hidrogen-custom-library[name=${libraryName}]`)
+    return this.child(`hidrogen-custom-library[name='${libraryName}']`)
   }
 
   add (libraryName, game) {
@@ -67,13 +67,14 @@ class CustomLibraryManager extends HidrogenComponent {
 
   subscribeToDOMEvents () {
     this.child('.return-btn').onDidClick(() => { this.close() })
-    this.child('.add-btn').onDidClick(() => { this.hidrogen.modals.get('new-custom-library').show() })
+    this.child('.add-btn').onDidClick(() => { this.hidrogen.libraryEditor.open() })
   }
 
   render () {
     super.render(`
       <hidrogen-panel class="library-container">
-        <hidrogen-custom-library name="Mis juegos"></hidrogen-custom-library>
+        <hidrogen-custom-library name="Mis juegos" destroyable="false"></hidrogen-custom-library>
+        <hidrogen-custom-library name="Favoritos" destroyable="false"></hidrogen-custom-library>
       </hidrogen-panel>
 
       <hidrogen-panel class="floating-btns">
