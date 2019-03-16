@@ -1,4 +1,5 @@
 const HidrogenComponent = require('./hidrogen-component')
+const Authentication = require('../authentication')
 const I18n = require('../translator')
 const i18n = new I18n()
 
@@ -74,6 +75,10 @@ class Settings extends HidrogenComponent {
     }
   }
 
+  updateProfilePic (picture) {
+    this.child('.profile-picture img').src = picture
+  }
+
   attachEvents () {
     const save = () => { this.save() }
     const showCleanLibraryModal = () => { this.hidrogen.modals.get('clean-library').show() }
@@ -99,11 +104,26 @@ class Settings extends HidrogenComponent {
     this.child('.save-btn').addEventListener('click', save)
     this.child('.clean-library-btn').addEventListener('click', showCleanLibraryModal)
     this.child('.restore-settings-btn').addEventListener('click', showResetHidrogenModal)
+
+    this.child('#profile-pic-input').addEventListener('change', event => {
+      let file = event.target.files[0]
+      Authentication.uploadUserProfilePicture(file, () => {
+        this.child('.profile-picture img').src = Authentication.getCurrentUser().picture
+        this.hidrogen.sidebar.updateUserProfilePanel({ name: Authentication.getCurrentUser().name, picture: Authentication.getCurrentUser().picture })
+      })
+    })
   }
 
   render () {
     super.render(`
       <hidrogen-panel type="panel" class="settings-panel">
+        <span class="settings-group-title"> Perfil </span>
+
+        <input type="file" id="profile-pic-input"/>
+        <label for="profile-pic-input" class="profile-picture">
+          <img src="../static/images/login-background.jpg"></img>
+        </label>
+
         <span class="settings-group-title"> General </span>
 
         <hidrogen-input type="toggle" label="${i18n.translate('Run Hidrogen when your computer starts.')}" class="autorun-toggle"></hidrogen-input>

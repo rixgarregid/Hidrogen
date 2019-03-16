@@ -23,6 +23,12 @@ In this API you'll also find how we write our styles using Stylus in the **UI St
 
 #### [Board](Core Components/Board.md)
 
+#### [CustomLibrary](Core Components/CustomLibrary.md)
+
+#### [CustomLibraryManager](Core Components/CustomLibraryManager.md)
+
+#### [Editor](Core Components/Editor.md)
+
 #### [Game](Core Components/Game.md)
 
 #### [GameEditor](Core Components/GameEditor.md)
@@ -32,6 +38,8 @@ In this API you'll also find how we write our styles using Stylus in the **UI St
 #### [Home](Core Components/Home.md)
 
 #### [Library](Core Components/Library.md)
+
+#### [LibraryEditor](Core Components/LibraryEditor.md)
 
 #### [Loader](Core Components/Loader.md)
 

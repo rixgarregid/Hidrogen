@@ -40,10 +40,16 @@ class Login extends HidrogenComponent {
       password: authFormData[1]
     }
 
-    Authentication.authenticateUser(loginData)
-    this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
-    this.hidrogen.sidebar.updateUserProfilePanel({ name: Authentication.getCurrentUser().name, picture: Authentication.getCurrentUser().picture })
-    this.hide()
+    // METER LOADER
+
+    Authentication.authenticateUser(loginData, () => {
+      this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
+      this.hidrogen.sidebar.updateUserProfilePanel({ name: Authentication.getCurrentUser().name, picture: Authentication.getCurrentUser().picture })
+      this.hidrogen.settings.updateProfilePic(Authentication.getCurrentUser().picture)
+      this.hide()
+
+      // QUITAR LOADER
+    })
   }
 
   signUp () {
@@ -54,9 +60,15 @@ class Login extends HidrogenComponent {
       password: authFormData[2]
     }
 
-    Authentication.signUpUser(signUpData)
-    this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
-    // this.hide()
+    // METER LOADER
+
+    Authentication.signUpUser(signUpData, () => {
+      this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
+      this.hidrogen.sidebar.updateUserProfilePanel(Authentication.getCurrentUser())
+      this.hide()
+
+      // QUITAR LOADER
+    })
   }
 
   subscribeToDOMEvents () {

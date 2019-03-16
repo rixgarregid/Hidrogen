@@ -24,7 +24,7 @@ class Sidebar extends HidrogenComponent {
 
   updateUserProfilePanel (user) {
     this.child('.profile-pic').src = user.picture
-    this.child('.username').src = user.name
+    this.child('.username').innerText = user.name
   }
 
   subscribeToDOMEvents () {
@@ -32,7 +32,7 @@ class Sidebar extends HidrogenComponent {
     this.child('.item-library').addEventListener('click', () => { this.hidrogen.setView('library') })
     this.child('.item-game-editor').addEventListener('click', () => { this.hidrogen.setView('game-editor') })
     this.child('.item-settings').addEventListener('click', () => { this.hidrogen.setView('settings') })
-    this.child('.item-about').addEventListener('click', () => { this.hidrogen.setView('about') })
+    // this.child('.item-about').addEventListener('click', () => { this.hidrogen.setView('about') })
 
     this.child('.update-ready-btn').onDidClick(() => { ipcRenderer.send('quitAndInstall') })
     ipcRenderer.on('updateReady', (event, text) => { this.child('.update-ready-btn').classList.add('active') })
