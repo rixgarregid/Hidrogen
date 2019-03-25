@@ -1,5 +1,5 @@
 const HidrogenComponent = require('./hidrogen-component')
-const Authentication = require('../authentication')
+const Authentication = require('../auth')
 const I18n = require('../translator')
 const i18n = new I18n()
 
@@ -75,8 +75,58 @@ class Settings extends HidrogenComponent {
     }
   }
 
-  updateProfilePic (picture) {
-    this.child('.profile-picture img').src = picture
+  updateUserSection (user) {
+    firebase.storage().ref(`users/${user.uid}`).child('profilePicture').getDownloadURL()
+      .then(url => {
+        this.hidrogen.sidebar.updateUserProfilePanel({ name: firebase.auth().currentUser.displayName, picture: url })
+        this.hidrogen.settings.updateProfilePic(url)
+      })
+      .catch(err => {
+        if (err.code === 'storage/object-not-found') {
+          const path = require('path')
+          this.hidrogen.settings.updateProfilePic(path.resolve('static/images/login-background.jpg'))
+        }
+      })
+  }
+
+  updateProfilePic () {
+    Authentication.updateUserPicture(this.child('.profile-picture-label img').src)
+      .then(url => {
+        this.child('.profile-picture').src = picture
+        this.hidrogen.sidebar.updateUserProfilePanel({ name: firebase.auth().currentUser.displayName, picture: url })
+      })
+  }
+
+  updateUserProfile (user) {
+    this.child('.username').innerText = user.displayName
+    this.child('.email').innerText = user.email
+  }
+
+  saveProfileChanges () {
+    console.log('Update!')
+
+    if (this.child('.username').innerText !== this.child('.name-field').value && this.child('.name-field').value !== '') {
+      firebase.auth().currentUser.updateProfile({ displayName: this.child('.name-field').value })
+
+
+      Authentication.updateUserName(this.child('.name-field').value)
+        .then(() => {
+          console.log(firebase.auth().currentUser)
+          this.hidrogen.login.updateUIWithUserData(firebase.auth().currentUser)
+        })
+      
+      // this.updateUserProfile(firebase.auth().currentUser)
+      /* let user = firebase.auth().currentUser
+      this.child('.username').innerText = user.displayName
+      this.child('.email').innerText = user.email
+      this.hidrogen.sidebar.updateUserProfilePanel({ name: firebase.auth().currentUser.displayName, picture: firebase.auth().currentUser.photoURL }) */
+      // this.hidrogen.login.updateUIWithUserData(firebase.auth().currentUser)
+        // .then(() => this.hidrogen.login.updateUIWithUserData(firebase.auth().currentUser))
+    }
+
+    if (this.child('.profile-picture-label img').src !== this.child('.profile-picture').src) {
+      this.updateProfilePic()
+    }
   }
 
   attachEvents () {
@@ -105,12 +155,51 @@ class Settings extends HidrogenComponent {
     this.child('.clean-library-btn').addEventListener('click', showCleanLibraryModal)
     this.child('.restore-settings-btn').addEventListener('click', showResetHidrogenModal)
 
+    this.child('.edit-btn').onDidClick(() => {
+      this.child('.user-profile-settings-section').classList.add('edit-mode')
+      this.child('.name-field').value = this.child('.username').innerText
+      this.child('.email-field').value = this.child('.email').innerText
+      this.child('.name-field').classList.add('active')
+      this.child('.email-field').classList.add('active')
+      
+      this.child('.profile-picture-label img').src = this.child('.profile-picture').src
+    })
+
+    this.child('.save-changes-btn').onDidClick(() => { 
+      this.saveProfileChanges()
+      this.child('.user-profile-settings-section').classList.remove('edit-mode')
+    })
+
+    this.child('.cancel-btn').onDidClick(() => {
+      this.child('.user-profile-settings-section').classList.remove('edit-mode')
+      /* this.child('.name-field').value = ''
+      this.child('.email-field').value = '' */
+    })
+
     this.child('#profile-pic-input').addEventListener('change', event => {
-      let file = event.target.files[0]
-      Authentication.uploadUserProfilePicture(file, () => {
-        this.child('.profile-picture img').src = Authentication.getCurrentUser().picture
+
+      /* if (files.length) {
+        const fileReader = new FileReader()
+        fileReader.onload = () => {
+          this.child('#profile-pic-input img').src = fileReader.result
+        }
+      } */
+
+      this.child('.profile-picture-label img').src = event.target.files[0]
+      
+      /* Authentication.updateUserPicture(this.child('.profile-picture-label img').src)
+        .then(url => {
+          this.updateProfilePic(url)
+          this.hidrogen.sidebar.updateUserProfilePanel({ name: firebase.auth().currentUser.displayName, picture: url })
+        }) */
+      
+
+      /* Authentication.uploadUserProfilePicture(file, () => {
+        // this.child('.profile-picture img').src = Authentication.getCurrentUser().picture
         this.hidrogen.sidebar.updateUserProfilePanel({ name: Authentication.getCurrentUser().name, picture: Authentication.getCurrentUser().picture })
-      })
+        this.child('.profile-picture img').src = event.target.value
+        
+      }) */
     })
   }
 
@@ -119,10 +208,40 @@ class Settings extends HidrogenComponent {
       <hidrogen-panel type="panel" class="settings-panel">
         <span class="settings-group-title"> Perfil </span>
 
-        <input type="file" id="profile-pic-input"/>
-        <label for="profile-pic-input" class="profile-picture">
-          <img src="../static/images/login-background.jpg"></img>
-        </label>
+        <hidrogen-panel class="user-profile-settings-section">
+
+          <hidrogen-panel class="edit-form">
+
+            <hidrogen-panel class="profile-pic">
+              <input type="file" id="profile-pic-input"/>
+              <label for="profile-pic-input" class="profile-picture-label">
+                <img src="../static/images/login-background.jpg"></img>
+                <span class="icon-mode_edit"></span>
+              </label>
+              <hidrogen-panel class="background"></hidrogen-panel>
+            </hidrogen-panel>
+
+            <hidrogen-input type="text" label="Nombre de usuario" class="name-field"></hidrogen-input>
+            <hidrogen-input type="text" label="Correo electrónico" class="email-field"></hidrogen-input>
+            <span class="reset-password"> Cambiar mi contraseña </span>
+            <hidrogen-btn class="delete-account-btn outlined" text="Eliminar mi cuenta" type="danger"></hidrogen-btn>
+            <hidrogen-btn class="save-changes-btn" text="Guardar cambios" type="success"></hidrogen-btn>
+            <hidrogen-btn class="cancel-btn outlined" text="Cancelar"></hidrogen-btn>
+
+          </hidrogen-panel>
+
+          <hidrogen-panel class="profile-container">
+
+            <img class="profile-picture" src="../static/images/login-background.jpg"></img>
+            <span class="username"> Username </span>
+            <span class="email"> someone@hidrogen.io </span>
+
+            <hidrogen-btn icon="mode_edit" text="Editar perfil" class="edit-btn" type="success"></hidrogen-btn>
+          
+          </hidrogen-panel>
+
+        </hidrogen-panel>
+        
 
         <span class="settings-group-title"> General </span>
 

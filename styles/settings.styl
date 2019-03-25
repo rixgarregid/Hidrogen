@@ -36,28 +36,179 @@
 
 
 
-        #profile-pic-input
+        .user-profile-settings-section
             display block
-            width 0.1px
-            height 0.1px
-            opacity 0
-            overflow hidden
-            position absolute
-            z-index -1
+            position relative
+            height 140px
+            border-radius 20px
+            margin-bottom 50px
+            transition ease-in-out .2s
 
-        .profile-picture
-            display block
-            width 80px
-            height 80px
-            border-radius 50%
-            cursor pointer
+            &.edit-mode
+                height 250px
 
-            img
+                .profile-container
+                    display none
+
+                .edit-form
+                    display block
+
+            .edit-form
+                display none
+
+                .profile-pic
+                    display block
+                    position absolute
+                    top 30px
+                    left 30px
+                    width 80px
+                    height 80px
+                    border-radius 50%
+                    cursor pointer
+
+                    #profile-pic-input
+                        display block
+                        width 0.1px
+                        height 0.1px
+                        opacity 0
+                        overflow hidden
+                        position absolute
+                        z-index -1
+
+                    .profile-picture-label
+                        display block
+                        width 80px
+                        height 80px
+                        border-radius 50%
+                        cursor pointer
+
+                        img
+                            display block
+                            width 80px
+                            height 80px
+                            border-radius 50%
+                            background #fff
+
+                        .icon-mode_edit
+                            display block
+                            position absolute
+                            top 0
+                            left 0
+                            width 80px
+                            height 80px
+                            border-radius 50%
+                            background white
+                            opacity 0
+                            transition ease-in-out .2s
+                            text-align center
+                            line-height 80px
+
+                        &:hover
+                            .icon-mode_edit
+                                opacity 0.5
+
+                .name-field
+                    width 600px
+                    position absolute
+                    top 20px
+                    left 130px
+                    //font-size 21px
+                    //border none
+                    transition .2s ease-in-out
+
+                     &:focus
+                        outline none
+                        color text-color-hightlight
+
+
+
+                .email-field
+                    display inline-block
+                    width 600px
+                    position absolute
+                    top 90px
+                    left 130px
+
+                .name-field, .email-field
+                    display block
+                    margin-bottom 20px
+                    color text-color
+                    transition .2s ease-in-out
+                    cursor pointer
+
+                    &:hover
+                        color text-color-highlight !important
+
+                .reset-password
+                    display block
+                    position absolute
+                    top 150px
+                    left 130px
+                    font-size 13px
+                    cursor pointer
+                    transition ease-in-out .2s
+
+                    &:hover
+                        color text-color-highlight
+
+                .delete-account-btn
+                    display inline-block
+                    position absolute
+                    top 200px
+
+                .save-changes-btn
+                    display inline-block
+                    position absolute
+                    top 200px
+                    left 320px
+
+                .cancel-btn
+                    display inline-block
+                    position absolute
+                    top 200px
+                    left 220px
+
+
+            .profile-container
                 display block
-                width 80px
-                height 80px
-                border-radius 50%
-                background #fff
+
+                .profile-picture
+                    display block
+                    position absolute
+                    top 30px
+                    left 30px
+                    width 80px
+                    height 80px
+                    border-radius 50%
+
+                .username
+                    display inline-block
+                    width 600px
+                    position absolute
+                    top 40px
+                    left 130px
+                    font-size 21px
+                    border none
+                    color text-color-highlight
+
+                .email
+                    display inline-block
+                    width 600px
+                    position absolute
+                    top 70px
+                    left 130px
+                    color text-color-highlight
+
+                .edit-btn
+                    background-color #3bb175
+                    position absolute
+                    top 45px
+                    left 400px
+
+            
+
+
+
 
 
 

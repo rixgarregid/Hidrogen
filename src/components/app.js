@@ -17,6 +17,7 @@ class App extends HidrogenComponent {
     this.loader = this.getComponent('loader')
     this.sidebar = this.getComponent('sidebar')
     this.board = this.getComponent('board')
+    this.login = this.getComponent('login')
     this.home = this.getComponent('home')
     this.library = this.getComponent('library')
     this.gameEditor = this.getComponent('game-editor')
@@ -95,6 +96,11 @@ class App extends HidrogenComponent {
     if (this.loadedComponents.library) {
       this.emitter.emit('ready')
     }
+  }
+
+  updateUserProfile (user) {
+    this.sidebar.updateUserProfilePanel(user)
+    
   }
 
   focus () {

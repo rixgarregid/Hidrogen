@@ -1,5 +1,5 @@
 const HidrogenComponent = require('./hidrogen-component')
-const Authentication = require('../authentication')
+const Authentication = require('../auth')
 
 class Login extends HidrogenComponent {
   constructor () {
@@ -33,23 +33,112 @@ class Login extends HidrogenComponent {
     this.style.display = 'none'
   }
 
+  updateUIWithUserData (user) {
+    firebase.storage().ref(`users/${user.uid}`).child('profilePicture').getDownloadURL()
+      .then(url => {
+        this.hidrogen.settings.updateProfilePic(url)
+        this.hidrogen.sidebar.updateUserProfilePanel({ name: firebase.auth().currentUser.displayName, picture: url })
+      })
+      .catch(err => {
+        if (err.code === 'storage/object-not-found') {
+          const path = require('path')
+          this.hidrogen.settings.updateProfilePic(path.resolve('static/images/login-background.jpg'))
+        }
+      })
+    
+    this.hidrogen.home.updateWelcomeMessage(user.displayName)
+    this.hidrogen.settings.updateUserProfile(user)
+    
+    
+    this.hide()
+    this.hidrogen.loader.hide()
+  }
+
   login () {
     const authFormData = this.getAuthForm().collectData()
-    const loginData = {
+    const credential = {
       email: authFormData[0],
       password: authFormData[1]
     }
 
-    // METER LOADER
+    Authentication.authenticateUser(credential)
+      .then(user => this.updateUIWithUserData(user))
+      .catch(error => console.log(error))
 
-    Authentication.authenticateUser(loginData, () => {
-      this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
-      this.hidrogen.sidebar.updateUserProfilePanel({ name: Authentication.getCurrentUser().name, picture: Authentication.getCurrentUser().picture })
-      this.hidrogen.settings.updateProfilePic(Authentication.getCurrentUser().picture)
-      this.hide()
+     /* Authentication.authenticateUser(loginData)
+       .then(() => {
+         this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
+         this.hidrogen.sidebar.updateUserProfilePanel({ name: Authentication.getCurrentUser().name, picture: Authentication.getCurrentUser().picture })
+         this.hidrogen.settings.updateProfilePic(Authentication.getCurrentUser().picture)
+         this.hide()
+         this.hidrogen.loader.hide()
+       })
+       .catch(err => console.log(err)) */
 
-      // QUITAR LOADER
-    })
+    //Authentication.authenticateUser(loginData, () => {
+    //  console.log(Authentication.getCurrentUser().picture)
+    //  this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
+    //  this.hidrogen.sidebar.updateUserProfilePanel({ name: Authentication.getCurrentUser().name, picture: Authentication.getCurrentUser().picture })
+    //  this.hidrogen.settings.updateProfilePic(Authentication.getCurrentUser().picture)
+    //  this.hidrogen.loader.hide()
+    //})
+  }
+
+  //async login () {
+  //  const formData = LoginForm.getData()
+  //  const loginCredentials = {
+  //    email: formData.email,
+  //    password: formData.password
+  //  }
+
+  //  import { App } from '../UIView'
+
+  //  try {
+      // We get the authenticated user's data object after successful login.
+  //    const user = await Authentication.authenticateUser(loginData)
+
+      // Update all app's components that use user's data.
+  //    App.updateUserProfile(user)
+  //  } catch (error) {
+  //    import Logger from '../logger'
+      // Log the error in the console and in the log's file.
+  //    Logger.error(error)
+  //  }
+    
+
+    // import { Home, SidebarUserProfilePanel, Settings, Loader } from '../UIView'
+    // const { Home, SidebarUserProfilePanel, Settings, Loader } = require('../UIView')
+
+    // Home.updateWelcomeMessage(user.name)
+    // SidebarUserProfilePanel.updateProfile({ name: user.name, picture: user.picture })
+    // Settings.getView('userProfile').updateProfile({
+    //   name: user.name,
+    //   email: user.email,
+    //   picture: user.picture
+    // })
+    // Loader.hide()
+  // }
+
+  async signUpUser (credentials) {
+    /* const signUpFormData = SignUpForm.getData()
+    const signUpCredentials = {
+      email: signUpFormData.email,
+      password: signUpFormData.password
+    } */
+
+    try {
+      const timer = new Timer('[Authentication] User creation time delay:')
+      timer.start()
+
+      const user = await Authentication.createUser(signUpCredentials)
+      App.uploadUserProfile(user)
+
+      Loader.hide()
+      timer.stop()
+    } catch (error) {
+      logger.error(error)
+      // Send notification to user.
+    }
   }
 
   signUp () {
@@ -60,24 +149,39 @@ class Login extends HidrogenComponent {
       password: authFormData[2]
     }
 
-    // METER LOADER
+    //Authentication.signUpUser(signUpData)
+    //   .then(() => {
+    //     this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
+    //     this.hidrogen.sidebar.updateUserProfilePanel(Authentication.getCurrentUser())
+    //     this.hidrogen.loader.hide()
+    //   })
 
-    Authentication.signUpUser(signUpData, () => {
-      this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
-      this.hidrogen.sidebar.updateUserProfilePanel(Authentication.getCurrentUser())
-      this.hide()
+    Authentication.createUser(signUpData)
+      .then(() => {
+        this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
+        this.hidrogen.sidebar.updateUserProfilePanel(Authentication.getCurrentUser())
+        this.hidrogen.loader.hide()
+      })
+      .catch (error => console.log(error))
 
-      // QUITAR LOADER
-    })
+    //Authentication.signUpUser(signUpData, () => {
+    //  this.hidrogen.home.updateWelcomeMessage(Authentication.getCurrentUser().name)
+    //  this.hidrogen.sidebar.updateUserProfilePanel(Authentication.getCurrentUser())
+    //  this.hidrogen.loader.hide()
+    //})
   }
 
   subscribeToDOMEvents () {
     this.child('.login-form').onDidSubmit(() => {
+      this.hidrogen.loader.show()
+      this.hide()
       this.login()
       this.getAuthForm().clear()
     })
 
     this.child('.signup-form').onDidSubmit(() => {
+      this.hidrogen.loader.show()
+      this.hide()
       this.signUp()
       this.getAuthForm().clear()
     })

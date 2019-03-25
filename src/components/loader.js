@@ -9,9 +9,18 @@ class Loader extends HidrogenComponent {
     this.subscribeToDOMEvents()
   }
 
+  show () {
+    this.classList.remove('inactive')
+    this.emitter.emit('did-show')
+  }
+
   hide () {
     this.classList.add('inactive')
     this.emitter.emit('did-hide')
+  }
+
+  onDidShow (callback) {
+    this.emitter.on('did-show', callback)
   }
 
   onDidHide (callback) {

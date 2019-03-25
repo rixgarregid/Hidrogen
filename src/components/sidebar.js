@@ -32,7 +32,6 @@ class Sidebar extends HidrogenComponent {
     this.child('.item-library').addEventListener('click', () => { this.hidrogen.setView('library') })
     this.child('.item-game-editor').addEventListener('click', () => { this.hidrogen.setView('game-editor') })
     this.child('.item-settings').addEventListener('click', () => { this.hidrogen.setView('settings') })
-    // this.child('.item-about').addEventListener('click', () => { this.hidrogen.setView('about') })
 
     this.child('.update-ready-btn').onDidClick(() => { ipcRenderer.send('quitAndInstall') })
     ipcRenderer.on('updateReady', (event, text) => { this.child('.update-ready-btn').classList.add('active') })
@@ -78,8 +77,3 @@ class Sidebar extends HidrogenComponent {
 }
 
 customElements.define('hidrogen-sidebar', Sidebar)
-
-// <li class="list-item item-about">
-//   <icon class="icon-school"></icon>
-//   <span> ${i18n.translate('About')} </span>
-// </li>
